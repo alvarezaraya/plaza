@@ -1,146 +1,171 @@
 {
-  "generado_en": "2026-05-10T02:12:10.106425",
+  "generado_en": "2026-05-10T02:34:43.977165",
   "total_eventos": 15,
-  "fuentes": [
-    "Ticketplus",
-    "Ticketpro",
-    "PuntoTicket"
-  ],
   "eventos": [
     {
       "fuente": "Ticketplus",
-      "nombre": "ROCK AND SOCCER RATA BLANCA EN ROCK AND SOCCER ANTOFAGASTA 26 DE AGOSTO",
-      "fecha": "26 AGO",
+      "nombre": "ROCK AND SOCCER RATA BLANCA EN ROCK AND SOCCER ANTOFAGASTA 26 DE AGOSTO 26 AGO Desde: CLP 40.250 CLP",
+      "descripcion": "RATA BLANCA EN ROCK AND SOCCER ANTOFAGASTA 26 DE AGOSTO",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "40.250",
-      "url": "https://ticketplus.cl/events/rata-blanca-rock-and-soccer-antofagasta-26-de-agosto",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/a1cda3bfb0d5a890935189253ed3642eebe763bd.png?1776363148&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/a1cda3bfb0d5a890935189253ed3642eebe763bd.png?1776363148&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/rata-blanca-rock-and-soccer-antofagasta-26-de-agosto"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Antofagasta Eva Ayllón - Tour Chile 2026 - Teatro Municipal de Antofagasta",
-      "fecha": "23 MAY",
+      "nombre": "Teatro Municipal de Antofagasta Eva Ayllón - Tour Chile 2026 - Teatro Municipal de Antofagasta 23 MAY Desde: CLP 40.250 CLP",
+      "descripcion": "Eva Ayllón - Tour Chile 2026 - Teatro Municipal de Antofagasta",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "40.250",
-      "url": "https://ticketplus.cl/events/eva-ayllon-teatro-municipal-antofagasta",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/64774672d6de46b246ad882a27b453073c03cffb.png?1771438356&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/64774672d6de46b246ad882a27b453073c03cffb.png?1771438356&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/eva-ayllon-teatro-municipal-antofagasta"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Antofagasta La Sociedad - El Regreso - Antofagasta",
-      "fecha": "27 JUN",
+      "nombre": "Teatro Municipal de Antofagasta La Sociedad - El Regreso - Antofagasta 27 JUN Desde: CLP 33.900 CLP",
+      "descripcion": "La Sociedad - El Regreso - Antofagasta",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "33.900",
-      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-antofagasta",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/c0b71c47edea6a07fbe1ce66cf2a1efc9599b608.jpeg?1773782073&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/c0b71c47edea6a07fbe1ce66cf2a1efc9599b608.jpeg?1773782073&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-antofagasta"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Calama La Sociedad - El Regreso - Calama",
-      "fecha": "28 JUN",
+      "nombre": "Teatro Municipal de Calama La Sociedad - El Regreso - Calama 28 JUN Desde: CLP 33.900 CLP",
+      "descripcion": "La Sociedad - El Regreso - Calama",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "33.900",
-      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-calama",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/56aa2d38810e897bb9dfe411b2a3d0e97bdddf8e.jpeg?1774474685&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/56aa2d38810e897bb9dfe411b2a3d0e97bdddf8e.jpeg?1774474685&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-calama"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Calama Eva Ayllón - Tour Chile 2026 - Calama",
-      "fecha": "22 MAY",
+      "nombre": "Teatro Municipal de Calama Eva Ayllón - Tour Chile 2026 - Calama 22 MAY Desde: CLP 39.550 CLP",
+      "descripcion": "Eva Ayllón - Tour Chile 2026 - Calama",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "39.550",
-      "url": "https://ticketplus.cl/events/eva-ayllon-tour-chile-2026-calama",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/9f1231953ea27c7570e7b80ee0357d05c0faffb2.jpeg?1771334348&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/9f1231953ea27c7570e7b80ee0357d05c0faffb2.jpeg?1771334348&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/eva-ayllon-tour-chile-2026-calama"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Calama Movimiento Original - Calama",
-      "fecha": "15 AGO",
+      "nombre": "Teatro Municipal de Calama Movimiento Original - Calama 15 AGO Desde: CLP 30.510 CLP",
+      "descripcion": "Movimiento Original - Calama",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "30.510",
-      "url": "https://ticketplus.cl/events/movimiento-original-calama",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/75a0bf408c6c259c620b2fa6a6d27e9f33e6b821.jpeg?1774890258&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/75a0bf408c6c259c620b2fa6a6d27e9f33e6b821.jpeg?1774890258&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/movimiento-original-calama"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Antofagasta Fútbol Sinfónico - Pedro Carcuro - Orquesta Sinfónica de Antofagasta",
-      "fecha": "29 MAY",
+      "nombre": "Teatro Municipal de Antofagasta Fútbol Sinfónico - Pedro Carcuro - Orquesta Sinfónica de Antofagasta 29 MAY Desde: CLP 5.600 CLP",
+      "descripcion": "Fútbol Sinfónico - Pedro Carcuro - Orquesta Sinfónica de Antofagasta",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "5.600",
-      "url": "https://ticketplus.cl/events/futbol-sinfonico",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/2ea57c6fda3767fcf8b88e71b78fc5d60a9651a3.png?1774629850&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/2ea57c6fda3767fcf8b88e71b78fc5d60a9651a3.png?1774629850&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/futbol-sinfonico"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Calama Eva Ayllón - Tour Chile 2026 - Calama",
-      "fecha": "22 MAY",
+      "nombre": "Teatro Municipal de Calama Eva Ayllón - Tour Chile 2026 - Calama 22 MAY Desde: CLP 39.550 CLP",
+      "descripcion": "Eva Ayllón - Tour Chile 2026 - Calama",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "39.550",
-      "url": "https://ticketplus.cl/events/eva-ayllon-tour-chile-2026-calama",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/9f1231953ea27c7570e7b80ee0357d05c0faffb2.jpeg?1771334348&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/9f1231953ea27c7570e7b80ee0357d05c0faffb2.jpeg?1771334348&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/eva-ayllon-tour-chile-2026-calama"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Antofagasta Eva Ayllón - Tour Chile 2026 - Teatro Municipal de Antofagasta",
-      "fecha": "23 MAY",
+      "nombre": "Teatro Municipal de Antofagasta Eva Ayllón - Tour Chile 2026 - Teatro Municipal de Antofagasta 23 MAY Desde: CLP 40.250 CLP",
+      "descripcion": "Eva Ayllón - Tour Chile 2026 - Teatro Municipal de Antofagasta",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "40.250",
-      "url": "https://ticketplus.cl/events/eva-ayllon-teatro-municipal-antofagasta",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/64774672d6de46b246ad882a27b453073c03cffb.png?1771438356&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/64774672d6de46b246ad882a27b453073c03cffb.png?1771438356&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/eva-ayllon-teatro-municipal-antofagasta"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Antofagasta Fútbol Sinfónico - Pedro Carcuro - Orquesta Sinfónica de Antofagasta",
-      "fecha": "29 MAY",
+      "nombre": "Teatro Municipal de Antofagasta Fútbol Sinfónico - Pedro Carcuro - Orquesta Sinfónica de Antofagasta 29 MAY Desde: CLP 5.600 CLP",
+      "descripcion": "Fútbol Sinfónico - Pedro Carcuro - Orquesta Sinfónica de Antofagasta",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "5.600",
-      "url": "https://ticketplus.cl/events/futbol-sinfonico",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/2ea57c6fda3767fcf8b88e71b78fc5d60a9651a3.png?1774629850&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/2ea57c6fda3767fcf8b88e71b78fc5d60a9651a3.png?1774629850&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/futbol-sinfonico"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Antofagasta La Sociedad - El Regreso - Antofagasta",
-      "fecha": "27 JUN",
+      "nombre": "Teatro Municipal de Antofagasta La Sociedad - El Regreso - Antofagasta 27 JUN Desde: CLP 33.900 CLP",
+      "descripcion": "La Sociedad - El Regreso - Antofagasta",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "33.900",
-      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-antofagasta",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/c0b71c47edea6a07fbe1ce66cf2a1efc9599b608.jpeg?1773782073&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/c0b71c47edea6a07fbe1ce66cf2a1efc9599b608.jpeg?1773782073&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-antofagasta"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Calama La Sociedad - El Regreso - Calama",
-      "fecha": "28 JUN",
+      "nombre": "Teatro Municipal de Calama La Sociedad - El Regreso - Calama 28 JUN Desde: CLP 33.900 CLP",
+      "descripcion": "La Sociedad - El Regreso - Calama",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "33.900",
-      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-calama",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/56aa2d38810e897bb9dfe411b2a3d0e97bdddf8e.jpeg?1774474685&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/56aa2d38810e897bb9dfe411b2a3d0e97bdddf8e.jpeg?1774474685&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-calama"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Teatro Municipal de Calama Movimiento Original - Calama",
-      "fecha": "15 AGO",
+      "nombre": "Teatro Municipal de Calama Movimiento Original - Calama 15 AGO Desde: CLP 30.510 CLP",
+      "descripcion": "Movimiento Original - Calama",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "30.510",
-      "url": "https://ticketplus.cl/events/movimiento-original-calama",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/75a0bf408c6c259c620b2fa6a6d27e9f33e6b821.jpeg?1774890258&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/75a0bf408c6c259c620b2fa6a6d27e9f33e6b821.jpeg?1774890258&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/movimiento-original-calama"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "ROCK AND SOCCER RATA BLANCA EN ROCK AND SOCCER ANTOFAGASTA 26 DE AGOSTO",
-      "fecha": "26 AGO",
+      "nombre": "ROCK AND SOCCER RATA BLANCA EN ROCK AND SOCCER ANTOFAGASTA 26 DE AGOSTO 26 AGO Desde: CLP 40.250 CLP",
+      "descripcion": "RATA BLANCA EN ROCK AND SOCCER ANTOFAGASTA 26 DE AGOSTO",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "40.250",
-      "url": "https://ticketplus.cl/events/rata-blanca-rock-and-soccer-antofagasta-26-de-agosto",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/a1cda3bfb0d5a890935189253ed3642eebe763bd.png?1776363148&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/a1cda3bfb0d5a890935189253ed3642eebe763bd.png?1776363148&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/rata-blanca-rock-and-soccer-antofagasta-26-de-agosto"
     },
     {
       "fuente": "Ticketplus",
-      "nombre": "Estadio Regional Calvo y Bascuñan Desafío Cuerpo de Bomberos de Antofagasta 2026",
-      "fecha": "05 SEP",
+      "nombre": "Estadio Regional Calvo y Bascuñan Desafío Cuerpo de Bomberos de Antofagasta 2026 05 SEP Desde: CLP 11.500 CLP",
+      "descripcion": "Desafío Cuerpo de Bomberos de Antofagasta 2026",
+      "fecha_iso": "",
+      "fecha_texto": "",
       "precio_desde_clp": "11.500",
-      "url": "https://ticketplus.cl/events/desafio-cuerpo-de-bomberos-de-antofagasta-2026",
-      "ciudad": "Antofagasta/Región",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/151352dc22141fd215aec0e0465983b27ea75d5a.JPEG?1777991475&format=baseline-jpeg&q=65"
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/151352dc22141fd215aec0e0465983b27ea75d5a.JPEG?1777991475&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/desafio-cuerpo-de-bomberos-de-antofagasta-2026"
     }
   ]
 }
