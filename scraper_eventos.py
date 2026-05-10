@@ -1,5 +1,5 @@
 """
-scraper_eventos.py  v3
+scraper_eventos.py  v4
 ======================
 Extrae eventos culturales con imagen y descripción desde:
   - Ticketplus.cl  (Región de Antofagasta)
@@ -7,10 +7,12 @@ Extrae eventos culturales con imagen y descripción desde:
   - PuntoTicket.com (filtrando ciudades del norte)
 
 Por cada evento visita su página individual y extrae:
-  - imagen_url   → meta og:image
-  - descripcion  → meta og:description
-  - fecha_iso    → fecha en formato YYYY-MM-DD (para ordenar en Swift)
-  - fecha_texto  → fecha legible en español
+  - nombre      → título limpio (artista / show)
+  - venue       → lugar del evento
+  - imagen_url  → meta og:image
+  - descripcion → meta og:description
+  - fecha_iso   → fecha en formato YYYY-MM-DD (para ordenar en Swift)
+  - fecha_texto → fecha legible en español
 
 Requisitos:
     pip install requests beautifulsoup4
@@ -42,10 +44,23 @@ CIUDADES_OBJETIVO = [
     "tocopilla", "mejillones", "taltal",
 ]
 
-OUTPUT_FILE = "eventos.json"
-PAUSA = 0.8   # segundos entre requests
+VENUES_CONOCIDOS = [
+    "teatro municipal de antofagasta",
+    "teatro municipal de calama",
+    "teatro municipal de iquique",
+    "teatro municipal",
+    "rock and soccer",
+    "centro cultural estación",
+    "sala andamios",
+    "enjoy antofagasta",
+    "estadio regional",
+    "club hípico",
+    "gimnasio olímpico",
+]
 
-# Meses en español → número
+OUTPUT_FILE = "eventos.json"
+PAUSA = 0.8
+
 MESES_ES = {
     "ene": 1, "enero": 1,
     "feb": 2, "febrero": 2,
@@ -66,6 +81,8 @@ MESES_TEXTO = {
     5: "mayo", 6: "junio", 7: "julio", 8: "agosto",
     9: "septiembre", 10: "octubre", 11: "noviembre", 12: "diciembre",
 }
+
+MESES_PATTERN = "|".join(MESES_ES.keys())
 
 
 # ── Utilidades ───────────────────────────────────────────────────────────────
@@ -89,23 +106,14 @@ def es_ciudad_objetivo(texto):
 
 
 def parsear_fecha(dia, mes_str):
-    """
-    Convierte día + nombre de mes en:
-      fecha_iso  → "2026-05-23"
-      fecha_texto → "23 de mayo de 2026"
-    Devuelve ("", "") si no puede parsear.
-    """
     mes_str = mes_str.lower().strip()
     mes_num = MESES_ES.get(mes_str)
     if not mes_num:
         return "", ""
-
     anio = datetime.now().year
-    # Si el mes ya pasó este año, probablemente es el año siguiente
     ahora = datetime.now()
     if mes_num < ahora.month or (mes_num == ahora.month and int(dia) < ahora.day):
         anio += 1
-
     try:
         fecha = datetime(anio, mes_num, int(dia))
         iso = fecha.strftime("%Y-%m-%d")
@@ -115,18 +123,94 @@ def parsear_fecha(dia, mes_str):
         return "", ""
 
 
+def extraer_fecha_de_texto(texto):
+    """Busca patrones de fecha en un texto y retorna (fecha_iso, fecha_texto)."""
+    patron = re.search(
+        rf"(\d{{1,2}})\s+(?:de\s+)?({MESES_PATTERN})",
+        texto, re.IGNORECASE
+    )
+    if patron:
+        return parsear_fecha(patron.group(1), patron.group(2))
+    return "", ""
+
+
+def detectar_venue(texto):
+    """Detecta un venue conocido en el texto."""
+    texto_lower = texto.lower()
+    for v in VENUES_CONOCIDOS:
+        if v in texto_lower:
+            return v.title()
+    return ""
+
+
+def detectar_ciudad(texto):
+    """Detecta la ciudad en un texto."""
+    texto_lower = texto.lower()
+    for c in CIUDADES_OBJETIVO:
+        if c in texto_lower:
+            return c.capitalize()
+    return ""
+
+
+def limpiar_nombre(nombre_crudo, venue="", ciudad=""):
+    """
+    Limpia el nombre del evento eliminando:
+    - Venue repetido
+    - Ciudad
+    - Fechas (DD MES, DD de MES)
+    - Precios (Desde: CLP ..., $...)
+    - Texto residual
+    """
+    nombre = nombre_crudo
+
+    # Quitar precios
+    nombre = re.sub(r"Desde:?\s*CLP\s*[\d\.]+\s*CLP?", "", nombre, flags=re.IGNORECASE)
+    nombre = re.sub(r"Desde:?\s*\$?\s*[\d\.]+", "", nombre, flags=re.IGNORECASE)
+    nombre = re.sub(r"CLP\s*[\d\.]+", "", nombre, flags=re.IGNORECASE)
+    nombre = re.sub(r"\$\s*[\d\.]+", "", nombre, flags=re.IGNORECASE)
+
+    # Quitar fechas (DD MES, DD de MES de YYYY)
+    nombre = re.sub(
+        rf"\d{{1,2}}\s+(?:de\s+)?(?:{MESES_PATTERN})(?:\s+(?:de\s+)?\d{{4}})?",
+        "", nombre, flags=re.IGNORECASE
+    )
+
+    # Quitar venue si está al inicio o repetido
+    if venue:
+        nombre = re.sub(re.escape(venue), "", nombre, flags=re.IGNORECASE)
+
+    # Quitar ciudades
+    for c in CIUDADES_OBJETIVO:
+        nombre = re.sub(rf"\b{c}\b", "", nombre, flags=re.IGNORECASE)
+
+    # Quitar separadores sueltos
+    nombre = re.sub(r"\s*-\s*$", "", nombre)
+    nombre = re.sub(r"^\s*-\s*", "", nombre)
+    nombre = re.sub(r"\s*-\s*-\s*", " - ", nombre)
+
+    return limpiar(nombre).strip(" -–—·")
+
+
 def extraer_detalle(url):
     """
     Visita la página del evento y extrae:
+      - og_title (título limpio)
       - imagen_url
       - descripcion
-      - fecha_iso y fecha_texto (si la descripción contiene fecha más precisa)
+      - fecha_iso y fecha_texto
+      - venue (si se puede detectar)
     """
     r = get(url)
     if not r:
-        return "", "", "", ""
+        return "", "", "", "", "", ""
 
     soup = BeautifulSoup(r.text, "html.parser")
+
+    # og:title
+    og_title = ""
+    tag = soup.find("meta", property="og:title")
+    if tag and tag.get("content"):
+        og_title = limpiar(tag["content"])
 
     # Imagen
     imagen = ""
@@ -148,19 +232,15 @@ def extraer_detalle(url):
         if tag and tag.get("content"):
             descripcion = limpiar(tag["content"])
 
-    # Intentar extraer fecha desde la descripción (más precisa que el listado)
-    # Formato típico Ticketplus: "Sábado 23 MAY - 20:00 hrs"
-    fecha_iso, fecha_texto = "", ""
-    patron = re.search(
-        r"(\d{1,2})\s+(ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC"
-        r"|enero|febrero|marzo|abril|mayo|junio|julio|agosto"
-        r"|septiembre|octubre|noviembre|diciembre)",
-        descripcion, re.IGNORECASE
-    )
-    if patron:
-        fecha_iso, fecha_texto = parsear_fecha(patron.group(1), patron.group(2))
+    # Fecha desde descripción o título
+    fecha_iso, fecha_texto = extraer_fecha_de_texto(descripcion)
+    if not fecha_iso:
+        fecha_iso, fecha_texto = extraer_fecha_de_texto(og_title)
 
-    return imagen, descripcion, fecha_iso, fecha_texto
+    # Venue
+    venue = detectar_venue(og_title) or detectar_venue(descripcion)
+
+    return og_title, imagen, descripcion, fecha_iso, fecha_texto, venue
 
 
 # ── Scraper 1: Ticketplus ────────────────────────────────────────────────────
@@ -183,26 +263,46 @@ def scrape_ticketplus():
         precio_match = re.search(r"CLP\s*([\d\.]+)", texto)
         precio = precio_match.group(1) if precio_match else ""
 
-        # Nombre: texto antes del recinto (segunda aparición del nombre)
-        partes = texto.split("  ")
-        nombre = limpiar(partes[0]) if partes else texto[:80]
-
         evento_url = f"https://ticketplus.cl{href}" if href.startswith("/") else href
-        base.append({"nombre": nombre, "precio": precio, "url": evento_url})
+        base.append({
+            "texto_crudo": texto,
+            "precio": precio,
+            "url": evento_url,
+        })
 
     print(f"  → Obteniendo detalle de {len(base)} eventos...")
     eventos = []
     for i, b in enumerate(base):
-        print(f"    [{i+1}/{len(base)}] {b['nombre'][:50]}...")
-        imagen, desc, fecha_iso, fecha_texto = extraer_detalle(b["url"])
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+
+        # Decidir el mejor nombre:
+        # 1. og:title suele ser más limpio que el texto del listado
+        # 2. Si no hay og:title, usar la descripción
+        # 3. Último recurso: texto crudo del listado
+        nombre_base = og_title or desc or b["texto_crudo"]
+
+        # Detectar venue y ciudad
+        if not venue:
+            venue = detectar_venue(b["texto_crudo"])
+        ciudad = detectar_ciudad(b["texto_crudo"]) or "Antofagasta"
+
+        # Si no tenemos fecha del detalle, intentar del texto crudo
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+
+        # Limpiar nombre
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+
         eventos.append({
             "fuente": "Ticketplus",
-            "nombre": b["nombre"],
+            "nombre": nombre,
+            "venue": venue,
             "descripcion": desc,
             "fecha_iso": fecha_iso,
             "fecha_texto": fecha_texto,
             "precio_desde_clp": b["precio"],
-            "ciudad": "Antofagasta",
+            "ciudad": ciudad,
             "imagen_url": imagen,
             "url": b["url"],
         })
@@ -232,28 +332,41 @@ def scrape_ticketpro():
         precio_match = re.search(r"\$\s*([\d\.]+)", texto)
         precio = precio_match.group(1) if precio_match else ""
 
-        ciudad_det = next(
-            (c.capitalize() for c in CIUDADES_OBJETIVO if c in texto.lower()), ""
-        )
+        ciudad_det = detectar_ciudad(texto) or ""
 
-        slug = href.rstrip("/").split("/")[-1]
-        nombre = slug.replace("-", " ").split("--")[0].title()
         evento_url = f"https://www.ticketpro.cl{href}" if href.startswith("/") else href
-        base.append({"nombre": nombre, "precio": precio, "ciudad": ciudad_det, "url": evento_url})
+        base.append({
+            "texto_crudo": texto,
+            "precio": precio,
+            "ciudad": ciudad_det,
+            "url": evento_url,
+        })
 
     print(f"  → Obteniendo detalle de {len(base)} eventos...")
     eventos = []
     for i, b in enumerate(base):
-        print(f"    [{i+1}/{len(base)}] {b['nombre'][:50]}...")
-        imagen, desc, fecha_iso, fecha_texto = extraer_detalle(b["url"])
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+
+        nombre_base = og_title or desc or b["texto_crudo"]
+        if not venue:
+            venue = detectar_venue(b["texto_crudo"])
+        ciudad = b["ciudad"] or detectar_ciudad(b["texto_crudo"])
+
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+
         eventos.append({
             "fuente": "Ticketpro",
-            "nombre": b["nombre"],
+            "nombre": nombre,
+            "venue": venue,
             "descripcion": desc,
             "fecha_iso": fecha_iso,
             "fecha_texto": fecha_texto,
             "precio_desde_clp": b["precio"],
-            "ciudad": b["ciudad"],
+            "ciudad": ciudad,
             "imagen_url": imagen,
             "url": b["url"],
         })
@@ -295,7 +408,7 @@ def scrape_puntoticket():
             ):
                 vistos.add(href)
                 base.append({
-                    "nombre": texto,
+                    "texto_crudo": texto,
                     "ciudad": ciudad,
                     "url": f"https://www.puntoticket.com{href}",
                 })
@@ -304,16 +417,28 @@ def scrape_puntoticket():
     print(f"  → Obteniendo detalle de {len(base)} eventos...")
     eventos = []
     for i, b in enumerate(base):
-        print(f"    [{i+1}/{len(base)}] {b['nombre'][:50]}...")
-        imagen, desc, fecha_iso, fecha_texto = extraer_detalle(b["url"])
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+
+        nombre_base = og_title or desc or b["texto_crudo"]
+        if not venue:
+            venue = detectar_venue(b["texto_crudo"])
+        ciudad = b["ciudad"]
+
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+
         eventos.append({
             "fuente": "PuntoTicket",
-            "nombre": b["nombre"],
+            "nombre": nombre,
+            "venue": venue,
             "descripcion": desc,
             "fecha_iso": fecha_iso,
             "fecha_texto": fecha_texto,
             "precio_desde_clp": "",
-            "ciudad": b["ciudad"],
+            "ciudad": ciudad,
             "imagen_url": imagen,
             "url": b["url"],
         })
@@ -327,7 +452,7 @@ def scrape_puntoticket():
 
 def main():
     print("=" * 55)
-    print("  Scraper de eventos — Norte de Chile  v3")
+    print("  Scraper de eventos — Norte de Chile  v4")
     print("=" * 55)
 
     todos = []
@@ -335,7 +460,6 @@ def main():
     todos += scrape_ticketpro()
     todos += scrape_puntoticket()
 
-    # Ordenar por fecha (eventos sin fecha van al final)
     todos.sort(key=lambda e: e["fecha_iso"] if e["fecha_iso"] else "9999")
 
     resultado = {
@@ -350,12 +474,14 @@ def main():
     con_imagen = sum(1 for e in todos if e["imagen_url"])
     con_desc   = sum(1 for e in todos if e["descripcion"])
     con_fecha  = sum(1 for e in todos if e["fecha_iso"])
+    con_venue  = sum(1 for e in todos if e["venue"])
     print(f"\n{'=' * 55}")
-    print(f"  Total    : {len(todos)} eventos")
-    print(f"  Con imagen : {con_imagen}")
+    print(f"  Total       : {len(todos)} eventos")
+    print(f"  Con imagen  : {con_imagen}")
     print(f"  Con descripción : {con_desc}")
-    print(f"  Con fecha : {con_fecha}")
-    print(f"  Archivo  : '{OUTPUT_FILE}'")
+    print(f"  Con fecha   : {con_fecha}")
+    print(f"  Con venue   : {con_venue}")
+    print(f"  Archivo     : '{OUTPUT_FILE}'")
     print(f"{'=' * 55}\n")
 
 
