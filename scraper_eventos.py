@@ -1,5 +1,5 @@
 """
-scraper_eventos.py  v4
+scraper_eventos.py  v5
 ======================
 Extrae eventos culturales con imagen y descripción desde:
   - Ticketplus.cl  (Región de Antofagasta)
@@ -448,11 +448,122 @@ def scrape_puntoticket():
     return eventos
 
 
+# ── Enriquecimiento: Wikipedia + DuckDuckGo ─────────────────────────────────
+
+def buscar_wikipedia(nombre):
+    """Busca en Wikipedia (es, luego en) y retorna el extracto."""
+    nombre_buscar = re.sub(r"\s*\(.*?\)", "", nombre).strip()
+    if len(nombre_buscar) < 3:
+        return ""
+
+    for lang in ("es", "en"):
+        try:
+            search_url = (
+                f"https://{lang}.wikipedia.org/w/api.php"
+                f"?action=query&list=search&srsearch={requests.utils.quote(nombre_buscar)}"
+                f"&srlimit=1&format=json"
+            )
+            r = requests.get(search_url, headers=HEADERS, timeout=10)
+            data = r.json()
+            results = data.get("query", {}).get("search", [])
+            if not results:
+                continue
+
+            page_title = results[0]["title"]
+            summary_url = (
+                f"https://{lang}.wikipedia.org/api/rest_v1/page/summary/"
+                f"{requests.utils.quote(page_title, safe='')}"
+            )
+            r2 = requests.get(summary_url, headers=HEADERS, timeout=10)
+            summary = r2.json()
+            extract = summary.get("extract", "")
+            if len(extract) > 50:
+                return extract
+        except Exception as e:
+            print(f"    ⚠️  Wikipedia ({lang}): {e}")
+            continue
+
+    return ""
+
+
+def buscar_duckduckgo(nombre):
+    """Usa la API instant answer de DuckDuckGo para obtener un resumen."""
+    try:
+        query = re.sub(r"\s*\(.*?\)", "", nombre).strip()
+        url = f"https://api.duckduckgo.com/?q={requests.utils.quote(query)}&format=json&no_html=1"
+        r = requests.get(url, headers=HEADERS, timeout=10)
+        data = r.json()
+
+        abstract = data.get("AbstractText", "")
+        if len(abstract) > 50:
+            return abstract
+    except Exception as e:
+        print(f"    ⚠️  DuckDuckGo: {e}")
+
+    return ""
+
+
+def enriquecer_evento(evento):
+    """
+    Busca información adicional del evento/artista en Wikipedia y DuckDuckGo.
+    Agrega campos:
+      - descripcion_extendida: resumen del evento/artista (1-2 párrafos)
+      - bio_artista: párrafo corto sobre la persona/artista
+    """
+    nombre = evento.get("nombre", "")
+    desc_original = evento.get("descripcion", "")
+    print(f"    🔎 Buscando info para: {nombre[:60]}...")
+
+    # 1. Buscar en Wikipedia
+    wiki = buscar_wikipedia(nombre)
+    time.sleep(0.5)
+
+    # 2. Buscar en DuckDuckGo como complemento
+    ddg = buscar_duckduckgo(nombre)
+    time.sleep(0.5)
+
+    # Elegir la mejor fuente para la bio del artista
+    bio = ""
+    if wiki:
+        bio = wiki
+    elif ddg:
+        bio = ddg
+
+    # Truncar bio a un párrafo razonable (max ~500 chars)
+    if bio:
+        sentences = re.split(r'(?<=[.!?])\s+', bio)
+        truncated = ""
+        for s in sentences:
+            if len(truncated) + len(s) > 500:
+                break
+            truncated += s + " "
+        bio = truncated.strip()
+
+    # Construir descripción extendida
+    # Combinar la descripción original del evento con info adicional
+    desc_ext = desc_original
+    if not desc_ext or len(desc_ext) < 30:
+        if bio:
+            desc_ext = bio
+        else:
+            desc_ext = ""
+
+    evento["descripcion_extendida"] = desc_ext
+    evento["bio_artista"] = bio
+
+    if bio:
+        print(f"      ✅ Bio encontrada ({len(bio)} chars)")
+    else:
+        print(f"      ❌ Sin bio adicional")
+
+    return evento
+
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
     print("=" * 55)
-    print("  Scraper de eventos — Norte de Chile  v4")
+    print("  Scraper de eventos — Norte de Chile  v5")
     print("=" * 55)
 
     todos = []
@@ -461,6 +572,12 @@ def main():
     todos += scrape_puntoticket()
 
     todos.sort(key=lambda e: e["fecha_iso"] if e["fecha_iso"] else "9999")
+
+    # Enriquecer con descripciones y bios
+    print(f"\n📚 Enriqueciendo {len(todos)} eventos con Wikipedia y DuckDuckGo...")
+    for i, evento in enumerate(todos):
+        print(f"  [{i+1}/{len(todos)}]", end="")
+        enriquecer_evento(evento)
 
     resultado = {
         "generado_en": datetime.now().isoformat(),
@@ -475,10 +592,14 @@ def main():
     con_desc   = sum(1 for e in todos if e["descripcion"])
     con_fecha  = sum(1 for e in todos if e["fecha_iso"])
     con_venue  = sum(1 for e in todos if e["venue"])
+    con_bio    = sum(1 for e in todos if e.get("bio_artista"))
+    con_ext    = sum(1 for e in todos if e.get("descripcion_extendida"))
     print(f"\n{'=' * 55}")
     print(f"  Total       : {len(todos)} eventos")
     print(f"  Con imagen  : {con_imagen}")
     print(f"  Con descripción : {con_desc}")
+    print(f"  Con desc. ext.  : {con_ext}")
+    print(f"  Con bio artista : {con_bio}")
     print(f"  Con fecha   : {con_fecha}")
     print(f"  Con venue   : {con_venue}")
     print(f"  Archivo     : '{OUTPUT_FILE}'")
