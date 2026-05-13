@@ -1,6 +1,6 @@
 {
-  "generado_en": "2026-05-12T12:29:49.002260",
-  "total_eventos": 15,
+  "generado_en": "2026-05-13T13:39:38.971902",
+  "total_eventos": 16,
   "eventos": [
     {
       "fuente": "Ticketplus",
@@ -84,6 +84,20 @@
       "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/2ea57c6fda3767fcf8b88e71b78fc5d60a9651a3.png?1774629850&format=baseline-jpeg&q=65",
       "url": "https://ticketplus.cl/events/futbol-sinfonico",
       "descripcion_extendida": "Fútbol Sinfónico - Pedro Carcuro - Orquesta Sinfónica de Antofagasta",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "Entradas para Humor y Voces del Ayer - Ticketplus",
+      "venue": "",
+      "descripcion": "Humor y Voces del Ayer",
+      "fecha_iso": "2026-06-20",
+      "fecha_texto": "20 de junio de 2026",
+      "precio_desde_clp": "11.500",
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/eb736514d7d7365f5e4fb4a4b61f3ceab6226d0a.png?1778626775&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/noche-de-humor-y-voces-del-ayer",
+      "descripcion_extendida": "",
       "bio_artista": ""
     },
     {
