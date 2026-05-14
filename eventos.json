@@ -1,7 +1,35 @@
 {
-  "generado_en": "2026-05-13T13:39:38.971902",
-  "total_eventos": 16,
+  "generado_en": "2026-05-14T12:13:49.818535",
+  "total_eventos": 18,
   "eventos": [
+    {
+      "fuente": "Ticketplus",
+      "nombre": "Entradas para Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12 - Ticketplus",
+      "venue": "",
+      "descripcion": "Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12",
+      "fecha_iso": "2026-05-16",
+      "fecha_texto": "16 de mayo de 2026",
+      "precio_desde_clp": "2.200",
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/cef2655ee1f378ecd3be8dafaebe8dd7cacbbfa7.png?1778510043&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/cobreloa-vs-deportes-copiapo-campeonato-de-ascenso-caixun-2026-fecha-12",
+      "descripcion_extendida": "Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "Entradas para Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12 - Ticketplus",
+      "venue": "",
+      "descripcion": "Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12",
+      "fecha_iso": "2026-05-16",
+      "fecha_texto": "16 de mayo de 2026",
+      "precio_desde_clp": "2.200",
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/cef2655ee1f378ecd3be8dafaebe8dd7cacbbfa7.png?1778510043&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/cobreloa-vs-deportes-copiapo-campeonato-de-ascenso-caixun-2026-fecha-12",
+      "descripcion_extendida": "Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12",
+      "bio_artista": ""
+    },
     {
       "fuente": "Ticketplus",
       "nombre": "Entradas para Eva Ayllón - Tour Chile 2026 - Ticketplus",
@@ -95,7 +123,7 @@
       "fecha_texto": "20 de junio de 2026",
       "precio_desde_clp": "11.500",
       "ciudad": "Antofagasta",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/eb736514d7d7365f5e4fb4a4b61f3ceab6226d0a.png?1778626775&format=baseline-jpeg&q=65",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/d3ac0c5b7b56257503af504231dee4eb515e2109.png?1778712111&format=baseline-jpeg&q=65",
       "url": "https://ticketplus.cl/events/noche-de-humor-y-voces-del-ayer",
       "descripcion_extendida": "",
       "bio_artista": ""
