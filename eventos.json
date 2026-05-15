@@ -1,6 +1,6 @@
 {
-  "generado_en": "2026-05-14T12:13:49.818535",
-  "total_eventos": 18,
+  "generado_en": "2026-05-15T12:24:23.078117",
+  "total_eventos": 19,
   "eventos": [
     {
       "fuente": "Ticketplus",
@@ -70,6 +70,20 @@
       "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/64774672d6de46b246ad882a27b453073c03cffb.png?1771438356&format=baseline-jpeg&q=65",
       "url": "https://ticketplus.cl/events/eva-ayllon-teatro-municipal-antofagasta",
       "descripcion_extendida": "Eva Ayllón - Tour Chile 2026 - Teatro Municipal de Antofagasta",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "Entradas para LIGA DOS SOKOL VS ARTURO PRAT SAN FELIPE - Ticketplus",
+      "venue": "",
+      "descripcion": "LIGA DOS SOKOL ANTOFAGASTA VS ARTURO PRAT SAN FELIPE",
+      "fecha_iso": "2026-05-23",
+      "fecha_texto": "23 de mayo de 2026",
+      "precio_desde_clp": "1.000",
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/f296b81468d24b22dd772e97839352d9596ca0de.png?1778703458&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/liga-dos-sokol-antofagasta-vs-arturo-prat-san-felipe",
+      "descripcion_extendida": "LIGA DOS SOKOL ANTOFAGASTA VS ARTURO PRAT SAN FELIPE",
       "bio_artista": ""
     },
     {
