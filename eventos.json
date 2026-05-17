@@ -1,35 +1,7 @@
 {
-  "generado_en": "2026-05-16T10:44:32.216095",
-  "total_eventos": 19,
+  "generado_en": "2026-05-17T10:53:41.267757",
+  "total_eventos": 18,
   "eventos": [
-    {
-      "fuente": "Ticketplus",
-      "nombre": "Entradas para Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12 - Ticketplus",
-      "venue": "",
-      "descripcion": "Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12",
-      "fecha_iso": "2026-05-16",
-      "fecha_texto": "16 de mayo de 2026",
-      "precio_desde_clp": "2.200",
-      "ciudad": "Antofagasta",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/cef2655ee1f378ecd3be8dafaebe8dd7cacbbfa7.png?1778510043&format=baseline-jpeg&q=65",
-      "url": "https://ticketplus.cl/events/cobreloa-vs-deportes-copiapo-campeonato-de-ascenso-caixun-2026-fecha-12",
-      "descripcion_extendida": "Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12",
-      "bio_artista": ""
-    },
-    {
-      "fuente": "Ticketplus",
-      "nombre": "Entradas para Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12 - Ticketplus",
-      "venue": "",
-      "descripcion": "Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12",
-      "fecha_iso": "2026-05-16",
-      "fecha_texto": "16 de mayo de 2026",
-      "precio_desde_clp": "2.200",
-      "ciudad": "Antofagasta",
-      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/cef2655ee1f378ecd3be8dafaebe8dd7cacbbfa7.png?1778510043&format=baseline-jpeg&q=65",
-      "url": "https://ticketplus.cl/events/cobreloa-vs-deportes-copiapo-campeonato-de-ascenso-caixun-2026-fecha-12",
-      "descripcion_extendida": "Cobreloa vs Deportes Copiapó / Campeonato de Ascenso Caixun 2026 | Fecha 12",
-      "bio_artista": ""
-    },
     {
       "fuente": "Ticketplus",
       "nombre": "Entradas para Eva Ayllón - Tour Chile 2026 - Ticketplus",
@@ -70,6 +42,20 @@
       "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/64774672d6de46b246ad882a27b453073c03cffb.png?1771438356&format=baseline-jpeg&q=65",
       "url": "https://ticketplus.cl/events/eva-ayllon-teatro-municipal-antofagasta",
       "descripcion_extendida": "Eva Ayllón - Tour Chile 2026 - Teatro Municipal de Antofagasta",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "Entradas para LIGA DOS SOKOL VS ARTURO PRAT SAN FELIPE - Ticketplus",
+      "venue": "",
+      "descripcion": "LIGA DOS SOKOL ANTOFAGASTA VS ARTURO PRAT SAN FELIPE",
+      "fecha_iso": "2026-05-23",
+      "fecha_texto": "23 de mayo de 2026",
+      "precio_desde_clp": "1.000",
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/f296b81468d24b22dd772e97839352d9596ca0de.png?1778703458&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/liga-dos-sokol-antofagasta-vs-arturo-prat-san-felipe",
+      "descripcion_extendida": "LIGA DOS SOKOL ANTOFAGASTA VS ARTURO PRAT SAN FELIPE",
       "bio_artista": ""
     },
     {
