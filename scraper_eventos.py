@@ -1,10 +1,13 @@
 """
-scraper_eventos.py  v5
+scraper_eventos.py  v6
 ======================
 Extrae eventos culturales con imagen y descripción desde:
-  - Ticketplus.cl  (Región de Antofagasta)
-  - Ticketpro.cl   (filtrando ciudades del norte)
-  - PuntoTicket.com (filtrando ciudades del norte)
+  - Ticketplus.cl    (Región de Antofagasta)
+  - Ticketpro.cl     (filtrando ciudades del norte)
+  - PuntoTicket.com  (filtrando ciudades del norte)
+  - Ticketmaster.cl  (filtrando ciudades del norte)
+  - Passline.com     (filtrando ciudades del norte) *requiere playwright*
+  - ComediaTicket.cl (todos los eventos de humor)   *requiere playwright*
 
 Por cada evento visita su página individual y extrae:
   - nombre      → título limpio (artista / show)
@@ -16,6 +19,7 @@ Por cada evento visita su página individual y extrae:
 
 Requisitos:
     pip install requests beautifulsoup4
+    pip install playwright && playwright install chromium   # para Passline y ComediaTicket
 
 Uso:
     python scraper_eventos.py
@@ -276,22 +280,15 @@ def scrape_ticketplus():
         print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
         og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
 
-        # Decidir el mejor nombre:
-        # 1. og:title suele ser más limpio que el texto del listado
-        # 2. Si no hay og:title, usar la descripción
-        # 3. Último recurso: texto crudo del listado
         nombre_base = og_title or desc or b["texto_crudo"]
 
-        # Detectar venue y ciudad
         if not venue:
             venue = detectar_venue(b["texto_crudo"])
         ciudad = detectar_ciudad(b["texto_crudo"]) or "Antofagasta"
 
-        # Si no tenemos fecha del detalle, intentar del texto crudo
         if not fecha_iso:
             fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
 
-        # Limpiar nombre
         nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
 
         eventos.append({
@@ -448,6 +445,312 @@ def scrape_puntoticket():
     return eventos
 
 
+# ── Scraper 4: Ticketmaster ──────────────────────────────────────────────────
+
+def scrape_ticketmaster():
+    """
+    Ticketmaster Chile se concentra en Santiago, pero permite buscar por ciudad.
+    Se aplica filtro estricto: solo se conservan eventos donde la página del
+    evento mencione alguna ciudad objetivo en título, descripción o venue.
+    """
+    print("\n🔍 Ticketmaster.cl ...")
+    base = []
+    vistos = set()
+
+    for ciudad in ["antofagasta", "calama", "iquique", "arica"]:
+        url = f"https://www.ticketmaster.cl/buscar?q={ciudad}"
+        r = get(url)
+        if not r:
+            continue
+        soup = BeautifulSoup(r.text, "html.parser")
+
+        for a in soup.find_all("a", href=re.compile(r"/event/")):
+            href = a.get("href", "")
+            # Normalizar URL relativa o con ../
+            if href.startswith("../event/"):
+                evento_url = href.replace("../", "https://www.ticketmaster.cl/")
+            elif href.startswith("/event/"):
+                evento_url = f"https://www.ticketmaster.cl{href}"
+            elif href.startswith("http"):
+                evento_url = href
+            else:
+                continue
+
+            if evento_url in vistos:
+                continue
+            vistos.add(evento_url)
+            texto = limpiar(a.get_text(" "))
+            base.append({
+                "texto_crudo": texto,
+                "ciudad_busqueda": ciudad.capitalize(),
+                "url": evento_url,
+            })
+        time.sleep(PAUSA)
+
+    print(f"  → Obteniendo detalle de {len(base)} eventos...")
+    eventos = []
+    for i, b in enumerate(base):
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+
+        # Filtro estricto: descartar si ningún campo menciona ciudad objetivo
+        todo_texto = f"{og_title} {desc} {venue} {b['texto_crudo']}".lower()
+        if not es_ciudad_objetivo(todo_texto):
+            continue
+
+        nombre_base = og_title or desc or b["texto_crudo"]
+        if not venue:
+            venue = detectar_venue(todo_texto)
+        ciudad = detectar_ciudad(todo_texto) or b["ciudad_busqueda"]
+
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+
+        eventos.append({
+            "fuente": "Ticketmaster",
+            "nombre": nombre,
+            "venue": venue,
+            "descripcion": desc,
+            "fecha_iso": fecha_iso,
+            "fecha_texto": fecha_texto,
+            "precio_desde_clp": "",
+            "ciudad": ciudad,
+            "imagen_url": imagen,
+            "url": b["url"],
+        })
+        time.sleep(PAUSA)
+
+    print(f"  ✅ {len(eventos)} eventos")
+    return eventos
+
+
+# ── Scraper 5: Passline ──────────────────────────────────────────────────────
+
+def scrape_passline():
+    """
+    Passline.com bloquea requests con 403 (Cloudflare).
+    Usa playwright para renderizar el browser y extraer los eventos.
+
+    Requiere: pip install playwright && playwright install chromium
+    """
+    print("\n🔍 Passline.com (playwright) ...")
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("  ⚠️  playwright no instalado — omitiendo Passline.")
+        print("       Ejecuta: pip install playwright && playwright install chromium")
+        return []
+
+    ciudades_pl = {
+        "Antofagasta": "https://www.passline.com/ciudad/antofagasta",
+        "Iquique":     "https://www.passline.com/ciudad/iquique",
+        "Calama":      "https://www.passline.com/ciudad/calama",
+    }
+
+    base = []
+    vistos = set()
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        ctx = browser.new_context(user_agent=HEADERS["User-Agent"])
+        page = ctx.new_page()
+
+        for ciudad, url in ciudades_pl.items():
+            try:
+                page.goto(url, wait_until="networkidle", timeout=25000)
+                page.wait_for_timeout(2500)
+
+                links = page.eval_on_selector_all(
+                    "a[href]",
+                    "els => els.map(el => ({href: el.href, text: el.innerText.trim()}))"
+                )
+
+                for link in links:
+                    href = link.get("href", "")
+                    texto = limpiar(link.get("text", ""))
+                    if (
+                        href not in vistos
+                        and len(texto) > 3
+                        and re.search(r"/(evento|event|show|ticket)/", href)
+                    ):
+                        vistos.add(href)
+                        base.append({
+                            "texto_crudo": texto,
+                            "ciudad": ciudad,
+                            "url": href,
+                        })
+            except Exception as e:
+                print(f"  ⚠️  Passline {ciudad}: {e}")
+            time.sleep(PAUSA)
+
+        # Fallback: buscar desde la página principal de Chile
+        if not base:
+            try:
+                page.goto("https://www.passline.com/cl", wait_until="networkidle", timeout=25000)
+                page.wait_for_timeout(3000)
+                links = page.eval_on_selector_all(
+                    "a[href]",
+                    "els => els.map(el => ({href: el.href, text: el.innerText.trim()}))"
+                )
+                for link in links:
+                    href = link.get("href", "")
+                    texto = limpiar(link.get("text", ""))
+                    if (
+                        href not in vistos
+                        and len(texto) > 3
+                        and re.search(r"/(evento|event|show|ticket)/", href)
+                        and es_ciudad_objetivo(texto)
+                    ):
+                        vistos.add(href)
+                        ciudad = detectar_ciudad(texto) or "Chile"
+                        base.append({"texto_crudo": texto, "ciudad": ciudad, "url": href})
+            except Exception as e:
+                print(f"  ⚠️  Passline fallback: {e}")
+
+        browser.close()
+
+    print(f"  → Obteniendo detalle de {len(base)} eventos...")
+    eventos = []
+    for i, b in enumerate(base):
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+
+        nombre_base = og_title or desc or b["texto_crudo"]
+        if not venue:
+            venue = detectar_venue(b["texto_crudo"])
+        ciudad = b["ciudad"]
+
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+
+        eventos.append({
+            "fuente": "Passline",
+            "nombre": nombre,
+            "venue": venue,
+            "descripcion": desc,
+            "fecha_iso": fecha_iso,
+            "fecha_texto": fecha_texto,
+            "precio_desde_clp": "",
+            "ciudad": ciudad,
+            "imagen_url": imagen,
+            "url": b["url"],
+        })
+        time.sleep(PAUSA)
+
+    print(f"  ✅ {len(eventos)} eventos")
+    return eventos
+
+
+# ── Scraper 6: ComediaTicket ─────────────────────────────────────────────────
+
+def scrape_comediaticket():
+    """
+    ComediaTicket.cl es una SPA React — el HTML estático llega vacío.
+    Usa playwright para renderizar el JavaScript y extraer los shows.
+
+    Se incluyen todos los eventos (no solo norte) porque es una plataforma
+    de humor nacional y los shows de comedia suelen hacer giras al norte.
+
+    Requiere: pip install playwright && playwright install chromium
+    """
+    print("\n🔍 ComediaTicket.cl (playwright) ...")
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("  ⚠️  playwright no instalado — omitiendo ComediaTicket.")
+        print("       Ejecuta: pip install playwright && playwright install chromium")
+        return []
+
+    EXCLUIR_PATHS = {"/shop/faq", "/shop/terms", "/shop/post_with_us", "/home"}
+
+    base = []
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        ctx = browser.new_context(user_agent=HEADERS["User-Agent"])
+        page = ctx.new_page()
+
+        try:
+            page.goto("https://comediaticket.cl/home", wait_until="networkidle", timeout=30000)
+            page.wait_for_timeout(3500)  # tiempo para que React hidrate
+
+            vistos = set()
+            links = page.eval_on_selector_all(
+                "a[href]",
+                "els => els.map(el => ({href: el.getAttribute('href'), text: el.innerText.trim()}))"
+            )
+
+            for link in links:
+                href = link.get("href", "") or ""
+                texto = limpiar(link.get("text", ""))
+
+                # Normalizar a URL absoluta
+                if href.startswith("/"):
+                    full_url = f"https://comediaticket.cl{href}"
+                elif href.startswith("http"):
+                    full_url = href
+                else:
+                    continue
+
+                path = href if href.startswith("/") else "/" + "/".join(href.split("/")[3:])
+
+                if (
+                    full_url not in vistos
+                    and len(texto) > 3
+                    and "/shop/" in full_url
+                    and not any(path.startswith(ex) for ex in EXCLUIR_PATHS)
+                ):
+                    vistos.add(full_url)
+                    base.append({
+                        "texto_crudo": texto,
+                        "url": full_url,
+                    })
+
+        except Exception as e:
+            print(f"  ⚠️  ComediaTicket: {e}")
+        finally:
+            browser.close()
+
+    print(f"  → Obteniendo detalle de {len(base)} eventos...")
+    eventos = []
+    for i, b in enumerate(base):
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+
+        nombre_base = og_title or desc or b["texto_crudo"]
+        todo_texto = f"{og_title} {desc} {venue} {b['texto_crudo']}".lower()
+
+        if not venue:
+            venue = detectar_venue(todo_texto)
+        ciudad = detectar_ciudad(todo_texto) or "Chile"
+
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+
+        eventos.append({
+            "fuente": "ComediaTicket",
+            "nombre": nombre,
+            "venue": venue,
+            "descripcion": desc,
+            "fecha_iso": fecha_iso,
+            "fecha_texto": fecha_texto,
+            "precio_desde_clp": "",
+            "ciudad": ciudad,
+            "imagen_url": imagen,
+            "url": b["url"],
+        })
+        time.sleep(PAUSA)
+
+    print(f"  ✅ {len(eventos)} eventos")
+    return eventos
+
+
 # ── Enriquecimiento: Wikipedia + DuckDuckGo ─────────────────────────────────
 
 def buscar_wikipedia(nombre):
@@ -514,22 +817,18 @@ def enriquecer_evento(evento):
     desc_original = evento.get("descripcion", "")
     print(f"    🔎 Buscando info para: {nombre[:60]}...")
 
-    # 1. Buscar en Wikipedia
     wiki = buscar_wikipedia(nombre)
     time.sleep(0.5)
 
-    # 2. Buscar en DuckDuckGo como complemento
     ddg = buscar_duckduckgo(nombre)
     time.sleep(0.5)
 
-    # Elegir la mejor fuente para la bio del artista
     bio = ""
     if wiki:
         bio = wiki
     elif ddg:
         bio = ddg
 
-    # Truncar bio a un párrafo razonable (max ~500 chars)
     if bio:
         sentences = re.split(r'(?<=[.!?])\s+', bio)
         truncated = ""
@@ -539,8 +838,6 @@ def enriquecer_evento(evento):
             truncated += s + " "
         bio = truncated.strip()
 
-    # Construir descripción extendida
-    # Combinar la descripción original del evento con info adicional
     desc_ext = desc_original
     if not desc_ext or len(desc_ext) < 30:
         if bio:
@@ -563,17 +860,19 @@ def enriquecer_evento(evento):
 
 def main():
     print("=" * 55)
-    print("  Scraper de eventos — Norte de Chile  v5")
+    print("  Scraper de eventos — Norte de Chile  v6")
     print("=" * 55)
 
     todos = []
     todos += scrape_ticketplus()
     todos += scrape_ticketpro()
     todos += scrape_puntoticket()
+    todos += scrape_ticketmaster()
+    todos += scrape_passline()
+    todos += scrape_comediaticket()
 
     todos.sort(key=lambda e: e["fecha_iso"] if e["fecha_iso"] else "9999")
 
-    # Enriquecer con descripciones y bios
     print(f"\n📚 Enriqueciendo {len(todos)} eventos con Wikipedia y DuckDuckGo...")
     for i, evento in enumerate(todos):
         print(f"  [{i+1}/{len(todos)}]", end="")
@@ -594,15 +893,23 @@ def main():
     con_venue  = sum(1 for e in todos if e["venue"])
     con_bio    = sum(1 for e in todos if e.get("bio_artista"))
     con_ext    = sum(1 for e in todos if e.get("descripcion_extendida"))
+
+    fuentes = {}
+    for e in todos:
+        fuentes[e["fuente"]] = fuentes.get(e["fuente"], 0) + 1
+
     print(f"\n{'=' * 55}")
-    print(f"  Total       : {len(todos)} eventos")
-    print(f"  Con imagen  : {con_imagen}")
+    print(f"  Total           : {len(todos)} eventos")
+    for fuente, count in sorted(fuentes.items()):
+        print(f"  {fuente:<16}: {count}")
+    print(f"  ---")
+    print(f"  Con imagen      : {con_imagen}")
     print(f"  Con descripción : {con_desc}")
     print(f"  Con desc. ext.  : {con_ext}")
     print(f"  Con bio artista : {con_bio}")
-    print(f"  Con fecha   : {con_fecha}")
-    print(f"  Con venue   : {con_venue}")
-    print(f"  Archivo     : '{OUTPUT_FILE}'")
+    print(f"  Con fecha       : {con_fecha}")
+    print(f"  Con venue       : {con_venue}")
+    print(f"  Archivo         : '{OUTPUT_FILE}'")
     print(f"{'=' * 55}\n")
 
 
