@@ -1,6 +1,6 @@
 {
-  "generado_en": "2026-05-19T00:55:09.874545",
-  "total_eventos": 8,
+  "generado_en": "2026-05-19T11:33:58.796644",
+  "total_eventos": 16,
   "eventos": [
     {
       "fuente": "PuntoTicket",
@@ -31,6 +31,20 @@
       "bio_artista": "María Angélica Ayllón Urbina, conocida artísticamente como Eva Ayllón, es una cantante y compositora peruana. Interpreta géneros afroperuanos y valses criollos."
     },
     {
+      "fuente": "Ticketplus",
+      "nombre": "Esteban Duch - Nuevoh Shiste & Música Peñalolen",
+      "venue": "",
+      "descripcion": "Esteban Duch - Nuevoh Shiste & Música Peñalolen",
+      "fecha_iso": "2026-05-28",
+      "fecha_texto": "28 de mayo de 2026",
+      "precio_desde_clp": "11.000",
+      "ciudad": "Copiapó",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/54584887d4b7bf033da3cd0106c3b2a1fbf4d104.jpeg?1777483549&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/esteban-duch-nuevoh-shiste-musica-penalolen",
+      "descripcion_extendida": "Esteban Duch - Nuevoh Shiste & Música Peñalolen",
+      "bio_artista": "Esteban Urdaneta, conocido artísticamente como Esteban Düch, es un comediante venezolano radicado en Chile desde hace más de una década. Alcanzó mayor exposición pública tras su presentación en el Festival de Viña del Mar 2026, donde obtuvo las Gaviotas de Plata y de Oro."
+    },
+    {
       "fuente": "PuntoTicket",
       "nombre": "Entradas Los Jaivas 2026 Gira 45 años alturas de Macchu Picchu",
       "venue": "Enjoy Antofagasta",
@@ -43,6 +57,48 @@
       "url": "https://www.puntoticket.com/evento/los-jaivas-enjoy-antofagasta-jun-2026",
       "descripcion_extendida": "Compra tu entrada para Los Jaivas 2026 Gira 45 años alturas de Macchu Picchu, viernes 05 de junio 2026 20:30 hrs. en Enjoy Antofagasta - Antofagasta.",
       "bio_artista": "Los Jaivas es una banda chilena de rock oriunda de Viña del Mar, Valparaíso, y activa desde 1963. Es conocida por su inclusión de instrumentos y ritmos folclóricos latinoamericanos, especialmente andinos, en el rock psicodélico y progresivo. A menudo se les considera como la banda más importante e influyente de Chile y una de las más prestigiosas de Sudamérica."
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "PALOMA SALAS / / GIGGO NIKKEI / IO / 22:00 HRS",
+      "venue": "",
+      "descripcion": "PALOMA SALAS / ARICA / GIGGO NIKKEI / 19 DE JUNIO / 22:00 HRS",
+      "fecha_iso": "2026-06-19",
+      "fecha_texto": "19 de junio de 2026",
+      "precio_desde_clp": "16.500",
+      "ciudad": "Arica",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/482af66cfd57a4afbfcc15396fea430691175f81.png?1776526250&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/paloma-salas-arica-giggo-nikkei-19-de-junio-22-00-hrs",
+      "descripcion_extendida": "PALOMA SALAS / ARICA / GIGGO NIKKEI / 19 DE JUNIO / 22:00 HRS",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "La Sociedad - El Regreso",
+      "venue": "",
+      "descripcion": "La Sociedad - El Regreso - Arica",
+      "fecha_iso": "2026-06-25",
+      "fecha_texto": "25 de junio de 2026",
+      "precio_desde_clp": "33.900",
+      "ciudad": "Arica",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/9486600089b0151c19ba82ab053abab83ece334c.jpeg?1773776577&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-arica",
+      "descripcion_extendida": "La Sociedad - El Regreso - Arica",
+      "bio_artista": "La Sociedad es un dúo musical chileno, formado en la comuna de Ñuñoa, Santiago de Chile, en el año 1984. De gran éxito durante los años 90 en Chile y Latinoamérica, se disolvió por primera vez en 2001, se reunieron nuevamente en 2012, para un nuevo receso en 2016. En 2025 vuelven a juntarse para una gira de conciertos."
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "La Sociedad - El Regreso",
+      "venue": "",
+      "descripcion": "La Sociedad - El Regreso - Iquique",
+      "fecha_iso": "2026-06-26",
+      "fecha_texto": "26 de junio de 2026",
+      "precio_desde_clp": "33.900",
+      "ciudad": "Iquique",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/24275dd892dd48921a931c6ace9dc301af4bdc03.jpeg?1773775000&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-iquique",
+      "descripcion_extendida": "La Sociedad - El Regreso - Iquique",
+      "bio_artista": "La Sociedad es un dúo musical chileno, formado en la comuna de Ñuñoa, Santiago de Chile, en el año 1984. De gran éxito durante los años 90 en Chile y Latinoamérica, se disolvió por primera vez en 2001, se reunieron nuevamente en 2012, para un nuevo receso en 2016. En 2025 vuelven a juntarse para una gira de conciertos."
     },
     {
       "fuente": "Ticketplus",
@@ -84,7 +140,21 @@
       "imagen_url": "https://static.ptocdn.net/images/eventos/ptt013_md.jpg",
       "url": "https://www.puntoticket.com/evento/31-minutos-antofagasta-jun-2026",
       "descripcion_extendida": "Compra tu entrada para 31 Minutos, domingo 28 de junio 2026 19:00 hrs. en Gimnasio Sokol, Antofagasta - Antofagasta.",
-      "bio_artista": "31 minutos es una serie de televisión infantil chilena creada por la productora Aplaplac —propiedad de Álvaro Díaz, Pedro Peirano y Juan Manuel Egaña— estrenada el 15 de marzo de 2003 por Televisión Nacional de Chile, tras ganar fondos en concurso del Consejo Nacional de Televisión de Chile. El programa parodia a 60 minutos, noticiero del mismo canal, que funcionó como aparato de propaganda encubierta de la dictadura, transmitido entre 1975 y 1988."
+      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "La Sociedad - El Regreso",
+      "venue": "",
+      "descripcion": "La Sociedad - El Regreso - Copiapó",
+      "fecha_iso": "2026-07-09",
+      "fecha_texto": "9 de julio de 2026",
+      "precio_desde_clp": "33.900",
+      "ciudad": "Copiapó",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/69dd91e7bfaefbbfef0facfaf2b1f4b5d06c1a80.jpeg?1774465042&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/la-sociedad-el-regreso-copiapo",
+      "descripcion_extendida": "La Sociedad - El Regreso - Copiapó",
+      "bio_artista": "La Sociedad was a Mexican lucha libre, or professional wrestling stable, that worked for Lucha Libre AAA World Wide. The group was originally formed in the summer of 2010 with the merger of La Legión Extranjera, Los Perros del Mal, La Milicia and Los Maniacos."
     },
     {
       "fuente": "PuntoTicket",
@@ -98,7 +168,35 @@
       "imagen_url": "https://static.ptocdn.net/images/eventos/ptt008_md.jpg",
       "url": "https://www.puntoticket.com/evento/los-jaivas-teatro-antay-arica-jul-2026",
       "descripcion_extendida": "Compra tu entrada para Los Jaivas 2026 Gira 45 años alturas de Macchu Picchu, sábado 11 de julio 2026 20:00 hrs. en Hotel Antay de Arica - Arica.",
-      "bio_artista": "Los Jaivas es una banda chilena de rock oriunda de Viña del Mar, Valparaíso, y activa desde 1963. Es conocida por su inclusión de instrumentos y ritmos folclóricos latinoamericanos, especialmente andinos, en el rock psicodélico y progresivo. A menudo se les considera como la banda más importante e influyente de Chile y una de las más prestigiosas de Sudamérica."
+      "bio_artista": "Los Jaivas is a Chilean musical group who perform in folk, rock, psychedelic, and progressive rock styles formed in 1963 in Viña Del Mar, Chile. They are considered one of the most important and influential artists of all time in Latin America."
+    },
+    {
+      "fuente": "PuntoTicket",
+      "nombre": "Talismanes del Ritmo y del Amor en Santiago | Teatro Coliseo – io",
+      "venue": "",
+      "descripcion": "Talismanes del Ritmo y del Amor llega al Teatro Coliseo este 12 de julio con un espectáculo lleno de música, emoción y conexión. Vive una noche especial donde el ritmo y las historias se mezclan para crear una experiencia única en vivo, ideal para dejarse llevar por las melodías y disfrutar de un show cargado de sentimiento en Santiago. Asegura tu entrada ahora en Punto Ticket.",
+      "fecha_iso": "2026-07-12",
+      "fecha_texto": "12 de julio de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "Pica",
+      "imagen_url": "https://static.ptocdn.net/images/eventos/ktc001_rs.jpg",
+      "url": "https://www.puntoticket.com/talismanes-del-ritmo-y-del-amor",
+      "descripcion_extendida": "Talismanes del Ritmo y del Amor llega al Teatro Coliseo este 12 de julio con un espectáculo lleno de música, emoción y conexión. Vive una noche especial donde el ritmo y las historias se mezclan para crear una experiencia única en vivo, ideal para dejarse llevar por las melodías y disfrutar de un show cargado de sentimiento en Santiago. Asegura tu entrada ahora en Punto Ticket.",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketplus",
+      "nombre": "Movimiento Original",
+      "venue": "",
+      "descripcion": "Movimiento Original - Copiapo",
+      "fecha_iso": "2026-08-14",
+      "fecha_texto": "14 de agosto de 2026",
+      "precio_desde_clp": "22.600",
+      "ciudad": "Copiapó",
+      "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/70a2292f0559d1da74ffbcda8867156476897401.jpeg?1775163448&format=baseline-jpeg&q=65",
+      "url": "https://ticketplus.cl/events/movimiento-original-copiapo-2026-08-14-23-00-00-0400",
+      "descripcion_extendida": "",
+      "bio_artista": ""
     },
     {
       "fuente": "Ticketplus",
@@ -112,7 +210,21 @@
       "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/a1cda3bfb0d5a890935189253ed3642eebe763bd.png?1776363148&format=baseline-jpeg&q=65",
       "url": "https://ticketplus.cl/events/rata-blanca-rock-and-soccer-antofagasta-26-de-agosto",
       "descripcion_extendida": "RATA BLANCA EN ROCK AND SOCCER ANTOFAGASTA 26 DE AGOSTO",
-      "bio_artista": "Rata Blanca es una banda de hard rock y heavy metal formado en 1985 por el guitarrista Walter Giardino en la zona del Bajo Flores, barrio ubicado al sur de la ciudad de Buenos Aires. Se la considera como una de las bandas más importantes e influyentes del hard rock y heavy metal en español, aunque durante su carrera también han incorporado pesados riffs con estructuras melódicas y armónicas de la música clásica."
+      "bio_artista": "Rata Blanca is an Argentine heavy metal band, formed in 1986."
+    },
+    {
+      "fuente": "Ticketmaster",
+      "nombre": "La Sole - Picante Pero Feliz",
+      "venue": "",
+      "descripcion": "Mayo 2026",
+      "fecha_iso": "",
+      "fecha_texto": "",
+      "precio_desde_clp": "",
+      "ciudad": "Pica",
+      "imagen_url": "https://cdn.getcrowder.com/images/cc9833ad-3065-434f-bba9-4595c8eb1139-640x640.png",
+      "url": "https://www.ticketmaster.cl/event/488-la-sole-picante-pero-feliz",
+      "descripcion_extendida": "",
+      "bio_artista": ""
     }
   ]
 }
