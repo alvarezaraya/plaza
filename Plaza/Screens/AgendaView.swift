@@ -6,6 +6,7 @@ import SwiftUI
 struct AgendaView: View {
     @Environment(EventoService.self) private var servicio
     @Environment(ReminderManager.self) private var reminders
+    @Environment(\.isIPadSidebar) private var isIPadSidebar
     private var events: [Event] { servicio.savedEvents }
 
     private static let groupFormatter: DateFormatter = {
@@ -89,7 +90,7 @@ struct AgendaView: View {
                                     .tint(reminders.hasReminder(for: event) ? .orange : .blue)
                                 }
                                 .listRowInsets(EdgeInsets(top: 0, leading: PlSpace.gutter, bottom: 0, trailing: PlSpace.gutter))
-                                .listRowBackground(Color.plBg)
+                                .listRowBackground(isIPadSidebar ? Color.plSurface.opacity(0.4) : Color.plBg)
                             }
                         } header: {
                             HStack {
@@ -103,7 +104,7 @@ struct AgendaView: View {
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .background(Color.plBg)
+            .background(isIPadSidebar ? Color.clear : Color.plBg)
             .toolbar(.hidden, for: .navigationBar)
             .toolbarBackground(.hidden, for: .tabBar)
             .navigationDestination(for: Event.self) { EventDetailView(event: $0) }

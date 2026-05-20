@@ -9,6 +9,7 @@ struct HomeView: View {
     @Environment(ComunaManager.self) private var comunaManager
     @Environment(ReminderManager.self) private var reminders
     @Environment(\.openURL) private var openURL
+    @Environment(\.isIPadSidebar) private var isIPadSidebar
     @State private var selectedCategory: Event.Category?
     @State private var showAddedToast = false
     @State private var showProfile = false
@@ -33,7 +34,7 @@ struct HomeView: View {
             listContent
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
-                .background(Color.plBg)
+                .background(isIPadSidebar ? Color.clear : Color.plBg)
                 .toolbar(.hidden, for: .navigationBar)
                 .toolbarBackground(.hidden, for: .tabBar)
                 .navigationDestination(for: Event.self) { EventDetailView(event: $0) }
@@ -122,7 +123,7 @@ struct HomeView: View {
                             .tint(servicio.isSaved(event) ? .red : .green)
                         }
                         .listRowInsets(EdgeInsets(top: 0, leading: PlSpace.gutter, bottom: 0, trailing: PlSpace.gutter))
-                        .listRowBackground(Color.plBg)
+                        .listRowBackground(isIPadSidebar ? Color.plSurface.opacity(0.4) : Color.plBg)
                     }
                 }
             }
@@ -320,52 +321,189 @@ struct EventRowContent: View {
     }
 }
 
-// MARK: - Event Image Stack
+// MARK: - Event Image Stack (Playbill, physics swipe)
 
 struct EventImageStack: View {
     let events: [Event]
     let onSelect: (Event) -> Void
 
+    @State private var frontIndex: Int = 0
+    @State private var dragOffset: CGFloat = 0
+
+    private var count: Int { events.count }
+
+    private func idx(_ offset: Int) -> Int {
+        guard count > 0 else { return 0 }
+        return ((frontIndex + offset) % count + count) % count
+    }
+
+    // Progreso normalizado [0,1] de cada tarjeta lateral acercándose al centro
+    private var leftLerp: CGFloat  { max(0, min(1, dragOffset / 120)) }
+    private var rightLerp: CGFloat { max(0, min(1, -dragOffset / 120)) }
+
     var body: some View {
         ZStack {
-            if events.count > 1 {
-                card(events[1])
-                    .frame(width: 168, height: 196)
-                    .rotationEffect(.degrees(-13))
-                    .offset(x: -60, y: 12)
+            // Tarjeta izquierda — siempre roja
+            if count > 1 {
+                PlaybillCard(event: events[idx(-1)], cardColor: .plCardLeft) {
+                    withAnimation(.spring(response: 0.38, dampingFraction: 0.72)) {
+                        frontIndex = idx(-1); dragOffset = 0
+                    }
+                }
+                .frame(width: 168, height: 196)
+                .rotationEffect(.degrees(-13 * (1 - leftLerp)))
+                .offset(x: -60 + 60 * leftLerp, y: 12 * (1 - leftLerp))
+                .scaleEffect(0.87 + 0.13 * leftLerp)
+                .zIndex(leftLerp > 0.6 ? 3 : 1)
             }
-            if events.count > 2 {
-                card(events[2])
-                    .frame(width: 168, height: 196)
-                    .rotationEffect(.degrees(13))
-                    .offset(x: 60, y: 12)
+
+            // Tarjeta derecha — siempre amarilla
+            if count > 2 {
+                PlaybillCard(event: events[idx(1)], cardColor: .plCardRight) {
+                    withAnimation(.spring(response: 0.38, dampingFraction: 0.72)) {
+                        frontIndex = idx(1); dragOffset = 0
+                    }
+                }
+                .frame(width: 168, height: 196)
+                .rotationEffect(.degrees(13 * (1 - rightLerp)))
+                .offset(x: 60 - 60 * rightLerp, y: 12 * (1 - rightLerp))
+                .scaleEffect(0.87 + 0.13 * rightLerp)
+                .zIndex(rightLerp > 0.6 ? 3 : 1)
             }
-            if let first = events.first {
-                card(first)
-                    .frame(width: 196, height: 228)
+
+            // Tarjeta central — siempre cyan, arrastrable
+            if count > 0 {
+                PlaybillCard(event: events[idx(0)], cardColor: .plCardCenter) {
+                    onSelect(events[frontIndex])
+                }
+                .frame(width: 196, height: 228)
+                .rotationEffect(.degrees(dragOffset / 22))
+                .offset(x: dragOffset, y: abs(dragOffset) * 0.04)
+                .zIndex(leftLerp > 0.7 || rightLerp > 0.7 ? 0 : 2)
+                .gesture(
+                    DragGesture(minimumDistance: 10)
+                        .onChanged { dragOffset = $0.translation.width }
+                        .onEnded { value in
+                            let v = value.predictedEndTranslation.width
+                            if dragOffset < -70 || v < -220 {
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.72)) {
+                                    frontIndex = idx(1); dragOffset = 0
+                                }
+                            } else if dragOffset > 70 || v > 220 {
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.72)) {
+                                    frontIndex = idx(-1); dragOffset = 0
+                                }
+                            } else {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.62)) {
+                                    dragOffset = 0
+                                }
+                            }
+                        }
+                )
             }
         }
         .frame(height: 264)
     }
+}
 
-    private func card(_ event: Event) -> some View {
-        Button { onSelect(event) } label: {
-            AsyncImage(url: event.imageURL) { phase in
-                if let img = phase.image {
-                    img.resizable().scaledToFill()
-                } else {
-                    Rectangle().fill(Color.plSurface)
-                        .overlay {
-                            Image(systemName: event.category.icon)
-                                .font(.system(size: 32))
-                                .foregroundStyle(Color.plMuted)
-                        }
+// MARK: - Playbill Card
+
+struct PlaybillCard: View {
+    let event: Event
+    let cardColor: Color
+    let onTap: () -> Void
+
+    private var timeLabel: String {
+        let cal = Calendar.current
+        let now = Date()
+        guard event.date >= now else { return "PRÓXIMAMENTE" }
+        if cal.isDateInToday(event.date) { return "HOY" }
+        let days = cal.dateComponents([.day], from: now, to: event.date).day ?? 999
+        return days <= 7 ? "ESTA SEMANA" : "PRÓXIMAMENTE"
+    }
+
+    private let ink = Color(hex: 0x100800, alpha: 1)
+
+    var body: some View {
+        Button(action: onTap) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(cardColor)
+                RoundedRectangle(cornerRadius: 14)
+                    .strokeBorder(ink.opacity(0.7), lineWidth: 2)
+
+                VStack(spacing: 0) {
+                    headerBanner
+                    imageArea
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 13))
+
+                // Marco interior inset
+                RoundedRectangle(cornerRadius: 11)
+                    .strokeBorder(ink.opacity(0.35), lineWidth: 1)
+                    .padding(6)
             }
-            .clipShape(.rect(cornerRadius: 22))
         }
         .buttonStyle(.plain)
-        .shadow(color: .black.opacity(0.22), radius: 12, x: 0, y: 6)
+        .shadow(color: .black.opacity(0.28), radius: 14, x: 0, y: 7)
+    }
+
+    private var headerBanner: some View {
+        VStack(spacing: 0) {
+            Spacer().frame(height: 9)
+            ruleLine
+            VStack(spacing: 2) {
+                ornamentRow
+                Text(timeLabel)
+                    .font(.plPlaybill(16))
+                    .foregroundStyle(ink)
+                    .fixedSize()
+                ornamentRow
+            }
+            .padding(.vertical, 4)
+            .padding(.horizontal, 10)
+            ruleLine
+            Spacer().frame(height: 7)
+        }
+        .background(cardColor)
+    }
+
+    private var ruleLine: some View {
+        Rectangle()
+            .fill(ink.opacity(0.7))
+            .frame(height: 1.5)
+            .padding(.horizontal, 9)
+    }
+
+    private var ornamentRow: some View {
+        HStack(spacing: 0) {
+            Rectangle().fill(ink.opacity(0.3)).frame(height: 0.7)
+            Text("  ✦  ")
+                .font(.system(size: 6))
+                .foregroundStyle(ink.opacity(0.35))
+            Rectangle().fill(ink.opacity(0.3)).frame(height: 0.7)
+        }
+        .padding(.horizontal, 14)
+    }
+
+    private var imageArea: some View {
+        AsyncImage(url: event.imageURL) { phase in
+            if let img = phase.image {
+                img.resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+            } else {
+                Rectangle()
+                    .fill(cardColor.opacity(0.65))
+                    .overlay {
+                        Image(systemName: event.category.icon)
+                            .font(.system(size: 26))
+                            .foregroundStyle(ink.opacity(0.4))
+                    }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

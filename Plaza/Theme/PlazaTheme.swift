@@ -50,6 +50,32 @@ extension Font {
     static func plMono(_ size: CGFloat) -> Font {
         .custom("JetBrains Mono", size: size, relativeTo: .caption2)
     }
+    // Estilo tipo Playbill: serif condensado bold para encabezados de tarjeta
+    static func plPlaybill(_ size: CGFloat) -> Font {
+        .system(size: size, weight: .heavy, design: .serif)
+    }
+}
+
+// MARK: - Card Colors (themeable — futuro: selector de color)
+
+extension Color {
+    // Colores de posición para EventImageStack. Orden fijo: izq=rojo, centro=cyan, der=amarillo
+    static let plCardLeft   = Color(hex: 0xE03030)
+    static let plCardCenter = Color(hex: 0x3AB8D8)
+    static let plCardRight  = Color(hex: 0xF0D030)
+}
+
+// MARK: - iPad Sidebar Environment
+
+private struct IPadSidebarKey: EnvironmentKey {
+    static let defaultValue = false
+}
+
+extension EnvironmentValues {
+    var isIPadSidebar: Bool {
+        get { self[IPadSidebarKey.self] }
+        set { self[IPadSidebarKey.self] = newValue }
+    }
 }
 
 // MARK: - Spacing

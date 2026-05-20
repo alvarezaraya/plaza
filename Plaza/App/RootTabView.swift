@@ -46,16 +46,19 @@ struct RootTabView: View {
     }
 
     // MARK: - iPad
+    // Inspirado en Apple Music iPadOS 26: sidebar traslúcida flotando sobre el mapa
 
     private var iPadLayout: some View {
-        HStack(spacing: 0) {
-            // Sidebar: estructura de iPhone sin la tab de Mapa
-            iPhoneTabView(includeMap: false)
-                .frame(width: 390)
-
-            // Detalle: Mapa permanente
+        ZStack(alignment: .leading) {
+            // Mapa ocupa toda la pantalla como fondo
             MapView()
                 .ignoresSafeArea()
+
+            // Sidebar traslúcida flotando a la izquierda
+            iPhoneTabView(includeMap: false)
+                .frame(width: 390)
+                .background(.ultraThinMaterial)
+                .environment(\.isIPadSidebar, true)
         }
         .ignoresSafeArea()
     }
