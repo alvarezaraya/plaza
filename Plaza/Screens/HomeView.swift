@@ -142,12 +142,13 @@ struct HomeView: View {
         HStack(spacing: 10) {
             // Píldora: muestra comuna + radio. Al tocar abre menú con ambas secciones.
             Menu {
-                Section("Ubicación") {
+                Menu {
                     Button {
                         comunaManager.resetearAAutoDeteccion()
                     } label: {
                         Label("Detectar automáticamente", systemImage: "location.circle")
                     }
+                    Divider()
                     ForEach(Self.mainCities, id: \.self) { city in
                         Button {
                             comunaManager.seleccionar(city)
@@ -159,18 +160,24 @@ struct HomeView: View {
                             }
                         }
                     }
+                    Divider()
                     Button {
                         showComunaPicker = true
                     } label: {
                         Label("Más comunas…", systemImage: "list.bullet")
                     }
+                } label: {
+                    Label("Ubicación · \(comunaManager.selectedComuna)", systemImage: "location.fill")
                 }
-                Section("Radio") {
-                    Picker("Distancia", selection: $maxDistanceKm) {
+
+                Menu {
+                    Picker("Radio", selection: $maxDistanceKm) {
                         ForEach(Self.distanceOptions, id: \.1) { label, km in
                             Text(label).tag(km)
                         }
                     }
+                } label: {
+                    Label("Radio · \(maxDistanceKm == 0 ? "Sin límite" : "\(Int(maxDistanceKm)) km")", systemImage: "circle.dashed")
                 }
             } label: {
                 HStack(spacing: 6) {
@@ -327,100 +334,98 @@ struct EventImageStack: View {
     let events: [Event]
     let onSelect: (Event) -> Void
 
-    @State private var frontIndex: Int = 0
-    @State private var dragOffset: CGFloat = 0
+    @State private var frontIndex = 0
+    @State private var dragOffsets: [Int: CGSize] = [:]
 
     private var count: Int { events.count }
 
-    private func idx(_ offset: Int) -> Int {
-        guard count > 0 else { return 0 }
-        return ((frontIndex + offset) % count + count) % count
+    // Configuración visual por slot (0=frente, 1=atrás-izq, 2=atrás-der)
+    private struct SlotCfg {
+        let baseX: CGFloat, baseY: CGFloat
+        let rot: Double, scale: CGFloat
+        let freq: Double, phase: Double, amp: Double
+        let zIndex: Double, color: Color
     }
 
-    private var leftLerp: CGFloat  { max(0, min(1, dragOffset / 120)) }
-    private var rightLerp: CGFloat { max(0, min(1, -dragOffset / 120)) }
+    private let slotCfgs: [SlotCfg] = [
+        SlotCfg(baseX: 0,   baseY: 0,  rot: 0,  scale: 1.00, freq: 1.38, phase: 0,          amp: 8, zIndex: 2, color: .plCardCenter),
+        SlotCfg(baseX: -52, baseY: 10, rot: -9, scale: 0.91, freq: 1.10, phase: .pi * 0.85, amp: 6, zIndex: 1, color: .plCardLeft),
+        SlotCfg(baseX: 52,  baseY: 10, rot: 9,  scale: 0.91, freq: 1.25, phase: .pi * 0.35, amp: 6, zIndex: 1, color: .plCardRight),
+    ]
 
-    // La flotación se amortigua cuando el usuario arrastra
-    private var floatDamp: Double { max(0, 1 - abs(Double(dragOffset)) / 140) }
+    // Índices de los 3 eventos activos, en orden [frente, izq, der]
+    private var activeIndices: [Int] {
+        guard count > 0 else { return [] }
+        var r = [frontIndex]
+        if count > 1 { r.append((frontIndex - 1 + count) % count) }
+        if count > 2 { r.append((frontIndex + 1) % count) }
+        return r
+    }
+
+    // Slot actual de un eventIndex dado el frontIndex en ese momento
+    private func slotOf(_ ei: Int) -> Int {
+        if ei == frontIndex { return 0 }
+        if count > 1 && ei == (frontIndex - 1 + count) % count { return 1 }
+        return 2
+    }
 
     var body: some View {
-        // TimelineView proporciona tiempo continuo para la animación de seno nativa
         TimelineView(.animation) { tl in
             let t = tl.date.timeIntervalSinceReferenceDate
-            cardStack(t: t)
+            ZStack {
+                // ForEach con ID = eventIndex: SwiftUI rastrea la misma tarjeta
+                // al moverse entre slots e interpola todos sus modificadores.
+                ForEach(activeIndices, id: \.self) { ei in
+                    let slot = slotOf(ei)
+                    let cfg  = slotCfgs[slot]
+                    let drag = dragOffsets[ei, default: .zero]
+                    let damp = max(0.0, 1.0 - Double(drag.width * drag.width + drag.height * drag.height).squareRoot() / 130)
+
+                    PlaybillCard(event: events[ei], cardColor: cfg.color) {
+                        onSelect(events[ei])
+                    }
+                    .frame(width: 200, height: 234)
+                    .scaleEffect(cfg.scale)
+                    .rotationEffect(.degrees(cfg.rot + Double(drag.width) / 18))
+                    .offset(
+                        x: cfg.baseX + drag.width,
+                        y: cfg.baseY + drag.height + sin(t * cfg.freq + cfg.phase) * cfg.amp * damp
+                    )
+                    .zIndex(cfg.zIndex)
+                    .highPriorityGesture(
+                        DragGesture(minimumDistance: 8)
+                            .onChanged { dragOffsets[ei] = $0.translation }
+                            .onEnded { value in
+                                let dx = value.translation.width
+                                let vx = value.predictedEndTranslation.width
+                                if slot == 0 && (dx < -70 || vx < -210) {
+                                    rotate(to: (frontIndex + 1) % count, fling: -1, key: ei)
+                                } else if slot == 0 && (dx > 70 || vx > 210) {
+                                    rotate(to: (frontIndex - 1 + count) % count, fling: +1, key: ei)
+                                } else {
+                                    withAnimation(.spring(response: 0.55, dampingFraction: 0.58)) {
+                                        dragOffsets[ei] = .zero
+                                    }
+                                }
+                            }
+                    )
+                }
+            }
         }
         .frame(height: 278)
     }
 
-    @ViewBuilder
-    private func cardStack(t: Double) -> some View {
-        ZStack {
-            // Tarjeta izquierda — roja
-            if count > 1 {
-                PlaybillCard(event: events[idx(-1)], cardColor: .plCardLeft) {
-                    withAnimation(.spring(response: 0.38, dampingFraction: 0.72)) {
-                        frontIndex = idx(-1); dragOffset = 0
-                    }
-                }
-                .frame(width: 182, height: 214)
-                .rotationEffect(.degrees(-9 * (1 - leftLerp)))
-                .offset(
-                    x: -52 + 52 * leftLerp,
-                    y: 10 * (1 - leftLerp) + sin(t * 1.1 + .pi * 0.85) * 6 * floatDamp
-                )
-                .scaleEffect(0.91 + 0.09 * leftLerp)
-                .zIndex(leftLerp > 0.6 ? 3 : 1)
-            }
-
-            // Tarjeta derecha — amarilla
-            if count > 2 {
-                PlaybillCard(event: events[idx(1)], cardColor: .plCardRight) {
-                    withAnimation(.spring(response: 0.38, dampingFraction: 0.72)) {
-                        frontIndex = idx(1); dragOffset = 0
-                    }
-                }
-                .frame(width: 182, height: 214)
-                .rotationEffect(.degrees(9 * (1 - rightLerp)))
-                .offset(
-                    x: 52 - 52 * rightLerp,
-                    y: 10 * (1 - rightLerp) + sin(t * 1.25 + .pi * 0.35) * 6 * floatDamp
-                )
-                .scaleEffect(0.91 + 0.09 * rightLerp)
-                .zIndex(rightLerp > 0.6 ? 3 : 1)
-            }
-
-            // Tarjeta central — cyan, arrastrable
-            if count > 0 {
-                PlaybillCard(event: events[idx(0)], cardColor: .plCardCenter) {
-                    onSelect(events[frontIndex])
-                }
-                .frame(width: 200, height: 234)
-                .rotationEffect(.degrees(dragOffset / 22))
-                .offset(
-                    x: dragOffset,
-                    y: abs(dragOffset) * 0.04 + sin(t * 1.38) * 8 * floatDamp
-                )
-                .zIndex(leftLerp > 0.7 || rightLerp > 0.7 ? 0 : 2)
-                .gesture(
-                    DragGesture(minimumDistance: 10)
-                        .onChanged { dragOffset = $0.translation.width }
-                        .onEnded { value in
-                            let v = value.predictedEndTranslation.width
-                            if dragOffset < -70 || v < -220 {
-                                withAnimation(.spring(response: 0.4, dampingFraction: 0.72)) {
-                                    frontIndex = idx(1); dragOffset = 0
-                                }
-                            } else if dragOffset > 70 || v > 220 {
-                                withAnimation(.spring(response: 0.4, dampingFraction: 0.72)) {
-                                    frontIndex = idx(-1); dragOffset = 0
-                                }
-                            } else {
-                                withAnimation(.spring(response: 0.3, dampingFraction: 0.62)) {
-                                    dragOffset = 0
-                                }
-                            }
-                        }
-                )
+    // Lanza primero la tarjeta en la dirección del swipe y luego rota el carrusel.
+    // Garantiza que la animación sea visible incluso en gestos cortos o rápidos.
+    private func rotate(to newFront: Int, fling: CGFloat, key: Int) {
+        withAnimation(.easeIn(duration: 0.14)) {
+            dragOffsets[key] = CGSize(width: fling * 280, height: 14)
+        }
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(110))
+            withAnimation(.spring(response: 0.52, dampingFraction: 0.72)) {
+                frontIndex = newFront
+                dragOffsets = [:]
             }
         }
     }
@@ -457,10 +462,6 @@ struct PlaybillCard: View {
                     imageArea
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 14))
-
-                // Borde exterior delgado (todo el contorno)
-                RoundedRectangle(cornerRadius: 14)
-                    .strokeBorder(ink.opacity(0.55), lineWidth: 1)
 
                 // Marco interior inset decorativo
                 RoundedRectangle(cornerRadius: 11)
@@ -516,8 +517,6 @@ struct PlaybillCard: View {
             if let img = phase.image {
                 img.resizable()
                     .scaledToFill()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipped()
             } else {
                 Rectangle()
                     .fill(cardColor.opacity(0.65))
@@ -529,6 +528,11 @@ struct PlaybillCard: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .padding(.top, 6)
+        .padding(.horizontal, 8)
+        .padding(.bottom, 8)
+        .background(cardColor)
     }
 }
 

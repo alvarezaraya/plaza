@@ -58,10 +58,7 @@ struct RootTabView: View {
             iPhoneTabView(includeMap: false)
                 .frame(width: 375)
                 .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-                .background(
-                    .ultraThinMaterial,
-                    in: RoundedRectangle(cornerRadius: 22, style: .continuous)
-                )
+                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
                 .shadow(color: .black.opacity(0.14), radius: 20, x: 4, y: 0)
                 .shadow(color: .black.opacity(0.06), radius: 60, x: 12, y: 0)
                 .padding(.leading, 12)

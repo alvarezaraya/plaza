@@ -902,16 +902,22 @@ def scrape_esquinaretornable():
     eventos = []
     seen    = set()
 
-    for page in range(1, 6):
-        url = f"{BASE}/cartelera/" if page == 1 else f"{BASE}/cartelera/page/{page}/"
+    # Primero revisa el homepage (puede tener cartelera actual distinta a /cartelera/)
+    # Luego pagina /cartelera/
+    urls_to_check = [f"{BASE}/"] + [
+        f"{BASE}/cartelera/" if page == 1 else f"{BASE}/cartelera/page/{page}/"
+        for page in range(1, 6)
+    ]
+
+    for url in urls_to_check:
         try:
             r = requests.get(url, headers=headers_er, timeout=15)
             if r.status_code == 404:
-                break
+                continue  # página de cartelera sin más resultados, seguir con la siguiente
             r.raise_for_status()
         except requests.RequestException as e:
             print(f"  ⚠️  {url} → {e}")
-            break
+            continue
 
         soup = BeautifulSoup(r.text, "html.parser")
         found_any = False
@@ -922,6 +928,90 @@ def scrape_esquinaretornable():
             if re.search(r"ya exhibid", heading.get_text(), re.I):
                 stop_node = heading
                 break
+
+        # ── Parser de homepage: icon-lists sueltos (sin elementor-column) ──
+        # La cartelera semanal del homepage usa ul.elementor-icon-list-items
+        # fuera de columnas. Estructura: [título, fecha/hora, categoría, dir., desc.]
+        if url == f"{BASE}/":
+            for ul in soup.find_all(
+                "ul",
+                class_=lambda c: c and "elementor-icon-list-items" in (c if isinstance(c, str) else " ".join(c))
+                    and "elementor-inline-items" not in (c if isinstance(c, str) else " ".join(c))
+            ):
+                # Saltar si está dentro de una columna (se maneja abajo)
+                if ul.find_parent("div", class_=lambda c: c and "elementor-column" in (c if isinstance(c, str) else " ".join(c))):
+                    continue
+                # Saltar si el heading de corte lo precede
+                if stop_node and ul.find_previous(lambda t: t is stop_node):
+                    continue
+
+                items = [
+                    limpiar(li.get_text(" ", strip=True))
+                    for li in ul.find_all("li")
+                    if li.get_text(strip=True)
+                ]
+                if not items or date_first_re.match(items[0]):
+                    continue  # bloque de programación semanal o ítem de fecha
+
+                # Título: quitar año entre paréntesis al final
+                title = re.sub(r"\s*\(\d{4}\)\s*$", "", items[0]).strip()
+                if not title or title in seen:
+                    continue
+
+                # Fecha: segundo ítem, tomar solo la parte antes de "/"
+                date_raw = items[1].split("/")[0].strip() if len(items) > 1 else ""
+                fecha_iso, fecha_texto = extraer_fecha_de_texto(date_raw)
+                if not fecha_iso:
+                    continue  # sin fecha válida, probablemente ítem antiguo
+
+                # Director y precio
+                director = ""
+                precio_str = ""
+                for item in items[2:]:
+                    low = item.lower()
+                    if price_re.search(item) or re.search(r"gratu|libre|entrada", low):
+                        precio_str = item
+                    elif not director and re.match(r"dir\.?\s", item, re.I):
+                        director = item
+
+                precio = ""
+                nums = price_re.findall(precio_str.replace(".", ""))
+                if nums:
+                    try:
+                        precio = str(min(int(n) for n in nums))
+                    except ValueError:
+                        pass
+
+                # Imagen: buscar en el widget contenedor
+                imagen = ""
+                widget = ul.find_parent(class_=re.compile(r"elementor-widget"))
+                search_area = widget.parent if widget else ul.parent
+                if search_area:
+                    for img in search_area.find_all("img"):
+                        src = (img.get("src") or img.get("data-src")
+                               or img.get("data-lazy-src") or "")
+                        if "wp-content/uploads" in src:
+                            imagen = src.split("?")[0]
+                            break
+
+                seen.add(title)
+                found_any = True
+                nombre = limpiar_nombre(title, venue=VENUE, ciudad=CIUDAD)
+                if not nombre:
+                    continue
+
+                eventos.append({
+                    "fuente":           "EsquinaRetornable",
+                    "nombre":           nombre,
+                    "venue":            VENUE,
+                    "descripcion":      director,
+                    "fecha_iso":        fecha_iso,
+                    "fecha_texto":      fecha_texto,
+                    "precio_desde_clp": precio,
+                    "ciudad":           CIUDAD,
+                    "imagen_url":       imagen,
+                    "url":              url,
+                })
 
         # Iterar por columna: cada div.elementor-column = una película
         for col in soup.find_all("div", class_=lambda c: c and "elementor-column" in c):
@@ -1020,8 +1110,8 @@ def scrape_esquinaretornable():
                 "url":              ticket_url,
             })
 
-        if not found_any:
-            break
+        if not found_any and "/cartelera/page/" in url:
+            break  # corta paginación de cartelera cuando no hay más eventos
         time.sleep(PAUSA)
 
     print(f"  ✅ {len(eventos)} eventos")

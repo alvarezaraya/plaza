@@ -7,8 +7,8 @@ import UIKit
 // MARK: - Colors
 
 extension Color {
-    static let plBg      = Color(light: 0xfbf8f1, dark: 0x141210)
-    static let plSurface = Color(light: 0xf3eee2, dark: 0x1e1c18)
+    static let plBg      = Color(uiColor: .systemBackground)
+    static let plSurface = Color(uiColor: .systemBackground)
     static let plFg      = Color(light: 0x0e0c0a, dark: 0xf5f2ec)
     static let plMuted   = Color(light: 0x5c544a, dark: 0xa09888)
     static let plDim     = Color(light: 0x8e8675, dark: 0x7a7268)
@@ -45,10 +45,10 @@ extension Font {
         .custom("Bricolage Grotesque", size: size, relativeTo: size >= 16 ? .body : .caption).weight(weight)
     }
     static func plSerifItalic(_ size: CGFloat) -> Font {
-        .custom("InstrumentSerif-Italic", size: size, relativeTo: size >= 18 ? .title3 : .subheadline)
+        .system(size: size, weight: .regular, design: .serif).italic()
     }
     static func plMono(_ size: CGFloat) -> Font {
-        .custom("JetBrains Mono", size: size, relativeTo: .caption2)
+        .system(size: size, weight: .regular, design: .monospaced)
     }
     // Estilo tipo Playbill: serif condensado bold para encabezados de tarjeta
     static func plPlaybill(_ size: CGFloat) -> Font {

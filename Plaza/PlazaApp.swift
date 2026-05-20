@@ -46,11 +46,7 @@ struct PlazaApp: App {
 
     private static func registerFonts() {
         let fonts = [
-            "BricolageGrotesque-VariableFont_opsz,wdth,wght",
-            "InstrumentSerif-Regular",
-            "InstrumentSerif-Italic",
-            "JetBrainsMono-VariableFont_wght",
-            "JetBrainsMono-Italic-VariableFont_wght"
+            "BricolageGrotesque-VariableFont_opsz,wdth,wght"
         ]
         for name in fonts {
             guard let url = Bundle.main.url(forResource: name, withExtension: "ttf") else { continue }
