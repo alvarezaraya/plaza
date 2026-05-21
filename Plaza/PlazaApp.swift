@@ -12,6 +12,7 @@ struct PlazaApp: App {
     @State private var reminderManager = ReminderManager()
     @State private var comunaManager = ComunaManager()
     @AppStorage("plaza_onboarding_done") private var onboardingDone = false
+    @AppStorage("plaza_theme") private var themeRaw: String = AppTheme.plaza.rawValue
 
     init() {
         Self.registerFonts()
@@ -27,6 +28,7 @@ struct PlazaApp: App {
                     .environment(reminderManager)
                     .environment(comunaManager)
                     .tint(.plAccent)
+                    .id(themeRaw)
             } else {
                 OnboardingView {
                     withAnimation(.smooth) { onboardingDone = true }

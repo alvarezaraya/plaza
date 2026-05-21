@@ -7,13 +7,10 @@ import UIKit
 // MARK: - Colors
 
 extension Color {
-    static let plBg      = Color(uiColor: .systemBackground)
-    static let plSurface = Color(uiColor: .systemBackground)
     static let plFg      = Color(light: 0x0e0c0a, dark: 0xf5f2ec)
     static let plMuted   = Color(light: 0x5c544a, dark: 0xa09888)
     static let plDim     = Color(light: 0x8e8675, dark: 0x7a7268)
     static let plHair    = Color(light: 0xd6cfbf, dark: 0x2e2a24)
-    static let plAccent  = Color(light: 0xc5832b, dark: 0xd4923a)
 }
 
 extension Color {
@@ -56,13 +53,74 @@ extension Font {
     }
 }
 
-// MARK: - Card Colors (themeable — futuro: selector de color)
+// MARK: - App Theme
+
+enum AppTheme: String, CaseIterable {
+    case plaza, multicolor
+
+    var displayName: String {
+        switch self {
+        case .plaza:      return "Plaza"
+        case .multicolor: return "Multicolor"
+        }
+    }
+
+    var cardLeft: Color {
+        switch self {
+        case .plaza:      return Color(light: 0xC4714A, dark: 0xD48A65)
+        case .multicolor: return Color(hex: 0xE03030)
+        }
+    }
+
+    var cardCenter: Color {
+        switch self {
+        case .plaza:      return Color(light: 0xD4A44C, dark: 0xE0B862)
+        case .multicolor: return Color(hex: 0x3AB8D8)
+        }
+    }
+
+    var cardRight: Color {
+        switch self {
+        case .plaza:      return Color(light: 0xE8C57A, dark: 0xC8A24A)
+        case .multicolor: return Color(hex: 0xF0D030)
+        }
+    }
+
+    var accent: Color {
+        switch self {
+        case .plaza:      return Color(light: 0xc5832b, dark: 0xd4923a)
+        case .multicolor: return Color(hex: 0x3AB8D8)
+        }
+    }
+
+    var bg: Color {
+        switch self {
+        case .plaza:      return Color(light: 0xFBF8F1, dark: 0x1C1814)
+        case .multicolor: return Color(uiColor: .systemBackground)
+        }
+    }
+
+    var surface: Color {
+        switch self {
+        case .plaza:      return Color(light: 0xF3EEE2, dark: 0x242018)
+        case .multicolor: return Color(uiColor: .systemBackground)
+        }
+    }
+
+    static var current: AppTheme {
+        AppTheme(rawValue: UserDefaults.standard.string(forKey: "plaza_theme") ?? "") ?? .plaza
+    }
+}
+
+// MARK: - Card Colors (theme-aware)
 
 extension Color {
-    // Colores de posición para EventImageStack. Orden fijo: izq=rojo, centro=cyan, der=amarillo
-    static let plCardLeft   = Color(hex: 0xE03030)
-    static let plCardCenter = Color(hex: 0x3AB8D8)
-    static let plCardRight  = Color(hex: 0xF0D030)
+    static var plBg: Color      { AppTheme.current.bg }
+    static var plSurface: Color { AppTheme.current.surface }
+    static var plAccent: Color  { AppTheme.current.accent }
+    static var plCardLeft: Color   { AppTheme.current.cardLeft }
+    static var plCardCenter: Color { AppTheme.current.cardCenter }
+    static var plCardRight: Color  { AppTheme.current.cardRight }
 }
 
 // MARK: - iPad Sidebar Environment

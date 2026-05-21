@@ -41,7 +41,7 @@ struct AgendaView: View {
                             .font(.plDisplay(40))
                             .kerning(-1.4)
                     }
-                    .plainRow()
+                    .plainRow(background: isIPadSidebar ? .clear : .plBg)
                     .padding(.horizontal, PlSpace.gutter)
                 }
 
@@ -49,14 +49,14 @@ struct AgendaView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .padding(.top, 40)
-                        .plainRow()
+                        .plainRow(background: isIPadSidebar ? .clear : .plBg)
                 } else if events.isEmpty {
                     ContentUnavailableView(
                         "Sin eventos guardados",
                         systemImage: "calendar.badge.plus",
                         description: Text("Desliza un evento hacia la derecha o toca el botón de agenda para agregarlo aquí")
                     )
-                    .plainRow()
+                    .plainRow(background: isIPadSidebar ? .clear : .plBg)
                 } else {
                     ForEach(grouped, id: \.0) { label, items in
                         Section {
@@ -90,7 +90,7 @@ struct AgendaView: View {
                                     .tint(reminders.hasReminder(for: event) ? .orange : .blue)
                                 }
                                 .listRowInsets(EdgeInsets(top: 0, leading: PlSpace.gutter, bottom: 0, trailing: PlSpace.gutter))
-                                .listRowBackground(isIPadSidebar ? Color.plSurface.opacity(0.4) : Color.plBg)
+                                .listRowBackground(isIPadSidebar ? Color.clear : Color.plBg)
                             }
                         } header: {
                             HStack {
@@ -110,6 +110,7 @@ struct AgendaView: View {
             .navigationDestination(for: Event.self) { EventDetailView(event: $0) }
             .refreshable { servicio.cargarEventos() }
         }
+        .background(isIPadSidebar ? .clear : Color.plBg)
     }
 }
 

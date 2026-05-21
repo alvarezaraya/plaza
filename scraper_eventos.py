@@ -874,16 +874,18 @@ def scrape_comediaticket():
 def scrape_esquinaretornable():
     """
     Esquina Retornable — cine arte en Antofagasta.
-    WordPress/Elementor site con cartelera en /cartelera/.
-    Requiere Referer header para evitar 403.
-    Estructura: cada película en elementor-inner-section con listas inline
-    para título/fechas y listas no-inline para descripción/precio.
+    Solo scraepea el homepage (ignora /cartelera/).
+    Tres parsers en cascada para capturar todas las estructuras Elementor:
+      1. Columnas con ul inline (título+fecha) + ul no-inline (desc+precio)
+      2. Icon-lists sueltos fuera de columnas (cartelera semanal)
+      3. Posts/artículos WordPress con heading y meta de fecha
     """
-    print("\n🔍 EsquinaRetornable.cl ...")
+    print("\n🔍 EsquinaRetornable.cl (homepage) ...")
 
     BASE   = "https://esquinaretornable.cl"
     VENUE  = "Esquina Retornable"
     CIUDAD = "Antofagasta"
+    url    = f"{BASE}/"
 
     headers_er = {
         **HEADERS,
@@ -893,226 +895,242 @@ def scrape_esquinaretornable():
     }
 
     price_re = re.compile(r'\$\s*([\d\.]+)')
-    # Detecta bloques de programación semanal donde el primer item es una fecha
+    # Detecta bloques de programación semanal (primer ítem es día o fecha)
     date_first_re = re.compile(
         r'^(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo|\d{1,2}\s+de\s)',
         re.I
     )
 
+    try:
+        r = requests.get(url, headers=headers_er, timeout=15)
+        r.raise_for_status()
+    except requests.RequestException as e:
+        print(f"  ⚠️  {url} → {e}")
+        return []
+
+    soup = BeautifulSoup(r.text, "html.parser")
     eventos = []
     seen    = set()
 
-    # Primero revisa el homepage (puede tener cartelera actual distinta a /cartelera/)
-    # Luego pagina /cartelera/
-    urls_to_check = [f"{BASE}/"] + [
-        f"{BASE}/cartelera/" if page == 1 else f"{BASE}/cartelera/page/{page}/"
-        for page in range(1, 6)
-    ]
+    def _precio_minimo(texto):
+        nums = price_re.findall(texto.replace(".", ""))
+        if nums:
+            try:
+                return str(min(int(n) for n in nums))
+            except ValueError:
+                pass
+        return ""
 
-    for url in urls_to_check:
-        try:
-            r = requests.get(url, headers=headers_er, timeout=15)
-            if r.status_code == 404:
-                continue  # página de cartelera sin más resultados, seguir con la siguiente
-            r.raise_for_status()
-        except requests.RequestException as e:
-            print(f"  ⚠️  {url} → {e}")
+    def _imagen_en(tag):
+        for img in tag.find_all("img"):
+            src = (img.get("src") or img.get("data-src")
+                   or img.get("data-lazy-src") or "")
+            if "wp-content/uploads" in src:
+                return src.split("?")[0]
+        return ""
+
+    def _ticket_url_en(tag):
+        for a in tag.find_all("a", href=True):
+            href = a.get("href", "")
+            text = a.get_text(strip=True).lower()
+            if any(k in text for k in ("inscripci", "comprar", "ticket", "reserva", "ver más", "ver mas")):
+                return href
+            if any(k in href for k in ("passline", "docs.google", "forms.gle", "eventbrite")):
+                return href
+        return url
+
+    # Localizar heading de corte ("ya exhibidas" o similar)
+    stop_node = None
+    for heading in soup.find_all(["h1", "h2", "h3", "h4"]):
+        if re.search(r"ya exhibid|anteriores|archivo", heading.get_text(), re.I):
+            stop_node = heading
+            break
+
+    def _antes_del_corte(tag):
+        return not (stop_node and tag.find_previous(lambda t: t is stop_node))
+
+    # ── Parser 1: columnas Elementor (título inline + desc no-inline) ──────────
+    for col in soup.find_all("div", class_=lambda c: c and "elementor-column" in c):
+        if not _antes_del_corte(col):
             continue
 
-        soup = BeautifulSoup(r.text, "html.parser")
-        found_any = False
+        inline_ul = col.find(
+            "ul",
+            class_=lambda c: c and "elementor-inline-items" in (c if isinstance(c, str) else " ".join(c))
+        )
+        if not inline_ul:
+            continue
 
-        # Localizar el heading que marca el inicio de "ya exhibidas"
-        stop_node = None
-        for heading in soup.find_all(["h1", "h2", "h3", "h4"]):
-            if re.search(r"ya exhibid", heading.get_text(), re.I):
-                stop_node = heading
-                break
+        inline_items = [
+            limpiar(li.get_text(" ", strip=True))
+            for li in inline_ul.find_all("li")
+            if li.get_text(strip=True)
+        ]
+        if not inline_items or date_first_re.match(inline_items[0]):
+            continue
 
-        # ── Parser de homepage: icon-lists sueltos (sin elementor-column) ──
-        # La cartelera semanal del homepage usa ul.elementor-icon-list-items
-        # fuera de columnas. Estructura: [título, fecha/hora, categoría, dir., desc.]
-        if url == f"{BASE}/":
-            for ul in soup.find_all(
-                "ul",
-                class_=lambda c: c and "elementor-icon-list-items" in (c if isinstance(c, str) else " ".join(c))
-                    and "elementor-inline-items" not in (c if isinstance(c, str) else " ".join(c))
-            ):
-                # Saltar si está dentro de una columna (se maneja abajo)
-                if ul.find_parent("div", class_=lambda c: c and "elementor-column" in (c if isinstance(c, str) else " ".join(c))):
-                    continue
-                # Saltar si el heading de corte lo precede
-                if stop_node and ul.find_previous(lambda t: t is stop_node):
-                    continue
+        title = re.sub(r"\s*\(\d{4}\)\s*$", "", inline_items[0]).strip()
+        if not title or title in seen:
+            continue
+        seen.add(title)
 
-                items = [
-                    limpiar(li.get_text(" ", strip=True))
-                    for li in ul.find_all("li")
-                    if li.get_text(strip=True)
-                ]
-                if not items or date_first_re.match(items[0]):
-                    continue  # bloque de programación semanal o ítem de fecha
+        date_parts = inline_items[1:]
+        fecha_iso, fecha_texto = extraer_fecha_de_texto(" ".join(date_parts))
 
-                # Título: quitar año entre paréntesis al final
-                title = re.sub(r"\s*\(\d{4}\)\s*$", "", items[0]).strip()
-                if not title or title in seen:
-                    continue
+        director = ""
+        precio_str = ""
+        for ul in col.find_all(
+            "ul",
+            class_=lambda c: c and "elementor-icon-list-items" in (c if isinstance(c, str) else " ".join(c))
+                and "elementor-inline-items" not in (c if isinstance(c, str) else " ".join(c))
+        ):
+            for li in ul.find_all("li"):
+                t   = limpiar(li.get_text(" ", strip=True))
+                low = t.lower()
+                if price_re.search(t) or re.search(r'gratu|libre|entrada', low):
+                    precio_str = t
+                elif not director and len(t) > 4:
+                    director = t
 
-                # Fecha: segundo ítem, tomar solo la parte antes de "/"
-                date_raw = items[1].split("/")[0].strip() if len(items) > 1 else ""
-                fecha_iso, fecha_texto = extraer_fecha_de_texto(date_raw)
-                if not fecha_iso:
-                    continue  # sin fecha válida, probablemente ítem antiguo
+        nombre = limpiar_nombre(title, venue=VENUE, ciudad=CIUDAD)
+        if not nombre:
+            continue
 
-                # Director y precio
-                director = ""
-                precio_str = ""
-                for item in items[2:]:
-                    low = item.lower()
-                    if price_re.search(item) or re.search(r"gratu|libre|entrada", low):
-                        precio_str = item
-                    elif not director and re.match(r"dir\.?\s", item, re.I):
-                        director = item
+        eventos.append({
+            "fuente":           "EsquinaRetornable",
+            "nombre":           nombre,
+            "venue":            VENUE,
+            "descripcion":      director,
+            "fecha_iso":        fecha_iso,
+            "fecha_texto":      fecha_texto,
+            "precio_desde_clp": _precio_minimo(precio_str),
+            "ciudad":           CIUDAD,
+            "imagen_url":       _imagen_en(col),
+            "url":              _ticket_url_en(col),
+        })
 
-                precio = ""
-                nums = price_re.findall(precio_str.replace(".", ""))
-                if nums:
-                    try:
-                        precio = str(min(int(n) for n in nums))
-                    except ValueError:
-                        pass
+    # ── Parser 2: icon-lists sueltos fuera de columnas ────────────────────────
+    for ul in soup.find_all(
+        "ul",
+        class_=lambda c: c and "elementor-icon-list-items" in (c if isinstance(c, str) else " ".join(c))
+            and "elementor-inline-items" not in (c if isinstance(c, str) else " ".join(c))
+    ):
+        if not _antes_del_corte(ul):
+            continue
+        # Omitir si está dentro de una columna (ya procesada arriba)
+        if ul.find_parent("div", class_=lambda c: c and "elementor-column" in (c if isinstance(c, str) else " ".join(c))):
+            continue
 
-                # Imagen: buscar en el widget contenedor
-                imagen = ""
-                widget = ul.find_parent(class_=re.compile(r"elementor-widget"))
-                search_area = widget.parent if widget else ul.parent
-                if search_area:
-                    for img in search_area.find_all("img"):
-                        src = (img.get("src") or img.get("data-src")
-                               or img.get("data-lazy-src") or "")
-                        if "wp-content/uploads" in src:
-                            imagen = src.split("?")[0]
-                            break
+        items = [
+            limpiar(li.get_text(" ", strip=True))
+            for li in ul.find_all("li")
+            if li.get_text(strip=True)
+        ]
+        if not items or date_first_re.match(items[0]):
+            continue
 
-                seen.add(title)
-                found_any = True
-                nombre = limpiar_nombre(title, venue=VENUE, ciudad=CIUDAD)
-                if not nombre:
-                    continue
+        title = re.sub(r"\s*\(\d{4}\)\s*$", "", items[0]).strip()
+        if not title or title in seen:
+            continue
+        seen.add(title)
 
-                eventos.append({
-                    "fuente":           "EsquinaRetornable",
-                    "nombre":           nombre,
-                    "venue":            VENUE,
-                    "descripcion":      director,
-                    "fecha_iso":        fecha_iso,
-                    "fecha_texto":      fecha_texto,
-                    "precio_desde_clp": precio,
-                    "ciudad":           CIUDAD,
-                    "imagen_url":       imagen,
-                    "url":              url,
-                })
+        date_raw = items[1].split("/")[0].strip() if len(items) > 1 else ""
+        fecha_iso, fecha_texto = extraer_fecha_de_texto(date_raw)
+        # No se descarta por falta de fecha — puede estar en texto libre
 
-        # Iterar por columna: cada div.elementor-column = una película
-        for col in soup.find_all("div", class_=lambda c: c and "elementor-column" in c):
-            # Saltar columnas que aparecen después del corte
-            if stop_node and col.find_previous(lambda t: t is stop_node):
-                continue
+        director = ""
+        precio_str = ""
+        for item in items[2:]:
+            low = item.lower()
+            if price_re.search(item) or re.search(r"gratu|libre|entrada", low):
+                precio_str = item
+            elif not director and re.match(r"dir\.?\s", item, re.I):
+                director = item
 
-            # ── Título y fechas: primer ul inline de esta columna ──────────
-            inline_ul = col.find("ul", class_=lambda c: c and "elementor-inline-items" in (c if isinstance(c, str) else " ".join(c)))
-            if not inline_ul:
-                continue
+        widget = ul.find_parent(class_=re.compile(r"elementor-widget"))
+        search_area = widget.parent if widget else ul.parent
 
-            inline_items = [
-                limpiar(li.get_text(" ", strip=True))
-                for li in inline_ul.find_all("li")
-                if li.get_text(strip=True)
-            ]
-            if not inline_items:
-                continue
+        nombre = limpiar_nombre(title, venue=VENUE, ciudad=CIUDAD)
+        if not nombre:
+            continue
 
-            # Saltar columnas de programación semanal o sin título
-            if date_first_re.match(inline_items[0]):
-                continue
+        eventos.append({
+            "fuente":           "EsquinaRetornable",
+            "nombre":           nombre,
+            "venue":            VENUE,
+            "descripcion":      director,
+            "fecha_iso":        fecha_iso,
+            "fecha_texto":      fecha_texto,
+            "precio_desde_clp": _precio_minimo(precio_str),
+            "ciudad":           CIUDAD,
+            "imagen_url":       _imagen_en(search_area) if search_area else "",
+            "url":              url,
+        })
 
-            title      = inline_items[0]
-            date_parts = inline_items[1:]
+    # ── Parser 3: posts/artículos WordPress ───────────────────────────────────
+    # Captura entradas del blog o custom posts que no usan Elementor widget lists.
+    for article in soup.find_all(["article", "div"], class_=lambda c: c and
+            any(k in (c if isinstance(c, str) else " ".join(c))
+                for k in ("post-", "type-post", "hentry", "elementor-post"))):
+        if not _antes_del_corte(article):
+            continue
 
-            if not title or title in seen:
-                continue
-            seen.add(title)
-            found_any = True
+        # Extraer título
+        title_tag = article.find(["h1", "h2", "h3", "h4", "h5"])
+        if not title_tag:
+            continue
+        title = re.sub(r"\s*\(\d{4}\)\s*$", "", limpiar(title_tag.get_text(" "))).strip()
+        if not title or title in seen or len(title) < 4:
+            continue
+        seen.add(title)
 
-            # ── Descripción y precio: ul no-inline de esta columna ─────────
-            director   = ""
-            precio_str = ""
-            for ul in col.find_all(
-                "ul",
-                class_=lambda c: c and "elementor-icon-list-items" in (c if isinstance(c, str) else " ".join(c))
-                    and "elementor-inline-items" not in (c if isinstance(c, str) else " ".join(c))
-            ):
-                for li in ul.find_all("li"):
-                    t   = limpiar(li.get_text(" ", strip=True))
-                    low = t.lower()
-                    if price_re.search(t) or re.search(r'gratu|libre|entrada', low):
-                        precio_str = t
-                    elif not director and len(t) > 4:
-                        director = t
-
-            # ── Fecha ──────────────────────────────────────────────────────
-            fecha_iso, fecha_texto = extraer_fecha_de_texto(" ".join(date_parts))
-
-            # ── Precio numérico mínimo ─────────────────────────────────────
-            precio = ""
-            nums = price_re.findall(precio_str.replace(".", ""))
-            if nums:
+        # Extraer fecha desde meta, time tag o texto del artículo
+        fecha_iso, fecha_texto = "", ""
+        time_tag = article.find("time")
+        if time_tag:
+            dt = time_tag.get("datetime", "")
+            if re.match(r"\d{4}-\d{2}-\d{2}", dt):
+                fecha_iso = dt[:10]
                 try:
-                    precio = str(min(int(n) for n in nums))
+                    d = datetime.strptime(fecha_iso, "%Y-%m-%d")
+                    fecha_texto = f"{d.day} de {MESES_TEXTO[d.month]} de {d.year}"
                 except ValueError:
                     pass
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(article.get_text(" "))
 
-            # ── Imagen ─────────────────────────────────────────────────────
-            imagen = ""
-            for img in col.find_all("img"):
-                src = (img.get("src") or img.get("data-src")
-                       or img.get("data-lazy-src") or "")
-                if "wp-content/uploads" in src:
-                    imagen = src.split("?")[0]
-                    break
+        # Descripción: primer párrafo con contenido útil
+        descripcion = ""
+        for p in article.find_all("p"):
+            t = limpiar(p.get_text(" "))
+            if len(t) > 30:
+                descripcion = t[:300]
+                break
 
-            # ── Link de inscripción/compra ──────────────────────────────────
-            ticket_url = url
-            for a in col.find_all("a", href=True):
-                href = a.get("href", "")
-                text = a.get_text(strip=True).lower()
-                if any(k in text for k in ("inscripci", "comprar", "ticket", "reserva", "ver más", "ver mas")):
-                    ticket_url = href
-                    break
-                if any(k in href for k in ("passline", "docs.google", "forms.gle", "eventbrite")):
-                    ticket_url = href
-                    break
+        # Link del artículo
+        link = url
+        a_tag = title_tag.find("a") or article.find("a", href=True)
+        if a_tag:
+            link = a_tag.get("href", url)
+            if link.startswith("/"):
+                link = f"{BASE}{link}"
 
-            nombre = limpiar_nombre(title, venue=VENUE, ciudad=CIUDAD)
-            if not nombre:
-                continue
+        nombre = limpiar_nombre(title, venue=VENUE, ciudad=CIUDAD)
+        if not nombre:
+            continue
 
-            eventos.append({
-                "fuente":           "EsquinaRetornable",
-                "nombre":           nombre,
-                "venue":            VENUE,
-                "descripcion":      director,
-                "fecha_iso":        fecha_iso,
-                "fecha_texto":      fecha_texto,
-                "precio_desde_clp": precio,
-                "ciudad":           CIUDAD,
-                "imagen_url":       imagen,
-                "url":              ticket_url,
-            })
-
-        if not found_any and "/cartelera/page/" in url:
-            break  # corta paginación de cartelera cuando no hay más eventos
-        time.sleep(PAUSA)
+        eventos.append({
+            "fuente":           "EsquinaRetornable",
+            "nombre":           nombre,
+            "venue":            VENUE,
+            "descripcion":      descripcion,
+            "fecha_iso":        fecha_iso,
+            "fecha_texto":      fecha_texto,
+            "precio_desde_clp": "",
+            "ciudad":           CIUDAD,
+            "imagen_url":       _imagen_en(article),
+            "url":              link,
+        })
 
     print(f"  ✅ {len(eventos)} eventos")
     return eventos

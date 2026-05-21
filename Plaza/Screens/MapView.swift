@@ -8,9 +8,14 @@ import CoreLocation
 struct MapView: View {
     @Environment(EventoService.self) private var servicio
     @Environment(LocationManager.self) private var location
+    @Environment(\.horizontalSizeClass) private var hSizeClass
     @State private var selectedVenue: String?
     @State private var venueGroups: [VenueGroup] = []
     @State private var camera: MapCameraPosition = .automatic
+
+    // En iPad el sidebar cubre 387pt desde el borde izquierdo (12 padding + 375 frame).
+    // Se añaden 16pt de margen mínimo para que el contenido no quede pegado al borde visible.
+    private var sidebarInset: CGFloat { hSizeClass == .regular ? 403 : 0 }
 
     private var selectedEvents: [Event] {
         guard let venue = selectedVenue else { return [] }
@@ -35,7 +40,7 @@ struct MapView: View {
             MapCompass()
         }
         .ignoresSafeArea()
-        .overlay(alignment: .topLeading) {
+        .overlay(alignment: sidebarInset > 0 ? .topTrailing : .topLeading) {
             Button {
                 if let coord = location.userLocation?.coordinate {
                     withAnimation {
@@ -53,7 +58,7 @@ struct MapView: View {
             }
             .glassEffect(.clear.interactive(), in: .circle)
             .safeAreaPadding(.top)
-            .padding(.leading, 14)
+            .padding(sidebarInset > 0 ? .trailing : .leading, 16)
             .padding(.top, 10)
         }
         .safeAreaInset(edge: .bottom) {
@@ -86,9 +91,6 @@ struct MapView: View {
             dict[key]?.events.append(event)
         }
         venueGroups = Array(dict.values).sorted { $0.name < $1.name }
-        if selectedVenue == nil {
-            selectedVenue = venueGroups.first?.id
-        }
         updateCameraToFitEvents()
     }
 
@@ -121,14 +123,16 @@ struct MapView: View {
         let minLat = lats.min()!, maxLat = lats.max()!
         let minLon = lons.min()!, maxLon = lons.max()!
 
-        let pad = 0.025
+        // pad = 0.08 ≈ 8.9 km por lado; garantiza ≥1 pulgada (132 pt) de margen
+        // en un iPad Pro 12,9" (132 pt/inch) con venues hasta ~50 km de distancia.
+        let pad = 0.08
         let center = CLLocationCoordinate2D(
             latitude: (minLat + maxLat) / 2,
             longitude: (minLon + maxLon) / 2
         )
         let span = MKCoordinateSpan(
-            latitudeDelta: max(maxLat - minLat + pad * 2, 0.04),
-            longitudeDelta: max(maxLon - minLon + pad * 2, 0.04)
+            latitudeDelta: max(maxLat - minLat + pad * 2, 0.16),
+            longitudeDelta: max(maxLon - minLon + pad * 2, 0.16)
         )
         camera = .region(MKCoordinateRegion(center: center, span: span))
     }
@@ -154,7 +158,8 @@ struct MapView: View {
                         .frame(width: 280)
                 }
             }
-            .padding(.horizontal, 14)
+            .padding(.leading, sidebarInset > 0 ? sidebarInset : 14)
+            .padding(.trailing, 16)
         }
         .padding(.vertical, 10)
     }
@@ -233,7 +238,7 @@ struct EventGlassCard: View {
             }
         }
         .padding(14)
-        .glassEffect(.regular, in: .rect(cornerRadius: PlSpace.cardRadius))
+        .glassEffect(.clear, in: .rect(cornerRadius: PlSpace.cardRadius))
         .overlay(alignment: .top) {
             if showAddedToast {
                 AddedToast()

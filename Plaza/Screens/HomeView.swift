@@ -12,7 +12,7 @@ struct HomeView: View {
     @Environment(\.isIPadSidebar) private var isIPadSidebar
     @State private var selectedCategory: Event.Category?
     @State private var showAddedToast = false
-    @State private var showProfile = false
+    @State private var showSettings = false
     @State private var showComunaPicker = false
     @State private var navPath = NavigationPath()
     @AppStorage("plaza_max_distance_km") private var maxDistanceKm: Double = 0
@@ -38,9 +38,9 @@ struct HomeView: View {
                 .toolbar(.hidden, for: .navigationBar)
                 .toolbarBackground(.hidden, for: .tabBar)
                 .navigationDestination(for: Event.self) { EventDetailView(event: $0) }
-                .sheet(isPresented: $showProfile) { ProfileView() }
-                .sheet(isPresented: $showComunaPicker) { ComunaPickerView() }
                 .refreshable { servicio.cargarEventos() }
+                .sheet(isPresented: $showSettings) { SettingsView() }
+                .sheet(isPresented: $showComunaPicker) { ComunaPickerView() }
                 .overlay(alignment: .top) {
                     if showAddedToast {
                         AddedToast()
@@ -51,6 +51,7 @@ struct HomeView: View {
                 .animation(.smooth, value: showAddedToast)
                 .safeAreaInset(edge: .top, spacing: 0) { headerBlock }
         }
+        .background(isIPadSidebar ? .clear : Color.plBg)
         .onAppear {
             if events.isEmpty { servicio.cargarEventos() }
             location.requestPermission()
@@ -69,7 +70,7 @@ struct HomeView: View {
                 ProgressView()
                     .frame(maxWidth: .infinity)
                     .padding(.top, 120)
-                    .plainRow()
+                    .plainRow(background: isIPadSidebar ? .clear : .plBg)
             } else if let error = servicio.error {
                 ContentUnavailableView {
                     Label("Sin conexión", systemImage: "wifi.slash")
@@ -81,7 +82,7 @@ struct HomeView: View {
                         .tint(Color.plAccent)
                 }
                 .padding(.top, 120)
-                .plainRow()
+                .plainRow(background: isIPadSidebar ? .clear : .plBg)
             } else {
                 if filteredEvents.isEmpty {
                     ContentUnavailableView(
@@ -90,14 +91,14 @@ struct HomeView: View {
                         description: Text("No hay eventos en esta categoría")
                     )
                     .padding(.top, 120)
-                    .plainRow()
+                    .plainRow(background: isIPadSidebar ? .clear : .plBg)
                 } else {
                     EventImageStack(events: Array(filteredEvents.prefix(3))) { event in
                         navPath.append(event)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 28)
-                    .plainRow()
+                    .plainRow(background: isIPadSidebar ? .clear : .plBg)
 
                     ForEach(filteredEvents) { event in
                         NavigationLink(value: event) {
@@ -123,7 +124,7 @@ struct HomeView: View {
                             .tint(servicio.isSaved(event) ? .red : .green)
                         }
                         .listRowInsets(EdgeInsets(top: 0, leading: PlSpace.gutter, bottom: 0, trailing: PlSpace.gutter))
-                        .listRowBackground(isIPadSidebar ? Color.plSurface.opacity(0.4) : Color.plBg)
+                        .listRowBackground(isIPadSidebar ? Color.clear : Color.plBg)
                     }
                 }
             }
@@ -223,17 +224,17 @@ struct HomeView: View {
             .glassEffect(.clear.interactive(), in: .circle)
             .accessibilityLabel("Filtrar por categoría\(selectedCategory != nil ? " (activo)" : "")")
 
-            // Botón de perfil
+            // Botón de ajustes
             Button {
-                showProfile = true
+                showSettings = true
             } label: {
-                Image(systemName: "person.crop.circle")
+                Image(systemName: "gearshape")
                     .font(.system(size: 22))
                     .frame(width: 50, height: 50)
                     .foregroundStyle(Color.plFg)
             }
             .glassEffect(.clear.interactive(), in: .circle)
-            .accessibilityLabel("Perfil")
+            .accessibilityLabel("Ajustes")
         }
         .padding(.horizontal, PlSpace.gutter)
         .padding(.vertical, 10)
@@ -273,11 +274,11 @@ struct HomeView: View {
 // MARK: - List row modifier
 
 extension View {
-    func plainRow() -> some View {
+    func plainRow(background: Color = .plBg) -> some View {
         self
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
-            .listRowBackground(Color.plBg)
+            .listRowBackground(background)
     }
 }
 
@@ -344,14 +345,18 @@ struct EventImageStack: View {
         let baseX: CGFloat, baseY: CGFloat
         let rot: Double, scale: CGFloat
         let freq: Double, phase: Double, amp: Double
-        let zIndex: Double, color: Color
+        let zIndex: Double
     }
 
     private let slotCfgs: [SlotCfg] = [
-        SlotCfg(baseX: 0,   baseY: 0,  rot: 0,  scale: 1.00, freq: 1.38, phase: 0,          amp: 8, zIndex: 2, color: .plCardCenter),
-        SlotCfg(baseX: -52, baseY: 10, rot: -9, scale: 0.91, freq: 1.10, phase: .pi * 0.85, amp: 6, zIndex: 1, color: .plCardLeft),
-        SlotCfg(baseX: 52,  baseY: 10, rot: 9,  scale: 0.91, freq: 1.25, phase: .pi * 0.35, amp: 6, zIndex: 1, color: .plCardRight),
+        SlotCfg(baseX: 0,   baseY: 0,  rot: 0,  scale: 1.00, freq: 1.38, phase: 0,          amp: 8, zIndex: 2),
+        SlotCfg(baseX: -52, baseY: 10, rot: -9, scale: 0.91, freq: 1.10, phase: .pi * 0.85, amp: 6, zIndex: 1),
+        SlotCfg(baseX: 52,  baseY: 10, rot: 9,  scale: 0.91, freq: 1.25, phase: .pi * 0.35, amp: 6, zIndex: 1),
     ]
+
+    // Color fijo por índice de evento: independiente del slot/posición
+    private static let cardColors: [Color] = [.plCardCenter, .plCardLeft, .plCardRight]
+    private func colorFor(_ ei: Int) -> Color { Self.cardColors[ei % 3] }
 
     // Índices de los 3 eventos activos, en orden [frente, izq, der]
     private var activeIndices: [Int] {
@@ -381,7 +386,7 @@ struct EventImageStack: View {
                     let drag = dragOffsets[ei, default: .zero]
                     let damp = max(0.0, 1.0 - Double(drag.width * drag.width + drag.height * drag.height).squareRoot() / 130)
 
-                    PlaybillCard(event: events[ei], cardColor: cfg.color) {
+                    PlaybillCard(event: events[ei], cardColor: colorFor(ei)) {
                         onSelect(events[ei])
                     }
                     .frame(width: 200, height: 234)

@@ -57,8 +57,9 @@ struct RootTabView: View {
             // Panel flotante: recortado, traslúcido, con sombra
             iPhoneTabView(includeMap: false)
                 .frame(width: 375)
+                .background(.clear)
                 .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .glassEffect(.clear, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
                 .shadow(color: .black.opacity(0.14), radius: 20, x: 4, y: 0)
                 .shadow(color: .black.opacity(0.06), radius: 60, x: 12, y: 0)
                 .padding(.leading, 12)
@@ -79,6 +80,7 @@ struct SearchView: View {
     @Environment(EventoService.self) private var servicio
     @Environment(LocationManager.self) private var location
     @Environment(ComunaManager.self) private var comunaManager
+    @Environment(\.isIPadSidebar) private var isIPadSidebar
     @State private var searchText = ""
     @State private var scope: SearchScope = .todos
     @AppStorage("plaza_max_distance_km") private var maxDistanceKm: Double = 0
@@ -122,11 +124,11 @@ struct SearchView: View {
                         PlTag(text: event.dateText)
                     }
                 }
-                .listRowBackground(Color.plBg)
+                .listRowBackground(isIPadSidebar ? Color.clear : Color.plBg)
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .background(Color.plBg)
+            .background(isIPadSidebar ? Color.clear : Color.plBg)
             .navigationDestination(for: Event.self) { EventDetailView(event: $0) }
             .navigationTitle("Buscar")
             .searchable(text: $searchText, prompt: "Eventos, venue, ciudad…")
@@ -141,13 +143,19 @@ struct SearchView: View {
                 }
             }
         }
+        .background(isIPadSidebar ? .clear : Color.plBg)
     }
 }
 
-// MARK: - Perfil
+// MARK: - Ajustes
 
-struct ProfileView: View {
+struct SettingsView: View {
     @Environment(EventoService.self) private var servicio
+    @AppStorage("plaza_theme") private var themeRaw: String = AppTheme.plaza.rawValue
+
+    private var selectedTheme: AppTheme {
+        AppTheme(rawValue: themeRaw) ?? .multicolor
+    }
 
     private var events: [Event] { servicio.events }
 
@@ -169,6 +177,26 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack {
             List {
+                Section("Apariencia") {
+                    ForEach(AppTheme.allCases, id: \.self) { theme in
+                        Button {
+                            themeRaw = theme.rawValue
+                        } label: {
+                            HStack(spacing: 14) {
+                                ThemeSwatchView(theme: theme)
+                                Text(theme.displayName)
+                                    .foregroundStyle(Color.plFg)
+                                Spacer()
+                                if selectedTheme == theme {
+                                    Image(systemName: "checkmark")
+                                        .foregroundStyle(Color.plAccent)
+                                        .fontWeight(.semibold)
+                                }
+                            }
+                        }
+                    }
+                }
+
                 Section("Resumen") {
                     Label {
                         HStack {
@@ -222,27 +250,36 @@ struct ProfileView: View {
                         }
                     }
                 }
-
-                Section("Preferencias") {
-                    NavigationLink {
-                        Text("Próximamente")
-                    } label: {
-                        Label("Categorías favoritas", systemImage: "heart")
-                    }
-                    NavigationLink {
-                        Text("Próximamente")
-                    } label: {
-                        Label("Recordatorios", systemImage: "bell")
-                    }
-                    NavigationLink {
-                        Text("Próximamente")
-                    } label: {
-                        Label("Ubicación", systemImage: "location")
-                    }
-                }
             }
-            .navigationTitle("Perfil")
+            .navigationTitle("Ajustes")
         }
+    }
+}
+
+// MARK: - Theme Swatch
+
+private struct ThemeSwatchView: View {
+    let theme: AppTheme
+
+    var body: some View {
+        HStack(spacing: 3) {
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .fill(theme.cardLeft)
+                .frame(width: 16, height: 24)
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .fill(theme.cardCenter)
+                .frame(width: 16, height: 24)
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .fill(theme.cardRight)
+                .frame(width: 16, height: 24)
+        }
+        .padding(4)
+        .background(theme.bg)
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(Color.plHair, lineWidth: 1)
+        )
     }
 }
 
