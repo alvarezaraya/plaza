@@ -1,5 +1,5 @@
 {
-  "generado_en": "2026-05-25T16:07:39.134110",
+  "generado_en": "2026-05-26T17:49:29.930349",
   "total_eventos": 20,
   "eventos": [
     {
@@ -98,7 +98,7 @@
       "ciudad": "Antofagasta",
       "imagen_url": "https://esquinaretornable.cl/wp-content/uploads/2026/05/DESPUES-DE-LA-NIEBLA-POSTER.jpg",
       "url": "https://www.passline.com/eventos/despues-de-la-niebla-515242",
-      "bio_artista": ""
+      "bio_artista": "Niebla es un municipio español de la provincia de Huelva, en la comunidad autónoma de Andalucía. El municipio cuenta con una población de 4268 habitantes. Con una extensión superficial es de 223,62 km², se encuentra situado a una altitud de unos 45 m sobre el nivel del mar y a 28 kilómetros de la capital provincial, Huelva. El casco urbano dispone de un importante conjunto histórico-monumental en el que sobresale su recinto amurallado."
     },
     {
       "fuente": "EsquinaRetornable",
@@ -112,7 +112,7 @@
       "ciudad": "Antofagasta",
       "imagen_url": "https://esquinaretornable.cl/wp-content/uploads/2026/05/el-faro-poster.jpg",
       "url": "https://www.passline.com/eventos/el-faro-508934",
-      "bio_artista": ""
+      "bio_artista": "El Faro es un periódico digital de El Salvador, fundado el 25 de abril de 1998, siendo así el primer periódico creado exclusivamente para internet en toda Latinoamérica, al carecer de edición impresa."
     },
     {
       "fuente": "Ticketplus",
@@ -126,7 +126,7 @@
       "imagen_url": "https://ticketing-uploads-1.ticketplus.global/images/thumbs/8313e292de4fd3db69eac65d3d0f1538ce7f910e.png?1779314664&format=baseline-jpeg&q=65",
       "url": "https://ticketplus.cl/events/cobreloa-vs-rangers-de-talca-campeonato-de-ascenso-caixun-2026-fecha-14",
       "descripcion_extendida": "Cobreloa vs Rangers de Talca / Campeonato de Ascenso Caixun 2026 | Fecha 14",
-      "bio_artista": ""
+      "bio_artista": "La Liga de Ascenso 2025, llamada «Liga de Ascenso Caixun 2025» por razones de patrocinio, fue la 76.a edición de la segunda categoría del fútbol chileno. El campeonato lo organiza la Asociación Nacional de Fútbol Profesional."
     },
     {
       "fuente": "PuntoTicket",
@@ -199,34 +199,6 @@
       "bio_artista": "La Sociedad was a Mexican lucha libre, or professional wrestling stable, that worked for Lucha Libre AAA World Wide. The group was originally formed in the summer of 2010 with the merger of La Legión Extranjera, Los Perros del Mal, La Milicia and Los Maniacos."
     },
     {
-      "fuente": "PuntoTicket",
-      "nombre": "Entradas 31 Minutos - Radio Guaripolo 2 - Gira 2026 Casa del Deportista,",
-      "venue": "",
-      "descripcion": "Compra tu entrada para 31 Minutos, sábado 27 de junio 2026 19:00 hrs. en Casa del Deportista, Iquique - Iquique.",
-      "fecha_iso": "2026-06-27",
-      "fecha_texto": "27 de junio de 2026",
-      "precio_desde_clp": "",
-      "ciudad": "Iquique",
-      "imagen_url": "https://static.ptocdn.net/images/eventos/ptt013_md.jpg",
-      "url": "https://www.puntoticket.com/evento/31-minutos-iquique-jun-2026",
-      "descripcion_extendida": "Compra tu entrada para 31 Minutos, sábado 27 de junio 2026 19:00 hrs. en Casa del Deportista, Iquique - Iquique.",
-      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
-    },
-    {
-      "fuente": "PuntoTicket",
-      "nombre": "Entradas 31 Minutos - Radio Guaripolo 2 - Gira 2026 Gimnasio Sokol,",
-      "venue": "",
-      "descripcion": "Compra tu entrada para 31 Minutos, domingo 28 de junio 2026 19:00 hrs. en Gimnasio Sokol, Antofagasta - Antofagasta.",
-      "fecha_iso": "2026-06-28",
-      "fecha_texto": "28 de junio de 2026",
-      "precio_desde_clp": "",
-      "ciudad": "Antofagasta",
-      "imagen_url": "https://static.ptocdn.net/images/eventos/ptt013_md.jpg",
-      "url": "https://www.puntoticket.com/evento/31-minutos-antofagasta-jun-2026",
-      "descripcion_extendida": "Compra tu entrada para 31 Minutos, domingo 28 de junio 2026 19:00 hrs. en Gimnasio Sokol, Antofagasta - Antofagasta.",
-      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
-    },
-    {
       "fuente": "Ticketplus",
       "nombre": "La Sociedad - El Regreso",
       "venue": "",
@@ -253,6 +225,34 @@
       "url": "https://www.puntoticket.com/evento/los-jaivas-teatro-antay-arica-jul-2026",
       "descripcion_extendida": "Compra tu entrada para Los Jaivas 2026 Gira 45 años alturas de Macchu Picchu, sábado 11 de julio 2026 20:00 hrs. en Hotel Antay de Arica - Arica.",
       "bio_artista": "Los Jaivas is a Chilean musical group who perform in folk, rock, psychedelic, and progressive rock styles formed in 1963 in Viña Del Mar, Chile. They are considered one of the most important and influential artists of all time in Latin America."
+    },
+    {
+      "fuente": "PuntoTicket",
+      "nombre": "Entradas 31 Minutos - Radio Guaripolo 2 - Gira 2026 Casa del Deportista,",
+      "venue": "",
+      "descripcion": "Compra tu entrada para 31 Minutos, domingo 26 de julio 2026 19:00 hrs. en Casa del Deportista, Iquique - Iquique.",
+      "fecha_iso": "2026-07-26",
+      "fecha_texto": "26 de julio de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "Iquique",
+      "imagen_url": "https://static.ptocdn.net/images/eventos/ptt013_md.jpg",
+      "url": "https://www.puntoticket.com/evento/31-minutos-iquique-jul-2026",
+      "descripcion_extendida": "Compra tu entrada para 31 Minutos, domingo 26 de julio 2026 19:00 hrs. en Casa del Deportista, Iquique - Iquique.",
+      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
+    },
+    {
+      "fuente": "PuntoTicket",
+      "nombre": "Entradas 31 Minutos - Radio Guaripolo 2 - Gira 2026 Gimnasio Sokol,",
+      "venue": "",
+      "descripcion": "Compra tu entrada para 31 Minutos, sábado 01 de agosto 2026 19:00 hrs. en Gimnasio Sokol, Antofagasta - Antofagasta.",
+      "fecha_iso": "2026-08-01",
+      "fecha_texto": "1 de agosto de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://static.ptocdn.net/images/eventos/ptt013_md.jpg",
+      "url": "https://www.puntoticket.com/evento/31-minutos-antofagasta-jul-2026",
+      "descripcion_extendida": "Compra tu entrada para 31 Minutos, sábado 01 de agosto 2026 19:00 hrs. en Gimnasio Sokol, Antofagasta - Antofagasta.",
+      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
     },
     {
       "fuente": "Ticketplus",
