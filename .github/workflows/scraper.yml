@@ -25,8 +25,20 @@ jobs:
       - name: Instalar dependencias Python
         run: pip install requests beautifulsoup4 playwright
 
+      - name: Cachear binarios de Playwright
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('**/requirements*.txt') }}-v1
+
       - name: Instalar Chromium para Playwright
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: python -m playwright install chromium --with-deps
+
+      - name: Instalar dependencias del sistema para Chromium (si viene de caché)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: python -m playwright install-deps chromium
 
       - name: Ejecutar scraper
         run: python scraper_eventos.py
@@ -35,6 +47,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add eventos.json
+          cp eventos.json docs/eventos.json
+          git add eventos.json docs/eventos.json
           git diff --cached --quiet || git commit -m "Actualizar eventos $(date +'%Y-%m-%d %H:%M UTC')"
           git push

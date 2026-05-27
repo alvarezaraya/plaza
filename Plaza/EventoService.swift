@@ -19,6 +19,8 @@ struct Evento: Identifiable, Codable {
     let venue: String?
     let descripcion_extendida: String?
     let bio_artista: String?
+    let lat: Double?
+    let lon: Double?
 
     var id: String { nombre + url }
 
@@ -50,8 +52,10 @@ struct RespuestaJSON: Codable {
 @MainActor
 @Observable
 class EventoService {
+    // GitHub Pages (Fastly CDN) — más rápido que raw.githubusercontent.com.
+    // Requiere activar Pages en repo Settings → Pages → Source: docs/ en main.
     private let jsonURL = URL(string:
-        "https://raw.githubusercontent.com/alvarezaraya/plaza/main/eventos.json"
+        "https://alvarezaraya.github.io/plaza/eventos.json"
     )!
     private let editsKey  = "plaza_edited_events"
     private let savedKey  = "plaza_saved_events"
@@ -205,7 +209,12 @@ class EventoService {
     // MARK: - Geocodificación
 
     private func geocodeEvents() async {
-        let uniqueVenues = Set(events.map { "\($0.venue)|\($0.ciudad)" })
+        // Solo geocodifica eventos sin coordenadas del JSON (lat/lon ausentes en el scraper).
+        let needsGeocode = events.filter {
+            $0.coordinate.latitude == Event.defaultCoordinate.latitude &&
+            $0.coordinate.longitude == Event.defaultCoordinate.longitude
+        }
+        let uniqueVenues = Set(needsGeocode.map { "\($0.venue)|\($0.ciudad)" })
         for venueKey in uniqueVenues {
             let parts = venueKey.split(separator: "|", maxSplits: 1)
             guard parts.count == 2 else { continue }
