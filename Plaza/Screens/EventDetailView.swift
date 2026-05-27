@@ -140,12 +140,6 @@ struct EventDetailView: View {
                             .lineSpacing(3)
                             .padding(.top, 4)
 
-                        PlTag(text: "Qué esperar")
-                        Text(summary.preview)
-                            .font(.plSerifItalic(15))
-                            .foregroundStyle(Color.plMuted)
-                            .lineSpacing(3)
-                            .padding(.top, 4)
                     } else if let bio = event.bioArtista, !bio.isEmpty {
                         Divider()
                         PlTag(text: "Sobre el artista")

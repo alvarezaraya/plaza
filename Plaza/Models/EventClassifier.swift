@@ -32,8 +32,6 @@ struct EventSummary {
     @Guide(description: "Brief bio strictly about the exact artist or band named in the event (2-3 sentences in Spanish). Only state facts you are confident about for THIS specific artist. If uncertain, describe only what is mentioned in the event description — do not invent details or confuse with other artists.")
     var bio: String
 
-    @Guide(description: "What attendees can expect at this specific event in Spanish (1-2 sentences), based on the event details provided.")
-    var preview: String
 }
 
 enum EventClassifier {
