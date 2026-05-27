@@ -6,6 +6,18 @@
     {
       "layers" : [
         {
+          "blend-mode-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "normal"
+            }
+          ],
+          "fill-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "automatic"
+            }
+          ],
           "image-name" : "imagevector.png",
           "name" : "imagevector",
           "position" : {
@@ -27,14 +39,6 @@
       }
     }
   ],
-  "appearances" : {
-    "dark" : {
-      "fill" : { "solid" : "extended-srgb:0.04,0.04,0.04,1.00" }
-    },
-    "mono" : {
-      "fill" : "automatic-mono"
-    }
-  },
   "supported-platforms" : {
     "circles" : [
       "watchOS"
