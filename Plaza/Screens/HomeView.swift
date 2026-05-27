@@ -411,7 +411,7 @@ struct EventImageStack: View {
                     PlaybillCard(event: events[ei], cardColor: colorFor(ei)) {
                         onSelect(events[ei])
                     }
-                    .frame(width: 200, height: 234)
+                    .frame(width: 200, height: 300)
                     .scaleEffect(cfg.scale)
                     .rotationEffect(.degrees(cfg.rot + Double(drag.width) / 18))
                     .offset(
@@ -439,7 +439,7 @@ struct EventImageStack: View {
                 }
             }
         }
-        .frame(height: 278)
+        .frame(height: 350)
     }
 
     // Lanza primero la tarjeta en la dirección del swipe y luego rota el carrusel.
@@ -544,6 +544,8 @@ struct PlaybillCard: View {
             if let img = phase.image {
                 img.resizable()
                     .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .clipped()
             } else {
                 Rectangle()
                     .fill(cardColor.opacity(0.65))
