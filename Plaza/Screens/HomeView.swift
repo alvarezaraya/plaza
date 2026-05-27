@@ -369,7 +369,8 @@ struct EventImageStack: View {
     ]
 
     // Color fijo por índice de evento: independiente del slot/posición
-    private static let cardColors: [Color] = [.plCardCenter, .plCardLeft, .plCardRight]
+    // Propiedad computada (no `let`) para que se re-evalúe al cambiar de tema.
+    private static var cardColors: [Color] { [.plCardCenter, .plCardLeft, .plCardRight] }
     private func colorFor(_ ei: Int) -> Color { Self.cardColors[ei % 3] }
 
     // Índices de los 3 eventos activos, en orden [frente, izq, der]
