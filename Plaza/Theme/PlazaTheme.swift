@@ -69,28 +69,28 @@ enum AppTheme: String, CaseIterable {
     var cardLeft: Color {
         switch self {
         case .plaza:      return Color(light: 0xC4714A, dark: 0xD48A65)
-        case .multicolor: return Color(light: 0xD63BAA, dark: 0xE855BE) // magenta
+        case .multicolor: return Color(light: 0xB8861A, dark: 0xD4A040) // oro antiguo
         }
     }
 
     var cardCenter: Color {
         switch self {
         case .plaza:      return Color(light: 0xD4A44C, dark: 0xE0B862)
-        case .multicolor: return Color(light: 0xB8232C, dark: 0xD03040) // terciopelo rojo
+        case .multicolor: return Color(light: 0x0B6B4A, dark: 0x1D8A62) // esmeralda
         }
     }
 
     var cardRight: Color {
         switch self {
         case .plaza:      return Color(light: 0xE8C57A, dark: 0xC8A24A)
-        case .multicolor: return Color(light: 0xF2C408, dark: 0xF0D040) // amarillo cálido
+        case .multicolor: return Color(light: 0x0040B0, dark: 0x1E63D0) // azul cobalto
         }
     }
 
     var accent: Color {
         switch self {
         case .plaza:      return Color(light: 0xc5832b, dark: 0xd4923a)
-        case .multicolor: return Color(light: 0xB8232C, dark: 0xD03040) // terciopelo rojo
+        case .multicolor: return Color(light: 0x0D7A54, dark: 0x2ABF84) // esmeralda vibrante
         }
     }
 
