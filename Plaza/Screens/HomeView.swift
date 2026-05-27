@@ -311,7 +311,16 @@ struct EventRowContent: View {
     let event: Event
 
     var body: some View {
-        HStack(alignment: .top, spacing: 14) {
+        HStack(alignment: .top, spacing: 0) {
+            CalendarBadge(date: event.date)
+
+            // Separador vertical
+            Rectangle()
+                .fill(Color.plHair)
+                .frame(width: 1, height: 28)
+                .padding(.horizontal, 10)
+                .padding(.top, 13)
+
             Image(systemName: event.category.icon)
                 .font(.system(size: 22))
                 .foregroundStyle(Color.plAccent)
@@ -330,7 +339,6 @@ struct EventRowContent: View {
                         .lineLimit(1)
                 }
                 HStack(spacing: 8) {
-                    PlTag(text: event.dateText)
                     PlTag(text: event.venue)
                     if let dist = location.distanceText(event.coordinate) {
                         PlTag(text: dist, color: .plAccent)
@@ -341,10 +349,55 @@ struct EventRowContent: View {
                     PlTag(text: "+\(event.otherDates.count) fechas", color: .plAccent)
                 }
             }
+            .padding(.leading, 12)
             Spacer(minLength: 0)
         }
         .padding(.vertical, 14)
         .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - Calendar Badge
+
+private struct CalendarBadge: View {
+    let date: Date
+
+    private static let dayFmt: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "d"
+        return f
+    }()
+
+    private static let monthFmt: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "es_CL")
+        f.dateFormat = "MMM"
+        return f
+    }()
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Text(Self.monthFmt.string(from: date).uppercased())
+                .font(.plMono(9))
+                .tracking(0.6)
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 4)
+                .background(Color.plAccent)
+
+            Text(Self.dayFmt.string(from: date))
+                .font(.plDisplay(20))
+                .foregroundStyle(Color.plFg)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6)
+                .background(Color.plSurface)
+        }
+        .frame(width: 40)
+        .clipShape(.rect(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .strokeBorder(Color.plHair, lineWidth: 0.5)
+        )
     }
 }
 
