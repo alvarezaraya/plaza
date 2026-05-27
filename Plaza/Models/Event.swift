@@ -92,6 +92,13 @@ extension Event {
         let descExtendida = evento.descripcion_extendida ?? ""
         let blurbFinal = descExtendida.isEmpty ? evento.descripcionMostrar : descExtendida
 
+        let coordinate: CLLocationCoordinate2D
+        if let lat = evento.lat, let lon = evento.lon {
+            coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        } else {
+            coordinate = Event.defaultCoordinate
+        }
+
         return Event(
             id: UUID(),
             stableID: evento.url,
@@ -101,7 +108,7 @@ extension Event {
             ciudad: evento.ciudad,
             category: category,
             date: parsedDate,
-            coordinate: Event.defaultCoordinate,
+            coordinate: coordinate,
             blurb: blurbFinal,
             bioArtista: evento.bio_artista,
             price: evento.precio_desde_clp.isEmpty ? nil : evento.precioTexto,

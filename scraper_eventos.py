@@ -1,16 +1,21 @@
 """
-scraper_eventos.py  v16
+scraper_eventos.py  v17
 ======================
 Extrae eventos culturales con imagen y descripción desde TODO Chile:
-  - Ticketplus.cl       (todas las regiones de Chile)
-  - Ticketpro.cl        (todo Chile — sin filtro de ciudad)
-  - PuntoTicket.com     (todo Chile — /todos + /evento/)
-  - Ticketmaster.cl     (filtra por texto en tarjeta; anti-bot)
-  - Passline.com        (playwright — ciudades principales)
-  - ComediaTicket.cl    (playwright — todos los shows de humor)
-  - EsquinaRetornable.cl (cine arte Antofagasta — WordPress)
+  - Ticketplus.cl         (todas las regiones de Chile)
+  - Ticketpro.cl          (todo Chile — sin filtro de ciudad)
+  - PuntoTicket.com       (todo Chile — /todos + /evento/)
+  - Ticketmaster.cl       (filtra por texto en tarjeta; anti-bot)
+  - Passline.com          (playwright — ciudades principales)
+  - ComediaTicket.cl      (playwright — todos los shows de humor)
+  - EsquinaRetornable.cl  (cine arte Antofagasta — WordPress)
   - CulturaAntofagasta.cl (RSS WordPress — Corporación Municipal)
-  - CulturaIquique.cl   (RSS WordPress — Orquesta Regional Tarapacá)
+  - CulturaIquique.cl     (RSS WordPress — Orquesta Regional Tarapacá)
+  - Ticketchile.cl        (ticketera regional — ciudades medianas)
+  - MasQueTickets.cl      (teatro y artes escénicas)
+  - Eventbrite.cl         (playwright — eventos independientes y corporativos)
+  - Joinnus.com/CL        (playwright — plataforma latinoamericana)
+  - RSS Municipales       (feeds WordPress de corporaciones culturales regionales)
 
 Requisitos:
     pip install requests beautifulsoup4
@@ -24,6 +29,7 @@ import json
 import re
 import time
 import warnings
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 
 import requests
@@ -227,7 +233,11 @@ OUTPUT_FILE = "eventos.json"
 PAUSA = 0.8
 MAX_POR_REGION = 40   # Límite de eventos a detallar por región en Ticketplus
 
-NOMBRES_TICKETERA = {"ticketplus", "ticketpro", "puntoticket", "ticketmaster", "passline", "comediaticket", "culturaantofagasta", "culturaiquique"}
+NOMBRES_TICKETERA = {
+    "ticketplus", "ticketpro", "puntoticket", "ticketmaster", "passline",
+    "comediaticket", "culturaantofagasta", "culturaiquique",
+    "ticketchile", "masquetickets", "eventbrite", "joinnus",
+}
 
 MESES_ES = {
     "ene": 1, "enero": 1,
@@ -419,6 +429,129 @@ def extraer_detalle(url):
     venue = detectar_venue(og_title) or detectar_venue(descripcion)
 
     return og_title, imagen, descripcion, fecha_iso, fecha_texto, venue
+
+
+# ── Geocodificación previa (Nominatim) ──────────────────────────────────────
+
+# Coordenadas conocidas para venues y ciudades chilenas.
+COORDENADAS_FIJAS = {
+    # Venues Antofagasta
+    "esquina retornable":              (-23.673621, -70.409617),
+    "teatro municipal de antofagasta": (-23.646360, -70.396306),
+    "teatro municipal":                (-23.646360, -70.396306),
+    "enjoy antofagasta":               (-23.685324, -70.414614),
+    "estadio sokol":                   (-23.655882, -70.397059),
+    "rock and soccer":                 (-23.699305, -70.422728),
+    # Venues Santiago
+    "movistar arena":                  (-33.456667, -70.655556),
+    "estadio nacional":                (-33.464833, -70.607500),
+    "teatro caupolicán":               (-33.461167, -70.648833),
+    "teatro municipal de santiago":    (-33.438889, -70.653056),
+    "teatro nescafé de las artes":     (-33.425278, -70.608056),
+    "anfiteatro cerrillos":            (-33.493056, -70.727500),
+    # Venues Viña del Mar
+    "enjoy viña del mar":              (-33.024167, -71.551944),
+    "casino viña del mar":             (-33.024167, -71.551944),
+    # Ciudades capitales regionales
+    "arica":        (-18.4783, -70.3126),
+    "iquique":      (-20.2208, -70.1431),
+    "antofagasta":  (-23.6509, -70.3975),
+    "copiapó":      (-27.3668, -70.3323),
+    "la serena":    (-29.9027, -71.2520),
+    "valparaíso":   (-33.0472, -71.6127),
+    "santiago":     (-33.4489, -70.6693),
+    "rancagua":     (-34.1708, -70.7444),
+    "talca":        (-35.4264, -71.6554),
+    "chillán":      (-36.6063, -72.1031),
+    "concepción":   (-36.8270, -73.0502),
+    "temuco":       (-38.7359, -72.5904),
+    "valdivia":     (-39.8142, -73.2459),
+    "puerto montt": (-41.4693, -72.9424),
+    "coyhaique":    (-45.5712, -72.0680),
+    "punta arenas": (-53.1638, -70.9171),
+    # Otras ciudades importantes
+    "calama":        (-22.4563, -68.9295),
+    "viña del mar":  (-33.0247, -71.5519),
+    "quilpué":       (-33.0508, -71.4422),
+    "villa alemana": (-33.0431, -71.3732),
+    "osorno":        (-40.5739, -73.1333),
+    "puerto varas":  (-41.3199, -72.9847),
+    "castro":        (-42.4791, -73.7616),
+    "los ángeles":   (-37.4697, -72.3534),
+    "curicó":        (-34.9854, -71.2394),
+    "linares":       (-35.8459, -71.5963),
+    "san antonio":   (-33.5897, -71.6216),
+    "ovalle":        (-30.6027, -71.1988),
+    "pucón":         (-39.2720, -71.9780),
+    "villarrica":    (-39.2840, -72.2288),
+    "angol":         (-37.7979, -72.7096),
+    "alto hospicio": (-20.2676, -70.0980),
+    "caldera":       (-27.0658, -70.8236),
+    "la unión":      (-40.2929, -73.0833),
+    "frutillar":     (-41.1259, -73.0541),
+}
+
+_NOMINATIM_HEADERS = {
+    "User-Agent": "PlazaApp/1.0 (events aggregator Chile; contact: plaza@example.com)"
+}
+
+
+def _geocodificar_nominatim(query):
+    """Consulta Nominatim una vez. Retorna (lat, lon) o None."""
+    try:
+        encoded = requests.utils.quote(query)
+        url = f"https://nominatim.openstreetmap.org/search?q={encoded}&format=json&limit=1&countrycodes=cl"
+        r = requests.get(url, headers=_NOMINATIM_HEADERS, timeout=10)
+        data = r.json()
+        if data:
+            return (float(data[0]["lat"]), float(data[0]["lon"]))
+    except Exception as e:
+        print(f"    ⚠️  Nominatim ({query[:50]}): {e}")
+    return None
+
+
+def _geocodificar_venue(venue, ciudad):
+    """Devuelve (lat, lon): primero diccionario, luego Nominatim venue, luego ciudad."""
+    venue_key  = venue.lower().strip()
+    ciudad_key = ciudad.lower().strip()
+
+    if venue_key in COORDENADAS_FIJAS:
+        return COORDENADAS_FIJAS[venue_key]
+    if ciudad_key in COORDENADAS_FIJAS:
+        return COORDENADAS_FIJAS[ciudad_key]
+
+    if venue and venue.lower() not in {ciudad.lower(), "chile", ""}:
+        coord = _geocodificar_nominatim(f"{venue}, {ciudad}, Chile")
+        time.sleep(1.1)  # Nominatim ToS: máx 1 req/s
+        if coord:
+            return coord
+
+    coord = _geocodificar_nominatim(f"{ciudad}, Chile")
+    time.sleep(1.1)
+    return coord
+
+
+def geocodificar_todos(eventos):
+    """Añade lat/lon a cada evento. Deduplica por (venue, ciudad)."""
+    print("\n🌍 Geocodificando venues...")
+    cache = {}
+    for evento in eventos:
+        venue  = evento.get("venue", "")
+        ciudad = evento.get("ciudad", "")
+        key    = f"{venue.lower().strip()}|{ciudad.lower().strip()}"
+
+        if key not in cache:
+            cache[key] = _geocodificar_venue(venue, ciudad)
+            if cache[key]:
+                print(f"  📍 {(venue or ciudad)[:40]} → {cache[key][0]:.4f}, {cache[key][1]:.4f}")
+
+        coord = cache[key]
+        evento["lat"] = round(coord[0], 6) if coord else None
+        evento["lon"] = round(coord[1], 6) if coord else None
+
+    geocoded = sum(1 for e in eventos if e.get("lat") is not None)
+    print(f"  ✅ {geocoded}/{len(eventos)} eventos geocodificados")
+    return eventos
 
 
 def extraer_ciudad_jsonld(soup):
@@ -1330,6 +1463,349 @@ def scrape_cultura_iquique():
     return eventos
 
 
+# ── Scraper 10: Ticketchile ──────────────────────────────────────────────────
+
+def scrape_ticketchile():
+    """Ticketchile.cl — ticketera nacional, buena cobertura en ciudades medianas."""
+    print("\n🔍 Ticketchile.cl ...")
+    r = get("https://www.ticketchile.cl/")
+    if not r:
+        return []
+
+    soup = BeautifulSoup(r.text, "html.parser")
+    base = []
+    vistos = set()
+
+    for a in soup.find_all("a", href=re.compile(r"/evento/")):
+        href  = a.get("href", "")
+        texto = limpiar(a.get_text(" "))
+        if not href or len(texto) < 4:
+            continue
+        evento_url = f"https://www.ticketchile.cl{href}" if href.startswith("/") else href
+        if evento_url in vistos:
+            continue
+        vistos.add(evento_url)
+        precio_match = re.search(r"\$\s*([\d\.]+)", texto)
+        precio = precio_match.group(1) if precio_match else ""
+        base.append({"texto_crudo": texto, "precio": precio,
+                     "ciudad": detectar_ciudad(texto) or "", "url": evento_url})
+
+    print(f"  → Obteniendo detalle de {len(base)} eventos...")
+    eventos = []
+    for i, b in enumerate(base):
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+        nombre_base = og_title or desc or b["texto_crudo"]
+        if not venue:
+            venue = detectar_venue(b["texto_crudo"])
+        ciudad = b["ciudad"] or detectar_ciudad(f"{og_title} {desc}")
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+        if not nombre or nombre.lower().strip() in NOMBRES_TICKETERA:
+            nombre = nombre_desde_slug(b["url"])
+        eventos.append({
+            "fuente": "Ticketchile", "nombre": nombre, "venue": venue,
+            "descripcion": desc, "fecha_iso": fecha_iso, "fecha_texto": fecha_texto,
+            "precio_desde_clp": b["precio"], "ciudad": ciudad,
+            "imagen_url": imagen, "url": b["url"],
+        })
+        time.sleep(PAUSA)
+
+    print(f"  ✅ {len(eventos)} eventos")
+    return eventos
+
+
+# ── Scraper 11: MasQueTickets ────────────────────────────────────────────────
+
+def scrape_masquetickets():
+    """MasQueTickets.cl — fuerte en teatro y artes escénicas."""
+    print("\n🔍 MasQueTickets.cl ...")
+    r = get("https://www.masquetickets.cl/")
+    if not r:
+        return []
+
+    soup = BeautifulSoup(r.text, "html.parser")
+    base = []
+    vistos = set()
+
+    excluir = {"login", "register", "contacto", "nosotros", "faq",
+               "terminos", "privacidad", "#", "javascript"}
+
+    for a in soup.find_all("a", href=True):
+        href  = a.get("href", "")
+        texto = limpiar(a.get_text(" "))
+        if len(texto) < 4:
+            continue
+        if any(x in href.lower() for x in excluir):
+            continue
+        # URLs de eventos tienen al menos un segmento de slug largo
+        if not re.search(r"masquetickets\.cl/[a-z0-9][a-z0-9-]{4,}", href, re.IGNORECASE):
+            continue
+        evento_url = href if href.startswith("http") else f"https://www.masquetickets.cl{href}"
+        if evento_url in vistos:
+            continue
+        vistos.add(evento_url)
+        base.append({"texto_crudo": texto, "ciudad": detectar_ciudad(texto) or "",
+                     "url": evento_url})
+
+    print(f"  → Obteniendo detalle de {len(base)} eventos...")
+    eventos = []
+    for i, b in enumerate(base):
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+        if not og_title and not desc:
+            continue
+        nombre_base = og_title or desc or b["texto_crudo"]
+        if not venue:
+            venue = detectar_venue(b["texto_crudo"])
+        ciudad = b["ciudad"] or detectar_ciudad(f"{og_title} {desc}")
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+        eventos.append({
+            "fuente": "MasQueTickets", "nombre": nombre, "venue": venue,
+            "descripcion": desc, "fecha_iso": fecha_iso, "fecha_texto": fecha_texto,
+            "precio_desde_clp": "", "ciudad": ciudad,
+            "imagen_url": imagen, "url": b["url"],
+        })
+        time.sleep(PAUSA)
+
+    print(f"  ✅ {len(eventos)} eventos")
+    return eventos
+
+
+# ── Scraper 12: Eventbrite Chile ─────────────────────────────────────────────
+
+def scrape_eventbrite():
+    """Eventbrite Chile — SPA React, usa Playwright."""
+    print("\n🔍 Eventbrite.cl (playwright) ...")
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("  ⚠️  playwright no instalado — omitiendo Eventbrite.")
+        return []
+
+    base = []
+    vistos = set()
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        ctx = browser.new_context(user_agent=HEADERS["User-Agent"])
+        page = ctx.new_page()
+        try:
+            page.goto("https://www.eventbrite.cl/d/chile/events/",
+                      wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(5000)
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(2000)
+            links = page.eval_on_selector_all(
+                "a[href]",
+                "els => els.map(el => ({href: el.href, text: el.innerText.trim()}))"
+            )
+            for link in links:
+                href  = link.get("href", "")
+                texto = limpiar(link.get("text", ""))
+                if not re.search(r"eventbrite\.cl/e/", href, re.IGNORECASE):
+                    continue
+                if href in vistos or len(texto) < 4:
+                    continue
+                vistos.add(href)
+                base.append({"texto_crudo": texto, "ciudad": detectar_ciudad(texto) or "",
+                             "url": href})
+        except Exception as e:
+            print(f"  ⚠️  Eventbrite: {e}")
+        finally:
+            browser.close()
+
+    print(f"  → Obteniendo detalle de {len(base)} eventos...")
+    eventos = []
+    for i, b in enumerate(base):
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+        if not og_title and not desc:
+            continue
+        nombre_base = og_title or desc or b["texto_crudo"]
+        if not venue:
+            venue = detectar_venue(b["texto_crudo"])
+        ciudad = b["ciudad"] or detectar_ciudad(f"{og_title} {desc}")
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+        eventos.append({
+            "fuente": "Eventbrite", "nombre": nombre, "venue": venue,
+            "descripcion": desc, "fecha_iso": fecha_iso, "fecha_texto": fecha_texto,
+            "precio_desde_clp": "", "ciudad": ciudad,
+            "imagen_url": imagen, "url": b["url"],
+        })
+        time.sleep(PAUSA)
+
+    print(f"  ✅ {len(eventos)} eventos")
+    return eventos
+
+
+# ── Scraper 13: Joinnus Chile ────────────────────────────────────────────────
+
+def scrape_joinnus():
+    """Joinnus.com/CL — plataforma latinoamericana con presencia en Chile. SPA React."""
+    print("\n🔍 Joinnus.com/CL (playwright) ...")
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("  ⚠️  playwright no instalado — omitiendo Joinnus.")
+        return []
+
+    base = []
+    vistos = set()
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        ctx = browser.new_context(user_agent=HEADERS["User-Agent"])
+        page = ctx.new_page()
+        try:
+            page.goto("https://www.joinnus.com/CL/",
+                      wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(6000)
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(2000)
+            links = page.eval_on_selector_all(
+                "a[href]",
+                "els => els.map(el => ({href: el.href, text: el.innerText.trim()}))"
+            )
+            for link in links:
+                href  = link.get("href", "")
+                texto = limpiar(link.get("text", ""))
+                # Eventos de Joinnus: /CL/[categoria]/[slug]-[id]
+                if not re.search(r"joinnus\.com/CL/[^/]+/[^/]+-\d+", href, re.IGNORECASE):
+                    continue
+                if href in vistos or len(texto) < 4:
+                    continue
+                vistos.add(href)
+                base.append({"texto_crudo": texto, "ciudad": detectar_ciudad(texto) or "",
+                             "url": href})
+        except Exception as e:
+            print(f"  ⚠️  Joinnus: {e}")
+        finally:
+            browser.close()
+
+    print(f"  → Obteniendo detalle de {len(base)} eventos...")
+    eventos = []
+    for i, b in enumerate(base):
+        print(f"    [{i+1}/{len(base)}] {b['url'].split('/')[-1][:50]}...")
+        og_title, imagen, desc, fecha_iso, fecha_texto, venue = extraer_detalle(b["url"])
+        if not og_title and not desc:
+            continue
+        nombre_base = og_title or desc or b["texto_crudo"]
+        if not venue:
+            venue = detectar_venue(b["texto_crudo"])
+        ciudad = b["ciudad"] or detectar_ciudad(f"{og_title} {desc}")
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(b["texto_crudo"])
+        nombre = limpiar_nombre(nombre_base, venue=venue, ciudad=ciudad)
+        eventos.append({
+            "fuente": "Joinnus", "nombre": nombre, "venue": venue,
+            "descripcion": desc, "fecha_iso": fecha_iso, "fecha_texto": fecha_texto,
+            "precio_desde_clp": "", "ciudad": ciudad,
+            "imagen_url": imagen, "url": b["url"],
+        })
+        time.sleep(PAUSA)
+
+    print(f"  ✅ {len(eventos)} eventos")
+    return eventos
+
+
+# ── Scraper 14: RSS Municipales ──────────────────────────────────────────────
+
+def _scrape_rss_municipal(feed_url, ciudad, venue, fuente):
+    """Helper genérico para feeds RSS WordPress de corporaciones culturales."""
+    r = get(feed_url)
+    if not r:
+        return []
+
+    soup  = BeautifulSoup(r.text, "html.parser")
+    items = soup.find_all("item")
+    eventos = []
+    ahora   = datetime.now().date()
+
+    for item in items:
+        title_tag = item.find("title")
+        link_tag  = item.find("link")
+        desc_tag  = item.find("description")
+        if not title_tag or not link_tag:
+            continue
+
+        nombre_raw = limpiar(title_tag.get_text())
+        url        = (link_tag.next_sibling or "").strip() or link_tag.get_text(strip=True)
+        desc_html  = desc_tag.get_text(" ", strip=True) if desc_tag else ""
+        desc_clean = limpiar(re.sub(r"<[^>]+>", " ", desc_html))
+
+        fecha_iso, fecha_texto = extraer_fecha_de_texto(nombre_raw)
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(desc_clean)
+
+        if fecha_iso:
+            try:
+                if datetime.strptime(fecha_iso, "%Y-%m-%d").date() < ahora:
+                    continue
+            except ValueError:
+                pass
+
+        imagen = ""
+        if url:
+            r2 = get(url)
+            if r2:
+                s2  = BeautifulSoup(r2.text, "html.parser")
+                tag = s2.find("meta", property="og:image")
+                if tag and tag.get("content"):
+                    imagen = tag["content"].strip()
+                tag2 = s2.find("meta", property="og:description")
+                if tag2 and tag2.get("content"):
+                    desc_clean = limpiar(tag2["content"])
+            time.sleep(PAUSA)
+
+        nombre = limpiar_nombre(nombre_raw, ciudad=ciudad)
+        if not nombre:
+            continue
+
+        eventos.append({
+            "fuente":           fuente,
+            "nombre":           nombre,
+            "venue":            venue,
+            "descripcion":      desc_clean[:300],
+            "fecha_iso":        fecha_iso,
+            "fecha_texto":      fecha_texto,
+            "precio_desde_clp": "",
+            "ciudad":           ciudad,
+            "imagen_url":       imagen,
+            "url":              url,
+        })
+
+    return eventos
+
+
+def scrape_rss_municipales():
+    """Feeds RSS WordPress de corporaciones culturales regionales."""
+    FEEDS = [
+        # (feed_url, ciudad, venue, fuente)
+        ("https://www.cultura.gob.cl/feed/",
+         "Santiago",    "Ministerio de las Culturas",            "CulturaGob"),
+        ("https://www.ccplm.cl/sitio/feed/",
+         "Santiago",    "Centro Cultural Palacio La Moneda",     "CCPLM"),
+        ("https://www.culturalvalparaiso.cl/feed/",
+         "Valparaíso",  "Corporación Cultural de Valparaíso",    "CulturaValparaíso"),
+        ("https://www.gam.cl/feed/",
+         "Santiago",    "GAM — Centro Cultural Gabriela Mistral","GAM"),
+    ]
+
+    todos = []
+    for feed_url, ciudad, venue, fuente in FEEDS:
+        print(f"\n🔍 {fuente} (RSS) ...")
+        items = _scrape_rss_municipal(feed_url, ciudad, venue, fuente)
+        print(f"  ✅ {len(items)} eventos")
+        todos += items
+    return todos
+
+
 # ── Enriquecimiento: Wikipedia + DuckDuckGo ─────────────────────────────────
 
 def _safe_json(r):
@@ -1435,7 +1911,7 @@ def enriquecer_evento(evento):
 
 def main():
     print("=" * 55)
-    print("  Scraper de eventos — Todo Chile  v16")
+    print("  Scraper de eventos — Todo Chile  v17")
     print("=" * 55)
 
     todos = []
@@ -1448,13 +1924,29 @@ def main():
     todos += scrape_esquinaretornable()
     todos += scrape_cultura_antofagasta()
     todos += scrape_cultura_iquique()
+    todos += scrape_ticketchile()
+    todos += scrape_masquetickets()
+    todos += scrape_eventbrite()
+    todos += scrape_joinnus()
+    todos += scrape_rss_municipales()
 
     todos.sort(key=lambda e: e["fecha_iso"] if e["fecha_iso"] else "9999")
+    geocodificar_todos(todos)
 
-    print(f"\n📚 Enriqueciendo {len(todos)} eventos con Wikipedia y DuckDuckGo...")
-    for i, evento in enumerate(todos):
-        print(f"  [{i+1}/{len(todos)}]", end=" ")
-        enriquecer_evento(evento)
+    print(f"\n📚 Enriqueciendo {len(todos)} eventos con Wikipedia y DuckDuckGo (paralelo)...")
+    # 6 workers: equilibrio entre velocidad y no saturar Wikipedia/DDG
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        futures = {pool.submit(enriquecer_evento, e): i for i, e in enumerate(todos)}
+        completados = 0
+        for fut in as_completed(futures):
+            completados += 1
+            idx = futures[fut] + 1
+            try:
+                todos[futures[fut]] = fut.result()
+            except Exception as exc:
+                print(f"  ⚠️  [{idx}] error en enriquecimiento: {exc}")
+            if completados % 20 == 0 or completados == len(todos):
+                print(f"  ↳ {completados}/{len(todos)} completados")
 
     resultado = {
         "generado_en": datetime.now().isoformat(),
@@ -1469,9 +1961,10 @@ def main():
     for e in todos:
         fuentes[e["fuente"]] = fuentes.get(e["fuente"], 0) + 1
 
-    con_imagen = sum(1 for e in todos if e["imagen_url"])
-    con_fecha  = sum(1 for e in todos if e["fecha_iso"])
-    con_bio    = sum(1 for e in todos if e.get("bio_artista"))
+    con_imagen  = sum(1 for e in todos if e["imagen_url"])
+    con_fecha   = sum(1 for e in todos if e["fecha_iso"])
+    con_bio     = sum(1 for e in todos if e.get("bio_artista"))
+    con_coords  = sum(1 for e in todos if e.get("lat") is not None)
 
     print(f"\n{'=' * 55}")
     print(f"  Total           : {len(todos)} eventos")
@@ -1480,6 +1973,7 @@ def main():
     print(f"  ---")
     print(f"  Con imagen      : {con_imagen}")
     print(f"  Con fecha       : {con_fecha}")
+    print(f"  Con coords      : {con_coords}")
     print(f"  Con bio artista : {con_bio}")
     print(f"  Archivo         : '{OUTPUT_FILE}'")
     print(f"{'=' * 55}\n")
