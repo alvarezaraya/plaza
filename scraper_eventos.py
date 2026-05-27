@@ -27,6 +27,7 @@ Uso:
 
 import json
 import re
+import threading
 import time
 import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -1819,6 +1820,11 @@ def _safe_json(r):
         return {}
 
 
+# Semáforo para no saturar Wikipedia/DDG desde múltiples workers.
+# Permite máx. 1 llamada de red de enriquecimiento a la vez.
+_enrich_lock = threading.Semaphore(1)
+
+
 def buscar_wikipedia(nombre):
     nombre_buscar = re.sub(r"\s*\(.*?\)", "", nombre).strip()
     if len(nombre_buscar) < 3:
@@ -1878,10 +1884,11 @@ def enriquecer_evento(evento):
     desc_original = evento.get("descripcion", "")
     print(f"    🔎 '{nombre[:55]}' ...")
 
-    wiki = buscar_wikipedia(nombre)
-    time.sleep(0.5)
-    ddg = buscar_duckduckgo(nombre)
-    time.sleep(0.5)
+    with _enrich_lock:
+        wiki = buscar_wikipedia(nombre)
+        time.sleep(0.8)
+        ddg = buscar_duckduckgo(nombre)
+        time.sleep(0.5)
 
     bio = wiki or ddg
 

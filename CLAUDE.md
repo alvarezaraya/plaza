@@ -71,7 +71,7 @@ Events are grouped by `groupKey` (lowercased title). Multiple dates for the same
 
 ### Enriquecimiento paralelo
 
-`enriquecer_evento()` (Wikipedia + DuckDuckGo) corre con `ThreadPoolExecutor(max_workers=6)` en `main()`. Cada worker es independiente; la lista `todos` se escribe de vuelta en orden una vez que cada `Future` completa. No usar más de 6 workers para no saturar la API pública de Nominatim ni Wikipedia.
+`enriquecer_evento()` (Wikipedia + DuckDuckGo) corre con `ThreadPoolExecutor(max_workers=6)` en `main()`. Las llamadas de red a Wikipedia/DDG están protegidas por `_enrich_lock = threading.Semaphore(1)` para no saturar las APIs públicas — solo un worker hace requests de enriquecimiento a la vez. La lista `todos` se escribe de vuelta en orden una vez que cada `Future` completa.
 
 ### Coordenadas en JSON
 

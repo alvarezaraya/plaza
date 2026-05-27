@@ -1,6 +1,6 @@
 {
-  "generado_en": "2026-05-27T01:18:51.757290",
-  "total_eventos": 298,
+  "generado_en": "2026-05-26T21:12:37.528907",
+  "total_eventos": 333,
   "eventos": [
     {
       "fuente": "Ticketplus",
@@ -32,7 +32,7 @@
       "lat": -33.4489,
       "lon": -70.6693,
       "descripcion_extendida": "Exit 8 de Genki Kawamura en SALA K",
-      "bio_artista": ""
+      "bio_artista": "The 58th Sitges International Fantastic Film Festival of Catalonia took place from 9 to 19 October 2025, in Sitges, Catalonia, Spain. It opened on 9 October with Julia Ducournau's body horror drama film Alpha. This edition of the festival honoured American film director, producer, and writer Sean S. Cunningham, the creator of Friday the 13th horror franchise."
     },
     {
       "fuente": "Ticketplus",
@@ -288,7 +288,7 @@
       "lat": -33.4489,
       "lon": -70.6693,
       "descripcion_extendida": "SIMBIOSIS HELENA ALEGRÍA GALLARDO - CÍA. SIAMESAS",
-      "bio_artista": ""
+      "bio_artista": "La historia del arte es el relato de la evolución del arte a través del tiempo, entendido como cualquier actividad o producto realizado por el ser humano con finalidad estética o comunicativa, a través de la cual se expresan ideas, emociones o, en general, una visión del mundo, empleando diversos recursos como los plásticos, lingüísticos, sonoros o mixtos."
     },
     {
       "fuente": "Ticketplus",
@@ -579,6 +579,22 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "BALLET CLASICO DE SAN PETERSBURGO PRESENTA EL LAGO DE LOS CISNE",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-05-28",
+      "fecha_texto": "28 de mayo de 2026",
+      "precio_desde_clp": "23000",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4567/CARTELERA_1_TICKET_PRO_445_a31fe240-dee2-4bf7-bacc-e84be9c333ac.jpg",
+      "url": "https://www.ticketpro.cl/evento/4567/ballet-clasico-de-san-petersburgo-presenta-el-lago-de-los-cisne--rancagua",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "PuntoTicket",
       "nombre": "Horsegirl , Barrio Bellavista",
       "venue": "Club Chocolate",
@@ -607,8 +623,8 @@
       "url": "https://www.ticketmaster.cl/event/avant-premier-dios-no-ayudara-teatro-oriente",
       "lat": null,
       "lon": null,
-      "descripcion_extendida": "El cónclave de 2013, celebrado los días 12 y 13 de marzo en la Capilla Sixtina, fue el proceso electoral mediante el cual el cardenal argentino Jorge Mario Bergoglio resultó electo papa, con el nombre de Francisco, como sucesor de Benedicto XVI, quien había renunciado al pontificado el 28 de febrero del mismo año. En cinco escrutinios participaron ciento quince cardenales electores.",
-      "bio_artista": "El cónclave de 2013, celebrado los días 12 y 13 de marzo en la Capilla Sixtina, fue el proceso electoral mediante el cual el cardenal argentino Jorge Mario Bergoglio resultó electo papa, con el nombre de Francisco, como sucesor de Benedicto XVI, quien había renunciado al pontificado el 28 de febrero del mismo año. En cinco escrutinios participaron ciento quince cardenales electores."
+      "descripcion_extendida": "",
+      "bio_artista": ""
     },
     {
       "fuente": "ComediaTicket",
@@ -656,7 +672,7 @@
       "url": "https://www.passline.com/eventos/hiver-a-sokcho",
       "lat": -23.673621,
       "lon": -70.409617,
-      "bio_artista": "El Premio Nacional del Libro es uno de los premios literarios más prestigiosos que se conceden en Estados Unidos. Establecido en 1950, este galardón recompensa obras literarias de autores estadounidenses y traducciones de obras extranjeras publicadas durante el año anterior al de su concesión, en diferentes categorías. Adicionalmente, se honra a la mejor traducción al inglés de una obra en idioma extranjero. Los premios son actualmente organizados por la National Book Foundation."
+      "bio_artista": ""
     },
     {
       "fuente": "CulturaIquique",
@@ -736,6 +752,22 @@
       "lat": -41.4693,
       "lon": -72.9424,
       "descripcion_extendida": "VIERNES 29 MAYO / KISS ME💋 / CLUB W 💃",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "BOMBO FICA, UNA EXPERIENCIA SOSPECHOSA",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-05-29",
+      "fecha_texto": "29 de mayo de 2026",
+      "precio_desde_clp": "23000",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4617/bombo_fica_445x500_px_post_dorado_e66aa727-8672-47d0-8f92-19d9606beb01.jpg",
+      "url": "https://www.ticketpro.cl/evento/4617/bombo-fica-una-experiencia-sospechosa--santiago",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
       "bio_artista": ""
     },
     {
@@ -1027,6 +1059,54 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "WORKSHOP BALLET CULTURAL KARI KARI",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-05-30",
+      "fecha_texto": "30 de mayo de 2026",
+      "precio_desde_clp": "100000",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4619/IMG_1_(1)_76cd77b7-9aa6-468d-bd6e-ffce9277dbb0.jpg",
+      "url": "https://www.ticketpro.cl/evento/4619/workshop-ballet-cultural-kari-kari--santiago",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "VIEJAS DE MIERDA LA DESPEDIDA",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-05-30",
+      "fecha_texto": "30 de mayo de 2026",
+      "precio_desde_clp": "18400",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4587/VIEJAS_DE_MIERDA_PNG_ff3adcac-d551-44a2-b289-2432fcda21de.jpg",
+      "url": "https://www.ticketpro.cl/evento/4587/viejas-de-mierda-la-despedida--santiago",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "INTI IILIMANI EN TU BARRIO",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-05-30",
+      "fecha_texto": "30 de mayo de 2026",
+      "precio_desde_clp": "23000",
+      "ciudad": "Curicó",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4523/Curicó_-_Inti_Illimani_en_tu_barrio_445_2d6ba1d8-e40d-40ff-be8c-abb0e049dadb.jpg",
+      "url": "https://www.ticketpro.cl/evento/4523/inti-iilimani-en-tu-barrio--curico",
+      "lat": -34.9854,
+      "lon": -71.2394,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "PuntoTicket",
       "nombre": "Unión Española vs - Liga Femenina Estadio Santa Laura - Universidad SEK",
       "venue": "",
@@ -1119,8 +1199,8 @@
       "url": "https://www.ticketmaster.cl/event/charlie-zaa-gran-arena-monticello-venta-general",
       "lat": null,
       "lon": null,
-      "descripcion_extendida": "",
-      "bio_artista": ""
+      "descripcion_extendida": "Carlos Alberto Sánchez, known professionally as Charlie Zaa, is a Colombian singer. Zaa is the son of singer Luis Humberto Sánchez.",
+      "bio_artista": "Carlos Alberto Sánchez, known professionally as Charlie Zaa, is a Colombian singer. Zaa is the son of singer Luis Humberto Sánchez."
     },
     {
       "fuente": "Ticketmaster",
@@ -1232,7 +1312,7 @@
       "lat": -35.4264,
       "lon": -71.6554,
       "descripcion_extendida": "Cobreloa vs Rangers de Talca / Campeonato de Ascenso Caixun 2026 | Fecha 14",
-      "bio_artista": ""
+      "bio_artista": "La Liga de Ascenso 2025, llamada «Liga de Ascenso Caixun 2025» por razones de patrocinio, fue la 76.a edición de la segunda categoría del fútbol chileno. El campeonato lo organiza la Asociación Nacional de Fútbol Profesional."
     },
     {
       "fuente": "Ticketplus",
@@ -1251,6 +1331,22 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "BOMBO FICA UNA EXPERIENCIA SOSPECHOSA - O",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-05-31",
+      "fecha_texto": "31 de mayo de 2026",
+      "precio_desde_clp": "10000",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4700/445x500_Bombo_Fica_PM_31M-1_91d1d487-fe0a-4c54-972a-7b4cab6e7945.jpg",
+      "url": "https://www.ticketpro.cl/evento/4700/bombo-fica-una-experiencia-sospechosa--31-de-mayo-rancagua",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "PuntoTicket",
       "nombre": "Magallanes vs. Deportes - Liga de Ascenso Caixun 2026 - Fecha 14 Estadio Municipal de",
       "venue": "",
@@ -1264,7 +1360,7 @@
       "lat": -20.2208,
       "lon": -70.1431,
       "descripcion_extendida": "Compra tu entrada para Magallanes vs. Deportes Iquique, domingo 31 de mayo 2026 12:30 hrs. en Estadio Municipal de San Bernardo - San Bernardo.",
-      "bio_artista": ""
+      "bio_artista": "Deportes Concepción is a Chilean football club based in the city of Concepción, Biobio Region. As of 2025, they play at the second tier of the Chilean League system, the Primera B de Chile."
     },
     {
       "fuente": "PuntoTicket",
@@ -1443,6 +1539,70 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "Buscar eventos",
+      "venue": "",
+      "descripcion": "Ticketpro #EstamosentodoChile",
+      "fecha_iso": "2026-06-05",
+      "fecha_texto": "5 de junio de 2026",
+      "precio_desde_clp": "12650",
+      "ciudad": "",
+      "imagen_url": "https://www.ticketpro.cl/assets/images/foto-link.png",
+      "url": "https://www.ticketpro.cl/evento/3861/viejas-de-mierda-la-despedida",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "CHILE VS ARGENTINA PARTIDO PREPARATORIO MUNDIAL 2026",
+      "venue": "Gimnasio Olímpico",
+      "descripcion": "",
+      "fecha_iso": "2026-06-05",
+      "fecha_texto": "5 de junio de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4715/Maipu_445_3ef92850-a336-4c32-9bc6-b4cd801fb3ba.jpg",
+      "url": "https://www.ticketpro.cl/evento/4715/chile-vs-argentina-partido-preparatorio-mundial-2026--maipu",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "LA SOLE- PICANTE PERO FELIZ - IO",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-05",
+      "fecha_texto": "5 de junio de 2026",
+      "precio_desde_clp": "23000",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4684/Sole_05J_445_6c974320-c40d-481b-9370-7c80f6bcd179.jpg",
+      "url": "https://www.ticketpro.cl/evento/4684/la-sole-picante-pero-feliz--providencia-05-junio",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "VIEJAS DE MIERDA LA DESPEDIDA",
+      "venue": "Teatro Municipal",
+      "descripcion": "",
+      "fecha_iso": "2026-06-05",
+      "fecha_texto": "5 de junio de 2026",
+      "precio_desde_clp": "12360",
+      "ciudad": "Los Ángeles",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4602/VIEJAS_DE_MIERDA_445x500_d25ec231-a23d-45d1-81c0-e124210c386b.jpg",
+      "url": "https://www.ticketpro.cl/evento/4602/viejas-de-mierda-la-despedida--los-angeles",
+      "lat": -23.64636,
+      "lon": -70.396306,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "PuntoTicket",
       "nombre": "Chile vs. Ecuador - Liga de las Naciones Femenina",
       "venue": "Estadio Nacional",
@@ -1472,7 +1632,7 @@
       "lat": -23.685324,
       "lon": -70.414614,
       "descripcion_extendida": "Compra tu entrada para Los Jaivas 2026 Gira 45 años alturas de Macchu Picchu, viernes 05 de junio 2026 20:30 hrs. en Enjoy Antofagasta - Antofagasta.",
-      "bio_artista": ""
+      "bio_artista": "Los Jaivas is a Chilean musical group who perform in folk, rock, psychedelic, and progressive rock styles formed in 1963 in Viña Del Mar, Chile. They are considered one of the most important and influential artists of all time in Latin America."
     },
     {
       "fuente": "PuntoTicket",
@@ -1539,6 +1699,86 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "CLAIRE HUANGCI",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-06",
+      "fecha_texto": "6 de junio de 2026",
+      "precio_desde_clp": "3300",
+      "ciudad": "Santa María",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4643/3_-_445x500_px_77dac38b-717e-4d87-b9c1-86e42a52d970.jpg",
+      "url": "https://www.ticketpro.cl/evento/4643/claire-huangci--valparaiso",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "Claire Huangci is an American classical pianist. She lives in Frankfurt am Main.",
+      "bio_artista": "Claire Huangci is an American classical pianist. She lives in Frankfurt am Main."
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "ZUMBALE PRIMO INTIMO",
+      "venue": "Teatro Municipal",
+      "descripcion": "",
+      "fecha_iso": "2026-06-06",
+      "fecha_texto": "6 de junio de 2026",
+      "precio_desde_clp": "14680",
+      "ciudad": "Chillán",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4683/ZP26-SHOW-INTIMO-WEB-TP-445X500_6d8dc56c-587d-4c9d-bfe8-bd794bbfa65b.jpg",
+      "url": "https://www.ticketpro.cl/evento/4683/zumbale-primo-intimo--chillan",
+      "lat": -23.64636,
+      "lon": -70.396306,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "FELIPE AVELLO - ENJOY",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-06",
+      "fecha_texto": "6 de junio de 2026",
+      "precio_desde_clp": "18400",
+      "ciudad": "Santiago",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4698/ENJOYBANNER3_445_e402b162-f93a-4445-bbb7-56d65bf143b2.png",
+      "url": "https://www.ticketpro.cl/evento/4698/felipe-avello---enjoy-santiago",
+      "lat": -33.4489,
+      "lon": -70.6693,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "CHILE VS ARGENTINA PARTIDO PREPARATORIO MUNDIAL 2026",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-06",
+      "fecha_texto": "6 de junio de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "Colina",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4719/colina_445_aec18191-995c-45ea-9c22-a0aa107d7aec.jpg",
+      "url": "https://www.ticketpro.cl/evento/4719/chile-vs-argentina-partido-preparatorio-mundial-2026--colina",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "VIEJAS DE MIERDA LA DESPEDIDA",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-06",
+      "fecha_texto": "6 de junio de 2026",
+      "precio_desde_clp": "13800",
+      "ciudad": "Lota",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4630/VIEJAS_DE_MIERDA_445x50_fc248b72-95d3-4389-b68b-8ede08ff747a.jpg",
+      "url": "https://www.ticketpro.cl/evento/4630/viejas-de-mierda-la-despedida--lota",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "PuntoTicket",
       "nombre": "Tiny Fest Globoaventura Laguna Caren",
       "venue": "",
@@ -1584,6 +1824,38 @@
       "lat": -33.461167,
       "lon": -70.648833,
       "descripcion_extendida": "Compra tu entrada para VERRÜCKT FESTIVAL 360°, sábado 06 de junio 2026 23:00 hrs. en Teatro Caupolicán - Santiago Centro.",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "VIEJAS DE MIERDA LA DESPEDIDA",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-07",
+      "fecha_texto": "7 de junio de 2026",
+      "precio_desde_clp": "12650",
+      "ciudad": "Concepción",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4601/VIEJAS_DE_MIERDA_445_2cda0221-819a-4699-a11c-7a4c60a696f2.png",
+      "url": "https://www.ticketpro.cl/evento/4601/viejas-de-mierda-la-despedida--concepcion",
+      "lat": -36.827,
+      "lon": -73.0502,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "CHILE VS ARGENTINA PARTIDO PREPARATORIO MUNDIAL 2026",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-07",
+      "fecha_texto": "7 de junio de 2026",
+      "precio_desde_clp": "2300",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4720/ceo_445_c4af5676-6cd5-46ca-bfcf-d3a144964a5f.jpg",
+      "url": "https://www.ticketpro.cl/evento/4720/chile-vs-argentina-partido-preparatorio-mundial-2026--nunoa",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
       "bio_artista": ""
     },
     {
@@ -1715,6 +1987,54 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "INTI ILLIMANI EN TU BARRIO",
+      "venue": "Teatro Municipal",
+      "descripcion": "",
+      "fecha_iso": "2026-06-11",
+      "fecha_texto": "11 de junio de 2026",
+      "precio_desde_clp": "17250",
+      "ciudad": "Linares",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4524/Linares_-_Inti_Illimani_en_tu_barrio_445_0a1f74d3-0a15-4a7a-b25d-314ee2a7c1af.jpg",
+      "url": "https://www.ticketpro.cl/evento/4524/inti-illimani-en-tu-barrio--linares-",
+      "lat": -23.64636,
+      "lon": -70.396306,
+      "descripcion_extendida": "Inti-Illimani are an instrumental and vocal Latin American folk music ensemble from Chile. The band was formed in 1967 by a group of university students and it acquired widespread popularity in Chile for their song Venceremos, which became the anthem of the Popular Unity government of Salvador Allende.",
+      "bio_artista": "Inti-Illimani are an instrumental and vocal Latin American folk music ensemble from Chile. The band was formed in 1967 by a group of university students and it acquired widespread popularity in Chile for their song Venceremos, which became the anthem of the Popular Unity government of Salvador Allende."
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "LUCHO MIRANDA ABRIENDO LAS MANOS",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-11",
+      "fecha_texto": "11 de junio de 2026",
+      "precio_desde_clp": "18400",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4468/Lucho_Miranda_TRLG_445x500_4c111006-4226-4a2d-bfe9-9267988b2215.jpg",
+      "url": "https://www.ticketpro.cl/evento/4468/lucho-miranda--abriendo-las-manos--rancagua",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "LOS ATLETAS DE LA RISA",
+      "venue": "Enjoy Viña Del Mar",
+      "descripcion": "",
+      "fecha_iso": "2026-06-11",
+      "fecha_texto": "11 de junio de 2026",
+      "precio_desde_clp": "12000",
+      "ciudad": "Viña del Mar",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4654/445x500_px_los_atleta_de_la_risa_VIÑA_DEL_MAR_2b15889a-0501-4682-b839-655bf5940052.jpg",
+      "url": "https://www.ticketpro.cl/evento/4654/los-atletas-de-la-risa--vina-del-mar",
+      "lat": -33.024167,
+      "lon": -71.551944,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "CulturaAntofagasta",
       "nombre": "“Concierto: Fútbol Sinfónico” musicalizará y revivirá históricos relatos de Pedro Carcuro",
       "venue": "Corporación Municipal de Cultura",
@@ -1827,6 +2147,38 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "DIVORCIADOS 2.0",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-13",
+      "fecha_texto": "13 de junio de 2026",
+      "precio_desde_clp": "19550",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4662/WEB_445X500_b3ff3151-fb76-4d30-be68-41d79d15b4af.jpg",
+      "url": "https://www.ticketpro.cl/evento/4662/divorciados-20--rancagua",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "VIEJAS DE MIERDA LA DESPEDIDA",
+      "venue": "Teatro Municipal De Viña Del Mar",
+      "descripcion": "",
+      "fecha_iso": "2026-06-13",
+      "fecha_texto": "13 de junio de 2026",
+      "precio_desde_clp": "14950",
+      "ciudad": "Viña del Mar",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4650/445x500_VM_vina_f2b59cbf-4567-4b4c-93a1-f3efc810673d.jpg",
+      "url": "https://www.ticketpro.cl/evento/4650/viejas-de-mierda--la-despedida--vina-del-mar--",
+      "lat": -33.0247,
+      "lon": -71.5519,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "PuntoTicket",
       "nombre": "Feria Bocas Moradas - Venta de Bodega Mall Plaza Los Dominicos",
       "venue": "",
@@ -1923,6 +2275,38 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "LA SOLE- PICANTE PERO FELIZ - IO",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-16",
+      "fecha_texto": "16 de junio de 2026",
+      "precio_desde_clp": "23000",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4685/Sole_16J_445_d9af78ea-7125-4cba-b24c-cb27da6b1236.jpg",
+      "url": "https://www.ticketpro.cl/evento/4685/la-sole-picante-pero-feliz--providencia-16-junio",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "DIVORCIADOS 2.0",
+      "venue": "Teatro Municipal De Antofagasta",
+      "descripcion": "",
+      "fecha_iso": "2026-06-16",
+      "fecha_texto": "16 de junio de 2026",
+      "precio_desde_clp": "23000",
+      "ciudad": "Antofagasta",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4675/ANTOFAGASTA_WEB_445X500_d1be4de6-2bbd-4e00-873a-1dd79762be9e.jpg",
+      "url": "https://www.ticketpro.cl/evento/4675/divorciados-20--antofagasta-",
+      "lat": -23.64636,
+      "lon": -70.396306,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "Ticketplus",
       "nombre": "D-Cámara III: Simplemente Brahms",
       "venue": "",
@@ -1968,6 +2352,22 @@
       "lat": -33.0472,
       "lon": -71.6127,
       "descripcion_extendida": "Luis Slimming / Stoney Bar - Quintero / 18 de Junio / 22:00 horas",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "MARLENE - IO",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-18",
+      "fecha_texto": "18 de junio de 2026",
+      "precio_desde_clp": "12710",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4638/445x500_f8cc0377-9628-4cab-9d3e-89a9920125c2.jpg",
+      "url": "https://www.ticketpro.cl/evento/4638/marlene--18-junio-santiago",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
       "bio_artista": ""
     },
     {
@@ -2019,6 +2419,70 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "INTI-ILLIMANI EN TU BARRIO - SAN JOAQUIN",
+      "venue": "Teatro Municipal",
+      "descripcion": "",
+      "fecha_iso": "2026-06-19",
+      "fecha_texto": "19 de junio de 2026",
+      "precio_desde_clp": "28750",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4534/San_Joaquín_-_Inti_Illimani_en_tu_barrio_445x500_c31a5982-a619-4923-b1b0-16b3af586323.jpg",
+      "url": "https://www.ticketpro.cl/evento/4534/intiillimani-en-tu-barrio--san-joaquin",
+      "lat": -23.64636,
+      "lon": -70.396306,
+      "descripcion_extendida": "Inti-Illimani are an instrumental and vocal Latin American folk music ensemble from Chile. The band was formed in 1967 by a group of university students and it acquired widespread popularity in Chile for their song Venceremos, which became the anthem of the Popular Unity government of Salvador Allende.",
+      "bio_artista": "Inti-Illimani are an instrumental and vocal Latin American folk music ensemble from Chile. The band was formed in 1967 by a group of university students and it acquired widespread popularity in Chile for their song Venceremos, which became the anthem of the Popular Unity government of Salvador Allende."
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "VIEJAS DE MIERDA LA DESPEDIDA",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-19",
+      "fecha_texto": "19 de junio de 2026",
+      "precio_desde_clp": "16100",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4618/445_17f69782-67f4-46ab-a820-150590e06178.jpg",
+      "url": "https://www.ticketpro.cl/evento/4618/viejas-de-mierda-la-despedida--rancagua",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "LA SOLE - PICANTE PERO FELIZ",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-19",
+      "fecha_texto": "19 de junio de 2026",
+      "precio_desde_clp": "26450",
+      "ciudad": "Curicó",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4575/Sole_TPC_445_d701d603-7a67-4b39-9a34-100203b1605b.jpg",
+      "url": "https://www.ticketpro.cl/evento/4575/la-sole--picante-pero-feliz--curico",
+      "lat": -34.9854,
+      "lon": -71.2394,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "MARLENE - IO",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-19",
+      "fecha_texto": "19 de junio de 2026",
+      "precio_desde_clp": "12710",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4639/445x500_6435f034-4f87-4552-b1e2-2f73e760ca57.jpg",
+      "url": "https://www.ticketpro.cl/evento/4639/marlene--19-junio-santiago",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "Ticketmaster",
       "nombre": "Pastor Rocha",
       "venue": "",
@@ -2047,6 +2511,22 @@
       "url": "https://ticketplus.cl/events/studio-54-concepcion-2026-06-20-21-00-00-0400",
       "lat": -36.827,
       "lon": -73.0502,
+      "descripcion_extendida": "Studio 54 is a Broadway theater and former nightclub at 254 West 54th Street in the Midtown Manhattan neighborhood of New York City, New York, U.S. Opened as the Gallo Opera House in 1927, it served as a CBS broadcast studio in the mid-20th century. Steve Rubell and Ian Schrager opened the Studio 54 nightclub, retaining much of the former theatrical and broadcasting fixtures, inside the venue in 1977. Roundabout Theatre Company renovated the space into a Broadway house in 1998.",
+      "bio_artista": "Studio 54 is a Broadway theater and former nightclub at 254 West 54th Street in the Midtown Manhattan neighborhood of New York City, New York, U.S. Opened as the Gallo Opera House in 1927, it served as a CBS broadcast studio in the mid-20th century. Steve Rubell and Ian Schrager opened the Studio 54 nightclub, retaining much of the former theatrical and broadcasting fixtures, inside the venue in 1977. Roundabout Theatre Company renovated the space into a Broadway house in 1998."
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "GUERRERAS K-POP ON TOUR",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-06-20",
+      "fecha_texto": "20 de junio de 2026",
+      "precio_desde_clp": "11500",
+      "ciudad": "Santa María",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4648/WEB_445X500_OK_2b91db47-f82f-485f-a3e2-a083bdb5b9b9.jpg",
+      "url": "https://www.ticketpro.cl/evento/4648/guerreras-kpop-on-tour--valparaiso-",
+      "lat": null,
+      "lon": null,
       "descripcion_extendida": "",
       "bio_artista": ""
     },
@@ -2176,7 +2656,7 @@
       "lat": -18.4783,
       "lon": -70.3126,
       "descripcion_extendida": "La Sociedad - El Regreso - Arica",
-      "bio_artista": ""
+      "bio_artista": "La Sociedad was a Mexican lucha libre, or professional wrestling stable, that worked for Lucha Libre AAA World Wide. The group was originally formed in the summer of 2010 with the merger of La Legión Extranjera, Los Perros del Mal, La Milicia and Los Maniacos."
     },
     {
       "fuente": "Ticketplus",
@@ -2208,7 +2688,7 @@
       "lat": -20.2208,
       "lon": -70.1431,
       "descripcion_extendida": "La Sociedad - El Regreso - Iquique",
-      "bio_artista": ""
+      "bio_artista": "La Sociedad was a Mexican lucha libre, or professional wrestling stable, that worked for Lucha Libre AAA World Wide. The group was originally formed in the summer of 2010 with the merger of La Legión Extranjera, Los Perros del Mal, La Milicia and Los Maniacos."
     },
     {
       "fuente": "PuntoTicket",
@@ -2240,7 +2720,7 @@
       "lat": -23.64636,
       "lon": -70.396306,
       "descripcion_extendida": "La Sociedad - El Regreso - Antofagasta",
-      "bio_artista": ""
+      "bio_artista": "La Sociedad was a Mexican lucha libre, or professional wrestling stable, that worked for Lucha Libre AAA World Wide. The group was originally formed in the summer of 2010 with the merger of La Legión Extranjera, Los Perros del Mal, La Milicia and Los Maniacos."
     },
     {
       "fuente": "Ticketplus",
@@ -2256,7 +2736,7 @@
       "lat": -33.0472,
       "lon": -71.6127,
       "descripcion_extendida": "ROCK FESTIVAL (TRIBUTOS) EN ENJOY VIÑA",
-      "bio_artista": ""
+      "bio_artista": "A rock festival is an open-air rock concert featuring many different performers, typically spread over two or three days and having a campsite and other amenities and forms of entertainment provided at the venue. Some festivals are singular events, while others recur annually in the same location. Occasionally, a festival will focus on a particular genre, but many attempt to bring together a diverse lineup to showcase a broad array of popular music trends."
     },
     {
       "fuente": "Ticketplus",
@@ -2384,7 +2864,7 @@
       "lat": -36.827,
       "lon": -73.0502,
       "descripcion_extendida": "Programa Especial: Aniversario Orquesta",
-      "bio_artista": "La Orquesta Sinfónica Venezuela (conocida también como Orquesta Sinfónica de Venezuela y OSV) es una de las orquestas más importantes de Venezuela. Fue fundada por Vicente Emilio Sojo el 24 de junio de 1930 y es, después de la Orquesta Sinfónica de Boston, la orquesta más antigua del continente americano. Sus directores titulares han sido los maestros Vicente Emilio Sojo, Vicente Martucci, Ángel Sauce, Antonio Estévez, Gonzalo Castellanos Yumar, Georg Schmöhe, Eduardo Marturet y Theodore Kuchar."
+      "bio_artista": ""
     },
     {
       "fuente": "Ticketplus",
@@ -2467,6 +2947,22 @@
       "bio_artista": ""
     },
     {
+      "fuente": "Ticketpro",
+      "nombre": "LOS VASQUEZ AMORES DE INVIERNO",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-07-04",
+      "fecha_texto": "4 de julio de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4670/GENERICA_445x500.jpg_b96d97b5-5fc1-4490-ba28-af766755825e.jpeg",
+      "url": "https://www.ticketpro.cl/evento/4670/los-vasquez-amores-de-invierno",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
       "fuente": "Ticketmaster",
       "nombre": "Sabor de Perú - Espacio Riesco",
       "venue": "",
@@ -2512,7 +3008,7 @@
       "lat": -27.3668,
       "lon": -70.3323,
       "descripcion_extendida": "La Sociedad - El Regreso - Copiapó",
-      "bio_artista": ""
+      "bio_artista": "La Sociedad was a Mexican lucha libre, or professional wrestling stable, that worked for Lucha Libre AAA World Wide. The group was originally formed in the summer of 2010 with the merger of La Legión Extranjera, Los Perros del Mal, La Milicia and Los Maniacos."
     },
     {
       "fuente": "Ticketplus",
@@ -2560,7 +3056,7 @@
       "lat": null,
       "lon": null,
       "descripcion_extendida": "LA SOCIEDAD - El Regreso - en Enjoy Coquimbo",
-      "bio_artista": ""
+      "bio_artista": "La Sociedad was a Mexican lucha libre, or professional wrestling stable, that worked for Lucha Libre AAA World Wide. The group was originally formed in the summer of 2010 with the merger of La Legión Extranjera, Los Perros del Mal, La Milicia and Los Maniacos."
     },
     {
       "fuente": "Ticketplus",
@@ -2608,7 +3104,7 @@
       "lat": -36.827,
       "lon": -73.0502,
       "descripcion_extendida": "Compra tu entrada para 31 Minutos, viernes 17 de julio 2026 19:00 hrs. en Gimnasio Municipal de Concepción - Concepción.",
-      "bio_artista": ""
+      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
     },
     {
       "fuente": "Ticketplus",
@@ -2656,7 +3152,7 @@
       "lat": -38.7359,
       "lon": -72.5904,
       "descripcion_extendida": "Compra tu entrada para 31 Minutos, sábado 18 de julio 2026 19:00 hrs. en UFRO Temuco - Temuco.",
-      "bio_artista": ""
+      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
     },
     {
       "fuente": "Ticketplus",
@@ -2688,7 +3184,7 @@
       "lat": -41.4693,
       "lon": -72.9424,
       "descripcion_extendida": "Compra tu entrada para 31 Minutos, domingo 19 de julio 2026 19:00 hrs. en Arena Puerto Montt - Puerto Montt.",
-      "bio_artista": ""
+      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
     },
     {
       "fuente": "Ticketplus",
@@ -2816,7 +3312,7 @@
       "lat": -20.2208,
       "lon": -70.1431,
       "descripcion_extendida": "Compra tu entrada para 31 Minutos, sábado 25 de julio 2026 19:00 hrs. en Casa del Deportista, Iquique - Iquique.",
-      "bio_artista": ""
+      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
     },
     {
       "fuente": "Ticketplus",
@@ -2848,6 +3344,70 @@
       "lat": -23.6509,
       "lon": -70.3975,
       "descripcion_extendida": "Compra tu entrada para 31 Minutos, sábado 01 de agosto 2026 19:00 hrs. en Gimnasio Sokol, Antofagasta - Antofagasta.",
+      "bio_artista": "31 minutos is a Chilean children's comedy television series and virtual band created by the production company Aplaplac, founded by Álvaro Díaz, Pedro Peirano, and Juan Manuel Egaña. It premiered on March 15, 2003, on Televisión Nacional de Chile. The show is presented as a satirical news program hosted by the puppet character Tulio Triviño, featuring comedic reports and sketches. It incorporates educational themes with a humorous format."
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "CAMPEONATO MUNDIAL DE VOLEIBOL FEMENINO SUB-17 DE CHILE - GIM. DEPORTES COLECTIVOS",
+      "venue": "Estadio Nacional",
+      "descripcion": "",
+      "fecha_iso": "2026-08-06",
+      "fecha_texto": "6 de agosto de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4526/Sub17_445x500_Stgo1_calendario_55a74926-6cde-4efe-9266-96f2b5ee463f.jpg",
+      "url": "https://www.ticketpro.cl/evento/4526/campeonato-mundial-de-voleibol-femenino-sub17-de-chile--santiago-gim-deportes-colectivos",
+      "lat": -33.464833,
+      "lon": -70.6075,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "CAMPEONATO MUNDIAL DE VOLEIBOL FEMENINO SUB-17 DE CHILE - CENTRO DEPORTES DE COMBATE",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-08-06",
+      "fecha_texto": "6 de agosto de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4527/Sub17_445x500_Stgo2_calendario_a295bc56-d13c-47e5-977d-e2bf1cb9dd38.jpg",
+      "url": "https://www.ticketpro.cl/evento/4527/campeonato-mundial-de-voleibol-femenino-sub17-de-chile--santiago-centro-deportes-de-combate",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "CAMPEONATO MUNDIAL DE VOLEIBOL FEMENINO SUB-17 DE CHILE",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-08-06",
+      "fecha_texto": "6 de agosto de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "San Felipe",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4525/Sub17_445x500_San_Felipe_calendario_ae7309f5-dd2b-4f62-a21a-34115b88b141.jpg",
+      "url": "https://www.ticketpro.cl/evento/4525/campeonato-mundial-de-voleibol-femenino-sub17-de-chile--san-felipe",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
+      "bio_artista": ""
+    },
+    {
+      "fuente": "Ticketpro",
+      "nombre": "CAMPEONATO MUNDIAL DE VOLEIBOL FEMENINO SUB-17 DE CHILE",
+      "venue": "",
+      "descripcion": "",
+      "fecha_iso": "2026-08-06",
+      "fecha_texto": "6 de agosto de 2026",
+      "precio_desde_clp": "",
+      "ciudad": "Los Andes",
+      "imagen_url": "https://cache-beta.ticketpro.cl/eventos/4511/Sub17_445x500_Los_Andes_calendario_8e2932b1-2384-4f31-aa99-b2d24be37038.jpg",
+      "url": "https://www.ticketpro.cl/evento/4511/campeonato-mundial-de-voleibol-femenino-sub17-de-chile--los-andes",
+      "lat": null,
+      "lon": null,
+      "descripcion_extendida": "",
       "bio_artista": ""
     },
     {
@@ -2927,8 +3487,8 @@
       "url": "https://www.ticketmaster.cl/event/la-sole-picante-pero-feliz-dreams-punta-arenas",
       "lat": -53.1638,
       "lon": -70.9171,
-      "descripcion_extendida": "Soledad Pastorutti, conocida simplemente como Soledad o por su apodo La Sole, es una cantante, compositora, actriz, conductora y productora argentina. Ganó el Premio Nacional SADAIC a los artistas en el Festival Nacional de Folklore de Cosquín el 26 de enero de 1996, evento que la lanzó a la fama. Su música renovó el folclore argentino en la segunda mitad de la década de 1990 y provocó un acercamiento de esta corriente musical a los jóvenes.",
-      "bio_artista": "Soledad Pastorutti, conocida simplemente como Soledad o por su apodo La Sole, es una cantante, compositora, actriz, conductora y productora argentina. Ganó el Premio Nacional SADAIC a los artistas en el Festival Nacional de Folklore de Cosquín el 26 de enero de 1996, evento que la lanzó a la fama. Su música renovó el folclore argentino en la segunda mitad de la década de 1990 y provocó un acercamiento de esta corriente musical a los jóvenes."
+      "descripcion_extendida": "",
+      "bio_artista": ""
     },
     {
       "fuente": "Ticketplus",
@@ -2944,7 +3504,7 @@
       "lat": -41.4693,
       "lon": -72.9424,
       "descripcion_extendida": "MANUEL PAEZ - ALMA FRAGMENTADA",
-      "bio_artista": "Manuel Adriano Páez Yépez, también conocido como \"Yeyé\", es un futbolista venezolano que juega como mediocentro ofensivo o extremo. Actualmente milita en el Estudiantes de Mérida de la Primera División de Venezuela."
+      "bio_artista": ""
     },
     {
       "fuente": "Ticketplus",
@@ -2959,8 +3519,8 @@
       "url": "https://ticketplus.cl/events/movimiento-original-copiapo-2026-08-14-23-00-00-0400",
       "lat": -27.3668,
       "lon": -70.3323,
-      "descripcion_extendida": "Movimiento Original es un grupo de hip hop chileno conformado en 2006 por Aerstame, Stailok y Semillah hasta 2007. En este mismo año se une DJ Acres y en el 2008 se une Mc Piri, el cual se separa del grupo en el año 2015.",
-      "bio_artista": "Movimiento Original es un grupo de hip hop chileno conformado en 2006 por Aerstame, Stailok y Semillah hasta 2007. En este mismo año se une DJ Acres y en el 2008 se une Mc Piri, el cual se separa del grupo en el año 2015."
+      "descripcion_extendida": "",
+      "bio_artista": ""
     },
     {
       "fuente": "PuntoTicket",
@@ -2976,7 +3536,7 @@
       "lat": -33.4489,
       "lon": -70.6693,
       "descripcion_extendida": "Compra tu entrada para Swallow The Sun, viernes 14 de agosto 2026 20:00 hrs. en Blondie - Santiago Centro.",
-      "bio_artista": "Swallow the Sun es una banda de death/doom melódico formada en la primavera del año 2000 en torno a Juha Raivio. Junto a Pasi Pasanen tocan en el Plutonium Orange, y graban un par de temas, apareciendo uno de ellos Through Her Silvery Body en su primera demo Out of This Gloomy Light."
+      "bio_artista": "Swallow the Sun is a Finnish death-doom band founded in 2000 by Juha Raivio. The band currently consists of guitarist and founder Juha Raivio, vocalist Mikko Kotamäki, drummer Juuso Raatikainen, guitarist Juho Räihä, and bassist Matti Honkonen. Their death-doom style emphasizes melody and atmosphere, and occasionally steps into gothic and black metal territory. They have released nine studio albums, one triple album, one EP, one demo, one live album and seven singles as of 2026."
     },
     {
       "fuente": "Ticketplus",
@@ -3103,8 +3663,8 @@
       "url": "https://ticketplus.cl/events/zuill-bailey",
       "lat": -41.4693,
       "lon": -72.9424,
-      "descripcion_extendida": "",
-      "bio_artista": ""
+      "descripcion_extendida": "James Zuill Bailey, better known as Zuill Bailey is an American Grammy Award-winning cello soloist, chamber musician, and artistic director. A graduate of the Peabody Institute of the Johns Hopkins University and the Juilliard School, he has appeared in recital and with major orchestras internationally. He is a professor of cello and Director of the Center for Entrepreneurship at the University of Texas at El Paso.",
+      "bio_artista": "James Zuill Bailey, better known as Zuill Bailey is an American Grammy Award-winning cello soloist, chamber musician, and artistic director. A graduate of the Peabody Institute of the Johns Hopkins University and the Juilliard School, he has appeared in recital and with major orchestras internationally. He is a professor of cello and Director of the Center for Entrepreneurship at the University of Texas at El Paso."
     },
     {
       "fuente": "Ticketplus",
@@ -3120,7 +3680,7 @@
       "lat": -23.699305,
       "lon": -70.422728,
       "descripcion_extendida": "RATA BLANCA EN ROCK AND SOCCER ANTOFAGASTA 26 DE AGOSTO",
-      "bio_artista": ""
+      "bio_artista": "Rata Blanca is an Argentine heavy metal band, formed in 1986."
     },
     {
       "fuente": "Ticketplus",
@@ -3279,8 +3839,8 @@
       "url": "https://www.ticketmaster.cl/event/robbie-williams-2026",
       "lat": null,
       "lon": null,
-      "descripcion_extendida": "",
-      "bio_artista": ""
+      "descripcion_extendida": "Robert Peter Williams, más conocido como Robbie Williams, es un cantante, compositor y actor británico.",
+      "bio_artista": "Robert Peter Williams, más conocido como Robbie Williams, es un cantante, compositor y actor británico."
     },
     {
       "fuente": "PuntoTicket",
@@ -3296,7 +3856,7 @@
       "lat": -40.5739,
       "lon": -73.1333,
       "descripcion_extendida": "Compra tu entrada para Los Jaivas 2026 Gira 45 años alturas de Macchu Picchu, viernes 02 de octubre 2026 20:00 hrs. en Salón Hotel Sonesta - Osorno - Osorno.",
-      "bio_artista": ""
+      "bio_artista": "Los Jaivas is a Chilean musical group who perform in folk, rock, psychedelic, and progressive rock styles formed in 1963 in Viña Del Mar, Chile. They are considered one of the most important and influential artists of all time in Latin America."
     },
     {
       "fuente": "Ticketmaster",
@@ -3311,8 +3871,8 @@
       "url": "https://www.ticketmaster.cl/event/746-jose-carreras-gran-arena-monticello",
       "lat": null,
       "lon": null,
-      "descripcion_extendida": "",
-      "bio_artista": ""
+      "descripcion_extendida": "Josep Maria Carreras Coll, better known as José Carreras, is a Spanish operatic tenor who is particularly known for his performances in the operas of Donizetti, Verdi and Puccini. Born in Barcelona, he made his debut on the operatic stage at 11 as Trujamán in Manuel de Falla's El retablo de Maese Pedro, and went on to a career that encompassed over 60 roles, performing in the world's leading opera houses and on numerous recordings.",
+      "bio_artista": "Josep Maria Carreras Coll, better known as José Carreras, is a Spanish operatic tenor who is particularly known for his performances in the operas of Donizetti, Verdi and Puccini. Born in Barcelona, he made his debut on the operatic stage at 11 as Trujamán in Manuel de Falla's El retablo de Maese Pedro, and went on to a career that encompassed over 60 roles, performing in the world's leading opera houses and on numerous recordings."
     },
     {
       "fuente": "Ticketplus",
@@ -3376,7 +3936,7 @@
       "lat": null,
       "lon": null,
       "descripcion_extendida": "Compra tu entrada para La Hungara, viernes 06 de noviembre 2026 19:00 hrs. en Hipódromo Chile - Independencia.",
-      "bio_artista": ""
+      "bio_artista": "Sonia María Priego Bárbara, más conocida por su nombre artístico La Húngara, es una cantante española de flamenco."
     },
     {
       "fuente": "Ticketplus",
@@ -3392,7 +3952,7 @@
       "lat": -36.827,
       "lon": -73.0502,
       "descripcion_extendida": "Sinfónico 11: Hacia el nuevo horizonte",
-      "bio_artista": "Belo Horizonte, también llamada BH o Beagá, es una ciudad brasileña, capital del Estado de Minas Gerais. Con un área de aproximadamente 330 km² y una geografía diversa, con montañas y tierras bajas, está situada en la zona central del estado a 716 km de la capital nacional, Brasilia, y a 438 km de Río de Janeiro."
+      "bio_artista": ""
     },
     {
       "fuente": "Ticketmaster",
@@ -3407,8 +3967,8 @@
       "url": "https://www.ticketmaster.cl/event/ed-sheeran-loop-tour-2026-scl",
       "lat": null,
       "lon": null,
-      "descripcion_extendida": "Edward Christopher Sheeran, conocido como  Ed Sheeran, es un cantautor y músico británico. Desde niño comenzó a cantar en la iglesia a la que asistía y también aprendió a tocar la guitarra. A los 16 años abandonó la escuela secundaria, y se trasladó a Londres para proseguir una carrera artística. Después de publicar un EP de forma independiente a principios de 2011, captó la atención de Elton John quien lo puso en contacto con el sello Asylum Records y firmó un acuerdo de grabación.",
-      "bio_artista": "Edward Christopher Sheeran, conocido como  Ed Sheeran, es un cantautor y músico británico. Desde niño comenzó a cantar en la iglesia a la que asistía y también aprendió a tocar la guitarra. A los 16 años abandonó la escuela secundaria, y se trasladó a Londres para proseguir una carrera artística. Después de publicar un EP de forma independiente a principios de 2011, captó la atención de Elton John quien lo puso en contacto con el sello Asylum Records y firmó un acuerdo de grabación."
+      "descripcion_extendida": "Edward Christopher Sheeran is an English singer-songwriter and musician. Born in Halifax, West Yorkshire, and raised in Framlingham, Suffolk, he began writing songs around the age of eleven. In early 2011, Sheeran independently released the extended play No. 5 Collaborations Project. He signed with Asylum Records the same year. Sheeran's debut album, +, was released on 9 September 2011 and topped the UK Albums Chart. It contained his first hit single, \"The A Team\".",
+      "bio_artista": "Edward Christopher Sheeran is an English singer-songwriter and musician. Born in Halifax, West Yorkshire, and raised in Framlingham, Suffolk, he began writing songs around the age of eleven. In early 2011, Sheeran independently released the extended play No. 5 Collaborations Project. He signed with Asylum Records the same year. Sheeran's debut album, +, was released on 9 September 2011 and topped the UK Albums Chart. It contained his first hit single, \"The A Team\"."
     },
     {
       "fuente": "Ticketplus",
@@ -3423,8 +3983,8 @@
       "url": "https://ticketplus.cl/events/event-with-queue-84aab50d70888744",
       "lat": -33.464833,
       "lon": -70.6075,
-      "descripcion_extendida": "Los Servicios de Transformación de Datos, o DTS, son un conjunto de objetos y utilidades para permitir la automatización de extracción, transformación y carga hacia, o desde, una base de datos. Los objetos son los paquetes DTS y sus componentes, y sus utilidades son llamadas herramientas DTS. DTS estaba incluido en las versiones más antiguas de Microsoft SQL Server, y casi siempre es utilizado con bases de datos SQL, a pesar de que puede ser usado independientemente con otras bases de datos.",
-      "bio_artista": "Los Servicios de Transformación de Datos, o DTS, son un conjunto de objetos y utilidades para permitir la automatización de extracción, transformación y carga hacia, o desde, una base de datos. Los objetos son los paquetes DTS y sus componentes, y sus utilidades son llamadas herramientas DTS. DTS estaba incluido en las versiones más antiguas de Microsoft SQL Server, y casi siempre es utilizado con bases de datos SQL, a pesar de que puede ser usado independientemente con otras bases de datos."
+      "descripcion_extendida": "",
+      "bio_artista": ""
     },
     {
       "fuente": "Ticketmaster",
@@ -3456,7 +4016,7 @@
       "lat": -39.8142,
       "lon": -73.2459,
       "descripcion_extendida": "Abonos C.D. Valdivia temporada 2026",
-      "bio_artista": "El Club Deportivo Charco del Pino fundado en 1977, es un club del Municipio de Granadilla de Abona, España. Actualmente juega en Primera Interinsular Tenerife."
+      "bio_artista": ""
     },
     {
       "fuente": "Ticketplus",
@@ -3487,8 +4047,8 @@
       "url": "https://www.ticketmaster.cl/event/lollapalooza-chile-2027",
       "lat": -33.4489,
       "lon": -70.6693,
-      "descripcion_extendida": "",
-      "bio_artista": ""
+      "descripcion_extendida": "Lollapalooza Chile is the Chilean edition of the popular music festival Lollapalooza. It was the first Lollapalooza event to be held outside the United States and has taken place in Santiago, Chile since 2011.",
+      "bio_artista": "Lollapalooza Chile is the Chilean edition of the popular music festival Lollapalooza. It was the first Lollapalooza event to be held outside the United States and has taken place in Santiago, Chile since 2011."
     },
     {
       "fuente": "Ticketplus",
@@ -3904,7 +4464,7 @@
       "lat": null,
       "lon": null,
       "descripcion_extendida": "<p>El comediante y guionista emblemático de programas de humor como: detrás del Muro, Los Venegas, El Club de la comedia, Teatro en Chv, Vértigo, Sábados Gigantes y muchos más, presenta su show de stand up </p><p>“El Guionista de Chile” el cual lleva más de 2 años en cartelera con más de 5000 personas que han reído con su visión de estar sobreviviendo en el mundo y el Chile de hoy.</p>",
-      "bio_artista": "Manuel Rodríguez es una telenovela chilena de drama romántico y de época creada por Vicente Sabatini Downey. Se estrenó por Chilevisión el 15 de marzo de 2010, y concluyó el 18 de agosto de 2010. Protagonizada por Ricardo Fernández en el personaje titular de Manuel Rodríguez y Erdoíza."
+      "bio_artista": ""
     },
     {
       "fuente": "ComediaTicket",
@@ -3920,7 +4480,7 @@
       "lat": -27.0658,
       "lon": -70.8236,
       "descripcion_extendida": "<p>KAKO DESPERTÓ – EN VIVO</p><p>No de una siesta cualquiera, sino de ese sueño raro donde el capitalismo te pide más, el cuerpo te pide pausa y la cabeza te pide respuestas. Y claro, como buen observador de la realidad, volvió con las cosas más claras… y con ganas de reírse de todo esto que nos agota.</p><p>\"Kako Despertó\" es el nuevo show donde nuestro comediante favorito enfrenta los problemas modernos con su humor ácido y social: el agotamiento de la rutina, la presión de producir sin parar, el descanso que nunca llega, y esa sensación de estar siempre al debe. </p><p>Pero ojo, no es una charla TED, es pura sátira, personajes y poemas que le ponen el espejo delante a esta vida acelerada.</p><p>¿Será esta rutina parte de su despertar? </p><p>¿O solo otra vuelta de tuerca pa' seguir riéndonos de nosotros mismos? </p><p>Una sola forma de saberlo: venir al show, reírse con ganas y quizás, solo quizás, salir con alguna respuesta… o con más preguntas (que igual es mejor que nada).</p><p>Ven a despertar con Kako es mejor que hacerlo con el desper</p><p>tador. </p>",
-      "bio_artista": "Luis Alberto Miranda Espinosa conocido como Lucho Miranda, es un comediante, humorista, personalidad de internet, expaciente de Teletón y atleta medallista paralímpico chileno. También se ha desempeñado como podcaster junto a Claudio Michaux en el programa No sé si fue tan así."
+      "bio_artista": ""
     },
     {
       "fuente": "ComediaTicket",
@@ -3936,7 +4496,7 @@
       "lat": null,
       "lon": null,
       "descripcion_extendida": "<p>De las redes al escenario, Pollo Castillo te presenta su show de stand up, con interacciones y relatos de su vida antes de ser un influencer.</p><p>¡No te lo pierdas!&nbsp;</p>",
-      "bio_artista": "Otra película de huevos y un pollo es una película de animación mexicana-argentina de 2009 de acción, aventura y comedia dirigida por Gabriel y Rodolfo Riva Palacio Alatriste y producida por la compañía de animación Huevocartoon Producciones. Es el segundo largometraje creado por dicha compañía, siendo la secuela de Una película de huevos (2006), como parte de la serie fílmica Huevos."
+      "bio_artista": ""
     },
     {
       "fuente": "ComediaTicket",
@@ -3952,7 +4512,7 @@
       "lat": null,
       "lon": null,
       "descripcion_extendida": "<p>ALTER EGO</p><p>Lospleimovil Impro Humor</p><p><br></p><p>Alter Ego es un espectáculo de improvisación teatral donde cuatro protagonistas coinciden por azar en una situación extrema, en el momento justo y a la hora precisa. A partir de ese encuentro inesperado, las historias van revelando las distintas realidades de cada personaje. Un cruce de decisiones y acciones, que aflora lo mejor y lo peor de cada uno. Un viaje impredecible donde nada está escrito y todo puede cambiar en un instante.</p><p>Dirección: Claudio Espinoza</p><p>Elenco:</p><p>Lissette Villegas, Claudio Espinoza, Enrique Guiñez, Yezz Martínez</p><p>Música: Jorge Salazar</p><p>Iluminación: Rodrigo Barnao</p>",
-      "bio_artista": "El alter ego es un segundo yo, que se cree es distinto de la personalidad normal u original de una persona. El término fue acuñado en el siglo XX descrito por los psicólogos en el libro Manual de psicología. De una persona que tiene un alter ego se dice que lleva una doble vida."
+      "bio_artista": ""
     },
     {
       "fuente": "ComediaTicket",
@@ -3968,7 +4528,7 @@
       "lat": -33.4489,
       "lon": -70.6693,
       "descripcion_extendida": "<p>Anda al show de Santiago </p>",
-      "bio_artista": "Coliseo fue un programa de televisión chileno de humor que se emitió por Mega, estrenado el 27 de septiembre de 2025 y conducido por la cantante María José Quintanilla. El espacio fue concebido como una plataforma destinada a revitalizar el humor en la televisión abierta, combinando competencia, espectáculo y cercanía con el público."
+      "bio_artista": ""
     },
     {
       "fuente": "ComediaTicket",
@@ -4464,7 +5024,7 @@
       "lat": -20.2208,
       "lon": -70.1431,
       "descripcion_extendida": "Por medio de la fotografía, promete visualizar el bodyboard en Iquique y destacarlo como un patrimonio inmaterial. Una de las actividades más llamativas en el ámbito deportivo que se realizan en nuestra ciudad en el sector costero es, sin lugar dudas, el Bodyboard. Cientos de cultores se lanzan al m",
-      "bio_artista": "Cleo Sertori es uno de los personajes principales que se convirtió en sirena en la serie de televisión australiana H2O: Just Add Water. Junto con Emma y Rikki, Cleo descubrió sus poderes después de su viaje a la isla de Mako. Es interpretada por la actriz Phoebe Tonkin en el año 2006."
+      "bio_artista": ""
     },
     {
       "fuente": "Eventbrite",
@@ -4480,7 +5040,7 @@
       "lat": null,
       "lon": null,
       "descripcion_extendida": "¡Únete a nosotros en el AWS Community Day Chile 2025 para un día lleno de aprendizaje, networking y diversión entre la comunidad de AWS!",
-      "bio_artista": "Amazon Web Services, Inc. (AWS) is a subsidiary of Amazon that provides on-demand cloud computing platforms and APIs to individuals, companies, and governments, on a metered, pay-as-you-go basis."
+      "bio_artista": ""
     },
     {
       "fuente": "Eventbrite",
@@ -4496,7 +5056,7 @@
       "lat": -33.4489,
       "lon": -70.6693,
       "descripcion_extendida": "¡Ven a escuchar a los mejores desarrolladores de Santiago compartiendo sus experiencias y conocimientos en Dev Talks Santiago!",
-      "bio_artista": "Tilda Cobham-Hervey es una actriz australiana de cine, teatro y televisión."
+      "bio_artista": ""
     },
     {
       "fuente": "Eventbrite",

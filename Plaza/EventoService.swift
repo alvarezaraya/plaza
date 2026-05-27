@@ -2,6 +2,7 @@
 // Servicio principal de datos: descarga el JSON de eventos, geocodifica venues, clasifica con IA y persiste ediciones.
 
 import Foundation
+import CoreLocation
 import Observation
 
 // MARK: - DTO
