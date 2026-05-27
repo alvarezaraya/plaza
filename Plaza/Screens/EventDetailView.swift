@@ -154,8 +154,6 @@ struct EventDetailView: View {
 
                 // Mapa
                 if liveCoordinate.latitude != 0 || liveCoordinate.longitude != 0 {
-                    Divider()
-                        .padding(.bottom, PlSpace.gutter)
                     Map(position: $mapCamera, interactionModes: []) {
                         Marker(event.venue, coordinate: liveCoordinate)
                             .tint(Color.plAccent)
@@ -165,6 +163,7 @@ struct EventDetailView: View {
                     .frame(maxWidth: .infinity)
                     .clipShape(.rect(cornerRadius: PlSpace.cardRadius))
                     .padding(.horizontal, PlSpace.gutter)
+                    .padding(.top, PlSpace.gutter)
                     .padding(.bottom, PlSpace.gutter)
                 }
             }
