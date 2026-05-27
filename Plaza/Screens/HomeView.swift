@@ -29,6 +29,15 @@ struct HomeView: View {
         return result
     }
 
+    /// Pool para el carrusel: hasta 15 eventos con imagen, ya ordenados por fecha.
+    /// Si hay menos de 3 con imagen, rellena con eventos sin imagen para garantizar
+    /// que siempre haya tarjetas visibles.
+    private var featuredEvents: [Event] {
+        let withImages = filteredEvents.filter { $0.imageURL != nil }
+        if withImages.count >= 3 { return Array(withImages.prefix(15)) }
+        return Array(filteredEvents.prefix(max(3, withImages.count)))
+    }
+
     var body: some View {
         NavigationStack(path: $navPath) {
             listContent
@@ -93,7 +102,7 @@ struct HomeView: View {
                     .padding(.top, 120)
                     .plainRow(background: isIPadSidebar ? .clear : .plBg)
                 } else {
-                    EventImageStack(events: Array(filteredEvents.prefix(3))) { event in
+                    EventImageStack(events: featuredEvents) { event in
                         navPath.append(event)
                     }
                     .frame(maxWidth: .infinity)
