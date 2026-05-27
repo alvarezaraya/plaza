@@ -76,7 +76,7 @@ enum AppTheme: String, CaseIterable {
     var cardCenter: Color {
         switch self {
         case .plaza:      return Color(light: 0xD4A44C, dark: 0xE0B862)
-        case .multicolor: return Color(light: 0x1BBCD6, dark: 0x28CCE8) // cyan
+        case .multicolor: return Color(light: 0xB8232C, dark: 0xD03040) // terciopelo rojo
         }
     }
 
@@ -90,7 +90,7 @@ enum AppTheme: String, CaseIterable {
     var accent: Color {
         switch self {
         case .plaza:      return Color(light: 0xc5832b, dark: 0xd4923a)
-        case .multicolor: return Color(light: 0xD63BAA, dark: 0xE855BE) // magenta como CTA
+        case .multicolor: return Color(light: 0xB8232C, dark: 0xD03040) // terciopelo rojo
         }
     }
 
