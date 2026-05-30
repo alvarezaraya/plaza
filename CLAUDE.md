@@ -68,7 +68,7 @@ Eventos con el mismo título **y subtítulo** (lowercased) se agrupan — giras 
 
 **Enriquecimiento**: `ThreadPoolExecutor(max_workers=6)`. Wikipedia/DuckDuckGo serializados con `Semaphore(1)` para no saturar APIs.
 
-**Fuentes** (14): Ticketplus · Ticketpro · PuntoTicket · Ticketmaster · Passline · ComediaTicket · EsquinaRetornable · CulturaAntofagasta · CulturaIquique · Ticketchile · MasQueTickets · Eventbrite · Joinnus · RSS Municipales (CulturaGob, CCPLM, GAM, CulturaValparaíso).
+**Fuentes** (15): Ticketplus · Ticketpro · PuntoTicket · Ticketmaster · Passline · ComediaTicket · EsquinaRetornable · CulturaAntofagasta · CulturaIquique · Ticketchile · MasQueTickets · Eventbrite · Joinnus · **GAM** (`scrape_gam`: sitio SSR sin RSS, lee JSON-LD `schema.org/Event` de cada show crawleando las categorías de `/que-hacer-en-gam/`) · RSS Municipales (CulturaGob, CCPLM, CulturaValparaíso).
 
 **Feeds RSS municipales** (`_scrape_rss_municipal`, compartido por CulturaGob/CCPLM/GAM/CulturaValparaíso/CulturaAntofagasta/CulturaIquique): son blogs de noticias, no de eventos. `_rss_es_evento` filtra notas de prensa y recopilaciones (`RSS_RUIDO` vs `RSS_EVENTO`); la ubicación se infiere con `detectar_ciudad`/`detectar_venue` sobre el título (feed = fallback); `limpiar_nombre_rss` limpia el titular sin borrar meses ni ciudades (a diferencia de `limpiar_nombre`).
 

@@ -159,6 +159,34 @@ class TestRssEsEvento(unittest.TestCase):
             "Orquesta Sinfónica invita a la comunidad a su concierto de gala", "", ""))
 
 
+class TestGamEventJsonld(unittest.TestCase):
+    def test_extrae_event(self):
+        html = ('<html><head>'
+                '<script type="application/ld+json">'
+                '{"@context":"https://schema.org","@type":"Event",'
+                '"name":"Cerebro","startDate":"2026-05-30T20:00:00"}'
+                '</script></head></html>')
+        ev = s._gam_event_jsonld(html)
+        self.assertIsNotNone(ev)
+        self.assertEqual(ev["name"], "Cerebro")
+
+    def test_ignora_no_event(self):
+        html = ('<script type="application/ld+json">'
+                '{"@type":"PerformingArtsTheater","name":"GAM"}</script>')
+        self.assertIsNone(s._gam_event_jsonld(html))
+
+    def test_sin_jsonld(self):
+        self.assertIsNone(s._gam_event_jsonld("<html><body>nada</body></html>"))
+
+    def test_lista_de_objetos(self):
+        html = ('<script type="application/ld+json">'
+                '[{"@type":"PerformingArtsTheater","name":"GAM"},'
+                '{"@type":"Event","name":"Furias","startDate":"2026-07-01T19:00:00"}]'
+                '</script>')
+        ev = s._gam_event_jsonld(html)
+        self.assertEqual(ev["name"], "Furias")
+
+
 class TestLimpiarNombreRss(unittest.TestCase):
     def test_preserva_mes_y_ciudad(self):
         n = s.limpiar_nombre_rss("Abril: Concierto de la Orquesta Sinfónica de Antofagasta")

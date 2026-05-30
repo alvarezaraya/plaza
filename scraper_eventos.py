@@ -451,6 +451,7 @@ COORDENADAS_FIJAS = {
     "teatro municipal de santiago":    (-33.438889, -70.653056),
     "teatro nescafé de las artes":     (-33.425278, -70.608056),
     "anfiteatro cerrillos":            (-33.493056, -70.727500),
+    "centro gabriela mistral (gam)":   (-33.437778, -70.640556),
     # Venues Viña del Mar
     "enjoy viña del mar":              (-33.024167, -71.551944),
     "casino viña del mar":             (-33.024167, -71.551944),
@@ -1723,6 +1724,114 @@ def _scrape_rss_municipal(feed_url, ciudad_feed, venue_feed, fuente):
     return eventos
 
 
+# ── Scraper: GAM (HTML SSR + JSON-LD) ───────────────────────────────────────
+
+GAM_BASE = "https://gam.cl/es/que-hacer-en-gam/"
+GAM_CATEGORIAS = [
+    "teatro", "danza", "musica-clasica", "musica-popular", "nueva-opera",
+    "stand-up-comedy", "familiar", "festivales-eventos-residentes",
+    "ideasypensamiento",
+]
+_GAM_SHOW_RE = re.compile(r"^https://gam\.cl/es/que-hacer-en-gam/[a-z0-9-]+/[a-z0-9-]+/$")
+
+
+def _gam_event_jsonld(html):
+    """Primer bloque JSON-LD con @type=Event del HTML, o None."""
+    soup = BeautifulSoup(html, "html.parser")
+    for tag in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(tag.get_text() or "")
+        except Exception:
+            continue
+        objetos = data if isinstance(data, list) else [data]
+        for obj in objetos:
+            if isinstance(obj, dict) and obj.get("@type") == "Event":
+                return obj
+    return None
+
+
+def scrape_gam():
+    """Centro Gabriela Mistral (GAM). El sitio migró a SSR sin RSS; cada show
+    expone JSON-LD schema.org/Event en el HTML. Se crawlean las categorías para
+    juntar los links de show y se lee el JSON-LD de cada uno."""
+    print("\n🔍 GAM — Centro Gabriela Mistral ...")
+    VENUE  = "Centro Gabriela Mistral (GAM)"
+    CIUDAD = "Santiago"
+    ahora  = datetime.now().date()
+
+    # 1) Crawl de categorías → links de show (saltando archivos y convocatorias)
+    shows  = []
+    vistos = set()
+    for cat in GAM_CATEGORIAS:
+        r = get(GAM_BASE + cat + "/")
+        if not r:
+            continue
+        soup = BeautifulSoup(r.text, "html.parser")
+        for a in soup.find_all("a", href=True):
+            u = a["href"]
+            if u.startswith("/"):
+                u = "https://gam.cl" + u
+            if (_GAM_SHOW_RE.match(u) and f"/{cat}/" in u and u not in vistos
+                    and "/historico/" not in u and "convocatoria" not in u):
+                vistos.add(u)
+                shows.append(u)
+        time.sleep(PAUSA)
+
+    print(f"  → {len(shows)} shows; leyendo JSON-LD...")
+
+    # 2) Detalle de cada show desde su JSON-LD Event
+    eventos     = []
+    descartados = 0
+    for url in shows:
+        r = get(url)
+        if not r:
+            continue
+        ev = _gam_event_jsonld(r.text)
+        if not ev or not ev.get("startDate"):
+            descartados += 1
+            time.sleep(PAUSA)
+            continue
+
+        try:
+            inicio = datetime.fromisoformat(ev["startDate"]).date()
+            fin    = datetime.fromisoformat(ev["endDate"]).date() if ev.get("endDate") else inicio
+        except ValueError:
+            descartados += 1
+            time.sleep(PAUSA)
+            continue
+
+        # Descartar funciones ya terminadas; para una temporada en curso usar hoy.
+        if fin < ahora:
+            descartados += 1
+            time.sleep(PAUSA)
+            continue
+        fecha = inicio if inicio >= ahora else ahora
+
+        nombre = limpiar(ev.get("name", ""))
+        if nombre:
+            img    = ev.get("image")
+            imagen = (img[0] if isinstance(img, list) and img else img) or ""
+            desc   = limpiar(ev.get("description", "")).rstrip("… .")
+            eventos.append({
+                "fuente":           "GAM",
+                "nombre":           nombre,
+                "venue":            VENUE,
+                "descripcion":      desc[:300],
+                "fecha_iso":        fecha.strftime("%Y-%m-%d"),
+                "fecha_texto":      f"{fecha.day} de {MESES_TEXTO[fecha.month]} de {fecha.year}",
+                "precio_desde_clp": "",
+                "ciudad":           CIUDAD,
+                "imagen_url":       imagen,
+                "url":              url,
+            })
+        time.sleep(PAUSA)
+
+    if descartados:
+        print(f"  🗑️  {descartados} sin Event/fecha futura")
+    print(f"  ✅ {len(eventos)} eventos")
+    return eventos
+
+
 def scrape_rss_municipales():
     """Feeds RSS WordPress de corporaciones culturales regionales."""
     FEEDS = [
@@ -1733,8 +1842,7 @@ def scrape_rss_municipales():
          "Santiago",    "Centro Cultural Palacio La Moneda",     "CCPLM"),
         ("https://www.culturalvalparaiso.cl/feed/",
          "Valparaíso",  "Corporación Cultural de Valparaíso",    "CulturaValparaíso"),
-        ("https://www.gam.cl/feed/",
-         "Santiago",    "GAM — Centro Cultural Gabriela Mistral","GAM"),
+        # GAM ya no publica RSS (sitio migrado a SSR); ver scrape_gam().
     ]
 
     todos = []
@@ -1920,6 +2028,7 @@ def main():
     todos += scrape_masquetickets()
     todos += scrape_eventbrite()
     todos += scrape_joinnus()
+    todos += scrape_gam()
     todos += scrape_rss_municipales()
 
     todos.sort(key=lambda e: e["fecha_iso"] if e["fecha_iso"] else "9999")
