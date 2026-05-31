@@ -34,6 +34,7 @@ import time
 import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 
 import requests
 from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
@@ -291,35 +292,68 @@ def es_ciudad_objetivo(texto):
     return any(re.search(rf'\b{re.escape(c)}\b', texto_lower) for c in CIUDADES_OBJETIVO)
 
 
-def parsear_fecha(dia, mes_str):
+def _fmt_fecha(fecha):
+    return fecha.strftime("%Y-%m-%d"), f"{fecha.day} de {MESES_TEXTO[fecha.month]} de {fecha.year}"
+
+
+def parsear_fecha(dia, mes_str, fecha_ancla=None):
+    """Resuelve un día+mes sueltos (sin año) a una fecha ISO.
+
+    Sin `fecha_ancla` (ticketeras): asume año actual y avanza al siguiente si el
+    evento pasó hace >30 días — un "24 de abril" suelto en una venta es la próxima
+    función. Con `fecha_ancla` (fecha de publicación de un post RSS): usa el año
+    del post y NO bumpea — un "24 de abril" en un post de abril es de ese abril,
+    aunque ya haya pasado (el scraper RSS lo descartará por antiguo)."""
     mes_str = mes_str.lower().strip()
     mes_num = MESES_ES.get(mes_str)
     if not mes_num:
         return "", ""
-    anio = datetime.now().year
     ahora = datetime.now().date()
+
+    if fecha_ancla is not None:
+        try:
+            fecha = datetime(fecha_ancla.year, mes_num, int(dia)).date()
+        except ValueError:
+            return "", ""
+        # Rollover: si el evento cae bastante antes del post (ej. post de
+        # diciembre sobre un evento de enero), es del año siguiente.
+        if (fecha_ancla - fecha).days > 120:
+            try:
+                fecha = fecha.replace(year=fecha_ancla.year + 1)
+            except ValueError:
+                pass
+        return _fmt_fecha(fecha)
+
+    anio = ahora.year
     try:
         fecha = datetime(anio, mes_num, int(dia)).date()
     except ValueError:
         return "", ""
-    # Solo avanzar al año siguiente si el evento pasó hace más de 30 días.
-    # Eventos recientes (≤30 días atrás) se retienen como fecha pasada para
-    # ser descartados por el filtro del scraper que los originó.
     if fecha < ahora and (ahora - fecha).days > 30:
-        anio += 1
-        fecha = fecha.replace(year=anio)
-    iso   = fecha.strftime("%Y-%m-%d")
-    texto = f"{fecha.day} de {MESES_TEXTO[fecha.month]} de {fecha.year}"
-    return iso, texto
+        fecha = fecha.replace(year=anio + 1)
+    return _fmt_fecha(fecha)
 
 
-def extraer_fecha_de_texto(texto):
-    patron = re.search(
-        rf"(\d{{1,2}})\s+(?:de\s+)?({MESES_PATTERN})",
-        texto, re.IGNORECASE
+def extraer_fecha_de_texto(texto, fecha_ancla=None):
+    """Extrae la primera fecha del texto. Si trae año explícito ("24 de abril
+    de 2026") lo usa literal; si no, delega en `parsear_fecha` (con `fecha_ancla`
+    para anclar al año de publicación en feeds RSS)."""
+    # Con año explícito de 4 dígitos.
+    m = re.search(
+        rf"(\d{{1,2}})\s+(?:de\s+)?({MESES_PATTERN})\s+(?:de\s+)?(\d{{4}})",
+        texto, re.IGNORECASE,
     )
-    if patron:
-        return parsear_fecha(patron.group(1), patron.group(2))
+    if m:
+        mes_num = MESES_ES.get(m.group(2).lower())
+        if mes_num:
+            try:
+                return _fmt_fecha(datetime(int(m.group(3)), mes_num, int(m.group(1))).date())
+            except ValueError:
+                pass
+    # Solo día + mes.
+    m = re.search(rf"(\d{{1,2}})\s+(?:de\s+)?({MESES_PATTERN})", texto, re.IGNORECASE)
+    if m:
+        return parsear_fecha(m.group(1), m.group(2), fecha_ancla=fecha_ancla)
     return "", ""
 
 
@@ -1668,10 +1702,22 @@ def _scrape_rss_municipal(feed_url, ciudad_feed, venue_feed, fuente):
         desc_html  = desc_tag.get_text(" ", strip=True) if desc_tag else ""
         desc_clean = limpiar(re.sub(r"<[^>]+>", " ", desc_html))
 
-        fecha_iso, fecha_texto = extraer_fecha_de_texto(nombre_raw)
-        if not fecha_iso:
-            fecha_iso, fecha_texto = extraer_fecha_de_texto(desc_clean)
+        # pubDate del post como ancla de año: un "24 de abril" suelto se
+        # interpreta en el año de publicación, no se bumpea a un año futuro.
+        pub_tag = item.find("pubdate")
+        fecha_ancla = None
+        if pub_tag:
+            try:
+                fecha_ancla = parsedate_to_datetime(pub_tag.get_text()).date()
+            except (TypeError, ValueError):
+                fecha_ancla = None
 
+        fecha_iso, fecha_texto = extraer_fecha_de_texto(nombre_raw, fecha_ancla)
+        if not fecha_iso:
+            fecha_iso, fecha_texto = extraer_fecha_de_texto(desc_clean, fecha_ancla)
+
+        # Descartar posts antiguos: con el ancla, una fecha pasada ya no se
+        # convierte en un fantasma del año siguiente, sino que cae aquí.
         if fecha_iso:
             try:
                 if datetime.strptime(fecha_iso, "%Y-%m-%d").date() < ahora:
