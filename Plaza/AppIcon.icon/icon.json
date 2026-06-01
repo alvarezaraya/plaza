@@ -1,30 +1,60 @@
 {
-  "fill" : {
-    "solid" : "display-p3:0.96783,0.94128,0.86828,1.00000"
-  },
+  "fill-specializations" : [
+    {
+      "value" : {
+        "linear-gradient" : [
+          "display-p3:0.47439,0.19609,0.23268,1.00000",
+          "display-p3:0.33874,0.12160,0.16000,1.00000"
+        ],
+        "orientation" : {
+          "start" : {
+            "x" : 0.5,
+            "y" : 0
+          },
+          "stop" : {
+            "x" : 0.5,
+            "y" : 0.7
+          }
+        }
+      }
+    },
+    {
+      "appearance" : "dark",
+      "value" : {
+        "linear-gradient" : [
+          "display-p3:0.11267,0.16290,0.25139,1.00000",
+          "display-p3:0.06624,0.10455,0.16352,1.00000"
+        ],
+        "orientation" : {
+          "start" : {
+            "x" : 0.5,
+            "y" : 0
+          },
+          "stop" : {
+            "x" : 0.5,
+            "y" : 0.7
+          }
+        }
+      }
+    }
+  ],
   "groups" : [
     {
       "layers" : [
         {
-          "blend-mode-specializations" : [
+          "image-name" : "Plaza-Icon-transparente.svg",
+          "name" : "Plaza-Icon-transparente",
+          "opacity-specializations" : [
             {
               "appearance" : "tinted",
-              "value" : "normal"
+              "value" : 1
             }
           ],
-          "fill-specializations" : [
-            {
-              "appearance" : "tinted",
-              "value" : "automatic"
-            }
-          ],
-          "image-name" : "imagevector.png",
-          "name" : "imagevector",
           "position" : {
             "scale" : 1,
             "translation-in-points" : [
-              -0.5,
-              83.3984375
+              8.700000000000045,
+              -91
             ]
           }
         }
